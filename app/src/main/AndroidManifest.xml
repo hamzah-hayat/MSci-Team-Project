@@ -18,7 +18,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".maze.MazeView" android:label="@string/app_name"/>
+        <activity
+            android:name=".maze.MazeView"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".picross.PicrossPuzzleOptionsGUI"
+            android:label="@string/title_activity_picross_puzzle_options_gui"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
