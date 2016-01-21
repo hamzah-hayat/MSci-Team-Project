@@ -1,12 +1,16 @@
 package com.group.msci.puzzlegenerator.BallSwitch;
 
+import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.BallSwitchObject;
+
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
  * Created by Hamzah on 30/11/2015.
  */
 public class BallSwitchPuzzle {
-    int[][] gridData;
+    int sizeX, sizeY;
+    ArrayList<BallSwitchObject> gameObjects;
     int puzzleID;
     String puzzleCreator;
     Date dateMade;
@@ -16,10 +20,7 @@ public class BallSwitchPuzzle {
 
     }
 
-    public BallSwitchPuzzle(int[][] gridDataIn)
-    {
-        gridData = gridDataIn;
-    }
+    public BallSwitchPuzzle(int sizeXIn,int sizeYIn) { sizeX = sizeXIn;sizeY = sizeYIn; }
 
     public BallSwitchPuzzle(int puzzleIDIn)
     {
@@ -27,11 +28,28 @@ public class BallSwitchPuzzle {
         //Load puzzle from database
     }
 
-    public BallSwitchPuzzle(int[][] gridDataIn,int puzzleIDIn,String puzzleCreatorIn,Date dateMadeIn)
+    public BallSwitchPuzzle(int sizeXIn,int sizeYIn,ArrayList<BallSwitchObject> list,int puzzleIDIn,String puzzleCreatorIn,Date dateMadeIn)
     {
-        gridData = gridDataIn;
+        sizeX = sizeXIn;
+        sizeY = sizeYIn;
+        gameObjects = list;
         puzzleID = puzzleIDIn;
         puzzleCreator = puzzleCreatorIn;
         dateMade = dateMadeIn;
+    }
+
+    public void addObject(BallSwitchObject obj)
+    {
+        gameObjects.add(obj);
+    }
+
+    public void removeObject(BallSwitchObject obj)
+    {
+        gameObjects.remove(obj);
+    }
+
+    public ArrayList<BallSwitchObject> getObjects()
+    {
+        return gameObjects;
     }
 }
