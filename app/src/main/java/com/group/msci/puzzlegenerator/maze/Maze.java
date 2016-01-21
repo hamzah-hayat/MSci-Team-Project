@@ -1,30 +1,10 @@
 package com.group.msci.puzzlegenerator.maze;
 
 /**
- * Created by filipt on 11/28/15.
+ * Created by Filipt on 19/01/2016.
  */
-public class Maze {
+public interface Maze {
 
-    private int positionInMaze;
-
-
-    public void reset() {
-
-    }
-
-    public void regenerate() {
-    }
-
-    public void solve() {
-
-    }
-
-    public void setPosition(Integer pos) {
-
-    }
-
-    public Integer position() {
-
-        return 4;
-    }
+    void solve();
+    void log();
 }
