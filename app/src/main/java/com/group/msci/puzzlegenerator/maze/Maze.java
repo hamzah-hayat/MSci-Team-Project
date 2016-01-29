@@ -7,4 +7,5 @@ public interface Maze {
 
     void solve();
     void log();
+    void regenerate();
 }

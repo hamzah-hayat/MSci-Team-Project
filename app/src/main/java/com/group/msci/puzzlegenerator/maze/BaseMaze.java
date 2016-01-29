@@ -19,6 +19,7 @@ public class BaseMaze implements Maze {
     private boolean solved;
     private Point entry;
     private Point exit;
+    private Point playerPos;
 
     public BaseMaze(int width, int height, Point entry, Point exit) {
         this(width, height);
@@ -39,6 +40,7 @@ public class BaseMaze implements Maze {
     public void setOpenings(Point entry, Point exit) {
         this.entry = entry;
         this.exit = exit;
+        playerPos = entry;
         writeAt(entry, SPACE);
         writeAt(exit, SPACE);
     }
@@ -109,6 +111,10 @@ public class BaseMaze implements Maze {
 
     public boolean withinBounds(int x, int y) {
         return x < width && x > 0 && y > 0 && y < height;
+    }
+
+    private boolean withinGrid(int x, int y) {
+        return x < width && x > -1 && y > -1 && y < height;
     }
 
     public void inc(Point p) {
@@ -281,7 +287,7 @@ public class BaseMaze implements Maze {
                         new Point(x, y + 1));
 
                 for (Point neighbour : neighbours) {
-                    if (withinBounds(neighbour.x, neighbour.y) &&
+                    if (withinGrid(neighbour.x, neighbour.y) &&
                             isWall(neighbour)) {
                         ++nextWalls;
                     }
@@ -292,5 +298,19 @@ public class BaseMaze implements Maze {
                 }
             }
         }
+    }
+
+    public void regenerate() {
+        for (int i = 0; i < width; ++i) {
+            Arrays.fill(grid[i], (byte)0);
+        }
+
+        //Make sure the previous player position is carved
+        writeAt(playerPos, PATH);
+        writeAt(entry, SPACE);
+        writeAt(exit, SPACE);
+        int carveStart = (this instanceof Maze3D) ? width / 3 : 1;
+        carve(carveStart, 1);
+        specifyWalls();
     }
 }

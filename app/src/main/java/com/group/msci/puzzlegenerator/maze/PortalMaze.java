@@ -29,6 +29,8 @@ public class PortalMaze implements Maze {
 
         for (int i = 0; i < nplanes; ++i) {
             planes[i] = new BaseMaze(width, height);
+            System.out.println("Plane " + i);
+            planes[i].logMat();
         }
 
         /**Random horizontal entry/exit point for the intermediate planes.
@@ -73,6 +75,20 @@ public class PortalMaze implements Maze {
             System.out.println("Plane " + i);
             planes[i].log();
             System.out.println();
+        }
+    }
+
+    public void logMat() {
+        for (int i = 0; i < planes.length; ++i) {
+            System.out.println("Plane " + i);
+            planes[i].logMat();
+            System.out.println();
+        }
+    }
+
+    public void regenerate() {
+        for (BaseMaze plane : planes) {
+            plane.regenerate();
         }
     }
 
