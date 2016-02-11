@@ -7,4 +7,7 @@
     <string name="imageSelectStr">Image Selection Type</string>
     <string name="title_activity_picross_puzzle_gui">PicrossPuzzleGUI</string>
     <string name="ballSiwtchMenuButton_text">BallSwitch Puzzle</string>
+    <string name="dotBtn">Dot to Dot Puzzles</string>
+    <string name="test">test</string>
+    <string name="title_activity_dot_to_dot_view2">DotToDotView2</string>
 </resources>

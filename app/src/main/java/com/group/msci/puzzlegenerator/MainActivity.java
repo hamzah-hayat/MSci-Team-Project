@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.group.msci.puzzlegenerator.BallSwitch.BallSwitchPuzzleView;
+import com.group.msci.puzzlegenerator.dottodot.DotToDotView2;
 import com.group.msci.puzzlegenerator.maze.MazeView;
 import com.group.msci.puzzlegenerator.picross.PicrossImageSelectType;
 
@@ -46,6 +47,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, PicrossImageSelectType.class);
+                MainActivity.this.startActivity(intent);
+            }
+        });
+
+        Button dotBtn = (Button) findViewById(R.id.DotBtn);
+        dotBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, DotToDotView2.class);
                 MainActivity.this.startActivity(intent);
             }
         });
