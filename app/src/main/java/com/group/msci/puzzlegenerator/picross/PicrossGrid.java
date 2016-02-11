@@ -14,4 +14,8 @@ public class PicrossGrid {
             }
         }
     }
+
+    public PicrossSquare[][] getGrid () {
+        return grid;
+    }
 }

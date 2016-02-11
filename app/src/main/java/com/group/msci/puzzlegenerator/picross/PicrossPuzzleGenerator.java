@@ -7,6 +7,7 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.util.Log;
 
 /**
  * Created by magdi on 29/11/2015.
@@ -17,14 +18,13 @@ public class PicrossPuzzleGenerator {
     protected int puzzleHeight;
     protected Bitmap originalImage;
 
-    public PicrossPuzzleGenerator (Bitmap imageT, int across, int down, Bitmap original) {
+    public PicrossPuzzleGenerator (Bitmap imageT, int across, int down) {
         foregroundImage = imageT;
         puzzleWidth = across;
         puzzleHeight = down;
-        originalImage = original;
     }
 
-    public Bitmap pixelateImage() {
+    public void pixelateImage() {
         int oldWidth = foregroundImage.getWidth();
         int oldHeight = foregroundImage.getHeight();
         float scaleWidth = ((float) puzzleWidth) / oldWidth;
@@ -36,7 +36,7 @@ public class PicrossPuzzleGenerator {
         // "RECREATE" THE NEW BITMAP
         Bitmap resizedBitmap = Bitmap.createBitmap(foregroundImage, 0, 0, oldWidth, oldHeight, matrix, false);
         foregroundImage.recycle();
-        return resizedBitmap;
+        foregroundImage = resizedBitmap;
         //info found at http://stackoverflow.com/questions/4837715/how-to-resize-a-bitmap-in-android/10703256#10703256
     }
 
@@ -78,14 +78,12 @@ public class PicrossPuzzleGenerator {
 
     public boolean[][] findShadedSquares(Bitmap binaryImage) {
         boolean[][] result = new boolean[puzzleHeight][puzzleWidth];
-        int height = binaryImage.getHeight();
-        int width = binaryImage.getWidth();
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; x++) {
+        for (int x = 0; x < binaryImage.getWidth(); x++) {
+            for (int y = 0; y < binaryImage.getHeight(); y++) {
+                Log.i("test", "it worked? " + x + " " + binaryImage.getWidth());
                 if (binaryImage.getPixel(x, y) == 0x00000000) {
                     result[x][y] = true;
-                }
-                else {
+                } else {
                     result[x][y] = false;
                 }
             }
@@ -94,8 +92,8 @@ public class PicrossPuzzleGenerator {
     }
 
     public PicrossPuzzle createPuzzle() {
-        foregroundImage = pixelateImage();
+        pixelateImage();
         boolean[][] shadedSquares = findShadedSquares(binariseImage());
-        return new PicrossPuzzle(shadedSquares, foregroundImage, originalImage);
+        return new PicrossPuzzle(shadedSquares, foregroundImage);
     }
 }

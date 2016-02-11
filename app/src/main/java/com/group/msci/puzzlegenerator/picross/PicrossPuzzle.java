@@ -7,12 +7,12 @@ import android.graphics.Bitmap;
  */
 public class PicrossPuzzle {
     protected boolean[][] answerArray;
-    protected Bitmap originalImage;
     protected Bitmap foregroundImage;
+    protected PicrossGrid grid;
 
-    public PicrossPuzzle(boolean[][] answerArrayT, Bitmap originalImageT, Bitmap foregroundImageT) {
+    public PicrossPuzzle(boolean[][] answerArrayT, Bitmap foregroundImageT) {
         answerArray = answerArrayT;
-        originalImage = originalImageT;
         foregroundImage = foregroundImageT;
+        grid = new PicrossGrid(answerArray.length, answerArray[0].length);
     }
 }

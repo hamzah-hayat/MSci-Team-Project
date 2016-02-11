@@ -11,7 +11,7 @@ import java.util.Random;
 public class NounGenerator {
     public NounGenerator () {
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("res/data/nounData.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader("res/raw/noundata.txt"));
             String countLine = reader.readLine();
             int wordCount = Integer.parseInt(countLine.substring(11));
             Random rand = new Random();

@@ -3,5 +3,8 @@
     <string name="action_settings">Settings</string>
     <string name="mazeBtn">Maze Puzzles</string>
     <string name="title_activity_picross_puzzle_options_gui">PicrossPuzzleOptionsGUI</string>
+    <string name="title_activity_picross_main">PicrossMain</string>
+    <string name="imageSelectStr">Image Selection Type</string>
+    <string name="title_activity_picross_puzzle_gui">PicrossPuzzleGUI</string>
     <string name="ballSiwtchMenuButton_text">BallSwitch Puzzle</string>
 </resources>

@@ -28,15 +28,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ballSiwtchMenuButton_text"
-        android:id="@+id/ballSwitchMenuButton"
-        android:layout_below="@+id/mazeBtn"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,4 +38,22 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="34dp" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Picross Puzzles"
+        android:id="@+id/picrossBtn"
+        android:layout_below="@+id/mazeBtn"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="55dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ball-Switch Puzzles"
+        android:id="@+id/ballSwitchMenuButton"
+        android:layout_alignBottom="@+id/mazeBtn"
+        android:layout_alignRight="@+id/picrossBtn"
+        android:layout_alignEnd="@+id/picrossBtn" />
 </RelativeLayout>
