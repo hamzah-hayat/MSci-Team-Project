@@ -14,7 +14,7 @@ public class PicrossPuzzleOptionsGUI extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_picross_puzzle_options_gui);
+        //setContentView(R.layout.activity_picross_puzzle_options_gui);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

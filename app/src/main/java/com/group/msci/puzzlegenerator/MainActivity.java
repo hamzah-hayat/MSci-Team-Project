@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
+import com.group.msci.puzzlegenerator.BallSwitch.BallSwitchPuzzleView;
 import com.group.msci.puzzlegenerator.maze.MazeView;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,6 +37,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
         public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, MazeView.class);
+                MainActivity.this.startActivity(intent);
+            }
+        });
+
+        //BallSwitch stuff here
+        Button ballSwitchMenuButton = (Button) findViewById(R.id.ballSwitchMenuButton);
+        ballSwitchMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, BallSwitchPuzzleView.class);
                 MainActivity.this.startActivity(intent);
             }
         });

@@ -19,6 +19,7 @@ public class BaseMaze implements Maze {
     private boolean solved;
     private Point entry;
     private Point exit;
+    private Point playerPos;
 
     public BaseMaze(int width, int height, Point entry, Point exit) {
         this(width, height);
@@ -36,9 +37,10 @@ public class BaseMaze implements Maze {
         specifyWalls();
     }
 
-    public void setOpenings(Point entry, Point exit) {
+    protected void setOpenings(Point entry, Point exit) {
         this.entry = entry;
         this.exit = exit;
+        playerPos = entry;
         writeAt(entry, SPACE);
         writeAt(exit, SPACE);
     }
@@ -48,7 +50,9 @@ public class BaseMaze implements Maze {
         int xExit = (this instanceof Maze3D) ? 2 * width / 3 : width - 2;
         setOpenings(new Point(xEnter, 0), new Point(xExit, height - 1));
     }
+    //Interface methods
 
+    @Override
     public void log() {
 
         for (byte[] row : grid) {
@@ -78,6 +82,66 @@ public class BaseMaze implements Maze {
         }
     }
 
+    @Override
+    public Point playerPos() {
+        return playerPos;
+    }
+
+    @Override
+    public boolean solved() {
+        return solved;
+    }
+
+    @Override
+    public void solve() {
+        if (entry == null || exit == null) setDefaultOpenings();
+        fill(entry, exit, SPACE);
+        writeAt(exit, PATH);
+        solved = true;
+    }
+
+    @Override
+    public void regenerate() {
+        regenerate(true);
+    }
+
+    @Override
+    public byte at(Point p) {
+        return grid[p.y][p.x];
+    }
+
+    @Override
+    public boolean movePlayer(int direction) {
+        playerPos = neighbour_at(direction, playerPos);
+        if (withinBounds(playerPos)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    //Convenience methods
+
+    protected void regenerate(boolean keepPlayerPos) {
+        for (int i = 0; i < width; ++i) {
+            Arrays.fill(grid[i], (byte)0);
+        }
+
+        //Make sure the previous player position is carved
+        if (keepPlayerPos) {
+            writeAt(playerPos, PATH);
+        }
+        else {
+            playerPos = entry;
+        }
+
+        writeAt(entry, SPACE);
+        writeAt(exit, SPACE);
+        int carveStart = (this instanceof Maze3D) ? width / 3 : 1;
+        carve(carveStart, 1);
+        specifyWalls();
+    }
+
     public int height() {
         return height;
     }
@@ -86,13 +150,8 @@ public class BaseMaze implements Maze {
         return width;
     }
 
-
-    public byte at(int i, int j) {
-        return grid[i][j];
-    }
-
-    public byte at(Point p) {
-        return grid[p.y][p.x];
+    public byte at(int x, int y) {
+        return grid[y][x];
     }
 
     public void writeAt(int i, int j, byte value) {
@@ -109,6 +168,18 @@ public class BaseMaze implements Maze {
 
     public boolean withinBounds(int x, int y) {
         return x < width && x > 0 && y > 0 && y < height;
+    }
+
+    public Point exit() {
+        return exit;
+    }
+
+    protected boolean withinBounds(Point p) {
+        return withinBounds(p.x, p.y);
+    }
+
+    private boolean withinGrid(int x, int y) {
+        return x < width && x > -1 && y > -1 && y < height;
     }
 
     public void inc(Point p) {
@@ -145,7 +216,13 @@ public class BaseMaze implements Maze {
         return neighbour_at(direction, p.x, p.y);
     }
 
-    //SOLVING METHODS
+    private boolean carvable(Point wall, Point neighbour) {
+        return withinBounds(neighbour.x, neighbour.y) &&
+                isWall(wall) && isWall(neighbour);
+
+    }
+
+    //Algorithms
     private static final int DEAD_END = -1, SUCCESS = 1;
 
     /**The dead-end filler algorithm. As the name suggests.
@@ -154,12 +231,6 @@ public class BaseMaze implements Maze {
      * the solution since a dead-end was never encountered there.
      */
 
-    public void solve() {
-        if (entry == null || exit == null) setDefaultOpenings();
-        fill(entry, exit, SPACE);
-        writeAt(exit, PATH);
-        solved = true;
-    }
 
     private int fill(Point curPos, Point exitPoint, int minVisit) {
 
@@ -260,11 +331,6 @@ public class BaseMaze implements Maze {
         } while (!stack.isEmpty());
     }
 
-    private boolean carvable(Point wall, Point neighbour) {
-        return withinBounds(neighbour.x, neighbour.y) &&
-                isWall(wall) && isWall(neighbour);
-
-    }
 
     /**Give different values to walls depending on their kind, e.g
      * walls that are connedted to more than two others should have a
@@ -281,7 +347,7 @@ public class BaseMaze implements Maze {
                         new Point(x, y + 1));
 
                 for (Point neighbour : neighbours) {
-                    if (withinBounds(neighbour.x, neighbour.y) &&
+                    if (withinGrid(neighbour.x, neighbour.y) &&
                             isWall(neighbour)) {
                         ++nextWalls;
                     }

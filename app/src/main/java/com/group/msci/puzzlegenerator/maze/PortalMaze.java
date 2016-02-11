@@ -12,6 +12,7 @@ public class PortalMaze implements Maze {
     private int nplanes;
     private int width;
     private int height;
+    private int currentPlane;
 
     public PortalMaze(int width, int height, int nplanes) {
         this(width, height, nplanes,
@@ -23,12 +24,15 @@ public class PortalMaze implements Maze {
                       Point3D exit) {
         Random random = new Random();
         planes = new BaseMaze[nplanes];
+        this.currentPlane = entry.z;
         this.width = width;
         this.height = height;
         this.nplanes = nplanes;
 
         for (int i = 0; i < nplanes; ++i) {
             planes[i] = new BaseMaze(width, height);
+            //System.out.println("Plane " + i);
+            //planes[i].logMat();
         }
 
         /**Random horizontal entry/exit point for the intermediate planes.
@@ -40,7 +44,6 @@ public class PortalMaze implements Maze {
          * entry and exit points, so that it is possible to move
          * between them.
          */
-        //TODO: Make sure this works in all cases.
         for (int i = 0; i < nplanes; ++i) {
             /**Make sure no entry/exit point is in the middle of a wall
              * junction which would make it unreachable.
@@ -53,13 +56,17 @@ public class PortalMaze implements Maze {
 
     private int genXpos(Random randomizer, int currentPlane) {
         int xpos = 1 + randomizer.nextInt(width - 2);
-        while (planes[currentPlane].at(xpos, height - 1 ) == BaseMaze.WALL_JUNCTION ||
-                planes[currentPlane + 1].at(xpos, 0) == BaseMaze.WALL_JUNCTION) {
+        int currentExit = planes[currentPlane].at(xpos, height - 1);
+        int nextEntrance = planes[currentPlane + 1].at(xpos, 0);
+
+        while (currentExit == BaseMaze.WALL_JUNCTION || nextEntrance == BaseMaze.WALL_JUNCTION) {
             xpos = 1 + randomizer.nextInt(width - 2);
         }
+
         return xpos;
     }
 
+    //Interface methods
     @Override
     public void solve() {
         for (BaseMaze plane : planes) {
@@ -68,12 +75,70 @@ public class PortalMaze implements Maze {
     }
 
     @Override
+    public boolean solved() {
+        for (BaseMaze plane : planes) {
+            if (!plane.solved()) return false;
+        }
+        return true;
+    }
+
+    @Override
     public void log() {
-        for (int i = 0; i < planes.length; ++i) {
+        for (int i = 0; i < nplanes; ++i) {
             System.out.println("Plane " + i);
             planes[i].log();
             System.out.println();
         }
     }
 
+    /*No need to retain the player position
+     * in the mazes that haven't been visited yet
+     * by the player.
+     */
+    @Override
+    public void regenerate() {
+        for (int i = 0; i < nplanes; ++i) {
+            if (i == currentPlane) {
+                planes[i].regenerate(true);
+            }
+            else {
+                planes[i].regenerate(false);
+            }
+        }
+    }
+
+    @Override
+    public Point3D playerPos() {
+        Point pos = planes[currentPlane].playerPos();
+        return new Point3D(pos.x, pos.y, currentPlane);
+    }
+
+    @Override
+    public boolean movePlayer(int direction) {
+        BaseMaze current = planes[currentPlane];
+        Point next = BaseMaze.neighbour_at(direction, current.playerPos());
+        if (current.withinBounds(next)) {
+            planes[currentPlane].movePlayer(direction);
+            return true;
+        }
+        else if (next.equals(current.exit())) {
+            ++currentPlane;
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public byte at(Point point) {
+        return planes[currentPlane].at(point);
+    }
+
+    public void logMat() {
+        for (int i = 0; i < planes.length; ++i) {
+            System.out.println("Plane " + i);
+            planes[i].logMat();
+            System.out.println();
+        }
+    }
 }

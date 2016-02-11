@@ -22,6 +22,6 @@ public class MazeModel {
 
     public Maze currentMaze() {
 
-        return new Maze();
+        return new BaseMaze(5,5);
     }
 }

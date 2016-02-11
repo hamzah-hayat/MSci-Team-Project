@@ -1,6 +1,7 @@
 package com.group.msci.puzzlegenerator.BallSwitch;
 
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.BallSwitchObject;
+import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Switch;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,5 +52,21 @@ public class BallSwitchPuzzle {
     public ArrayList<BallSwitchObject> getObjects()
     {
         return gameObjects;
+    }
+
+    public boolean checkPuzzleComplete()
+    {
+        for(BallSwitchObject object : gameObjects)
+        {
+            if(object.getClass().getName().equals("Switch"))
+            {
+                Switch switchObject = (Switch) object;
+                if(switchObject.getSwitched()==false)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
