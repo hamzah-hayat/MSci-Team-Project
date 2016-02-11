@@ -1,22 +1,20 @@
 package com.group.msci.puzzlegenerator.dottodot;
 
+import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.group.msci.puzzlegenerator.R;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
@@ -30,6 +28,8 @@ public class DotToDotView2 extends Activity {
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
 
+
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
 
