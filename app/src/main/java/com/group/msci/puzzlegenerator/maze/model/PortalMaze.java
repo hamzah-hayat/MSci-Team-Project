@@ -1,4 +1,6 @@
-package com.group.msci.puzzlegenerator.maze;
+package com.group.msci.puzzlegenerator.maze.model;
+
+import com.group.msci.puzzlegenerator.maze.Maze;
 
 import java.util.Random;
 
@@ -56,11 +58,15 @@ public class PortalMaze implements Maze {
 
     private int genXpos(Random randomizer, int currentPlane) {
         int xpos = 1 + randomizer.nextInt(width - 2);
+        //BaseMaze current = planes[currentPlane];
+        //BaseMaze next = planes[currentPlane + 1];
         int currentExit = planes[currentPlane].at(xpos, height - 1);
         int nextEntrance = planes[currentPlane + 1].at(xpos, 0);
 
         while (currentExit == BaseMaze.WALL_JUNCTION || nextEntrance == BaseMaze.WALL_JUNCTION) {
             xpos = 1 + randomizer.nextInt(width - 2);
+            currentExit = planes[currentPlane].at(xpos, height - 1);
+            nextEntrance = planes[currentPlane + 1].at(xpos, 0);
         }
 
         return xpos;
@@ -132,6 +138,20 @@ public class PortalMaze implements Maze {
     @Override
     public byte at(Point point) {
         return planes[currentPlane].at(point);
+    }
+
+    @Override
+    public byte at(int x, int y) {
+        return planes[currentPlane].at(x, y);
+    }
+
+    @Override
+    public int width() {
+        return planes[currentPlane].width();
+    }
+
+    @Override public int height() {
+        return planes[currentPlane].height();
     }
 
     public void logMat() {

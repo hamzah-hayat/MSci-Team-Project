@@ -1,4 +1,6 @@
-package com.group.msci.puzzlegenerator.maze;
+package com.group.msci.puzzlegenerator.maze.model;
+
+import com.group.msci.puzzlegenerator.maze.Maze;
 
 import java.util.List;
 

@@ -1,4 +1,6 @@
-package com.group.msci.puzzlegenerator.maze;
+package com.group.msci.puzzlegenerator.maze.model;
+
+import com.group.msci.puzzlegenerator.maze.Maze;
 
 import java.util.*;
 
@@ -34,7 +36,7 @@ public class BaseMaze implements Maze {
         grid = new byte[height][width];
         int carveStart = (this instanceof Maze3D) ? width / 3 : 1;
         carve(carveStart, 1);
-        specifyWalls();
+        markWallJunctions();
     }
 
     protected void setOpenings(Point entry, Point exit) {
@@ -139,7 +141,7 @@ public class BaseMaze implements Maze {
         writeAt(exit, SPACE);
         int carveStart = (this instanceof Maze3D) ? width / 3 : 1;
         carve(carveStart, 1);
-        specifyWalls();
+        markWallJunctions();
     }
 
     public int height() {
@@ -210,6 +212,18 @@ public class BaseMaze implements Maze {
 
         //return new Point();
         return null;
+    }
+
+    public static Map<Integer, Point> all_neighbours(Point p) {
+        Map<Integer, Point> all = new HashMap<Integer, Point>();
+
+        all.put(NORTH, new Point(p.x, p.y - 1));
+        all.put(EAST, new Point(p.x + 1, p.y));
+        all.put(SOUTH, new Point(p.x, p.y + 1));
+        all.put(WEST, new Point(p.x - 1, p.y));
+
+        return all;
+
     }
 
     public static Point neighbour_at(int direction, Point p) {
@@ -336,26 +350,33 @@ public class BaseMaze implements Maze {
      * walls that are connedted to more than two others should have a
      * different value.
      */
-    private void specifyWalls() {
+    private void markWallJunctions() {
 
         for (int y = 0; y < height; ++y) {
             for (int x = 0; x < width; ++x) {
-                int nextWalls = 0;
-                List<Point> neighbours = Arrays.asList(new Point(x + 1, y),
-                        new Point(x, y - 1),
-                        new Point(x + 1, y),
-                        new Point(x, y + 1));
 
-                for (Point neighbour : neighbours) {
+                int nextWalls = 0;
+                Point current = new Point(x, y);
+                Map<Integer, Point> neighbours = all_neighbours(current);
+
+                for (Point neighbour : neighbours.values()) {
                     if (withinGrid(neighbour.x, neighbour.y) &&
                             isWall(neighbour)) {
                         ++nextWalls;
                     }
                 }
 
-                if ((nextWalls > 2) && isWall(new Point(x, y))) {
-                    writeAt(new Point(x, y), WALL_JUNCTION);
+                if ((nextWalls > 2) && isWall(current)) {
+                    writeAt(current, WALL_JUNCTION);
                 }
+                /*
+                else if ((at(neighbours.get(NORTH)) == WALL) && (at(neighbours.get(SOUTH)) == WALL)) {
+                   writeAt(current, HORIZONTAL_WALL);
+                }
+                else if ((at(neighbours.get(WEST)) == WALL) && (at(neighbours.get(EAST)) == WALL)) {
+                    writeAt(current, VERTICAL_WALL);
+                }
+                */
             }
         }
     }

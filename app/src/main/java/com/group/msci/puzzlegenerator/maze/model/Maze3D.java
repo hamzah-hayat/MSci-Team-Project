@@ -1,4 +1,7 @@
-package com.group.msci.puzzlegenerator.maze;
+package com.group.msci.puzzlegenerator.maze.model;
+
+import com.group.msci.puzzlegenerator.maze.model.BaseMaze;
+import com.group.msci.puzzlegenerator.maze.model.Point;
 
 /**
  * Created by Filipt on 19/01/2016.

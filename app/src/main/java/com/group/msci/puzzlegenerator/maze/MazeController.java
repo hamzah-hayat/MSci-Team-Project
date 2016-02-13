@@ -1,5 +1,7 @@
 package com.group.msci.puzzlegenerator.maze;
 
+import com.group.msci.puzzlegenerator.maze.model.MazeModel;
+
 /**
  * Created by filipt on 11/28/15.
  */
