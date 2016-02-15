@@ -23,19 +23,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Right"
-            android:id="@+id/button2"
+            android:id="@+id/button_right"
             android:layout_gravity="left|bottom"
             android:layout_alignParentBottom="true"
-            android:layout_alignLeft="@+id/button4"
-            android:layout_alignStart="@+id/button4" />
+            android:layout_alignLeft="@+id/button_down"
+            android:layout_alignStart="@+id/button_down" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Down"
-            android:id="@+id/button4"
+            android:id="@+id/button_down"
             android:layout_gravity="right|bottom"
-            android:layout_above="@+id/button2"
+            android:layout_above="@+id/button_right"
             android:layout_alignRight="@+id/mazeSurfaceView"
             android:layout_alignEnd="@+id/mazeSurfaceView" />
 
@@ -52,19 +52,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Left"
-            android:id="@+id/button3"
+            android:id="@+id/button_left"
             android:layout_gravity="center_horizontal|bottom"
             android:layout_alignParentBottom="true"
-            android:layout_alignLeft="@+id/button5"
-            android:layout_alignStart="@+id/button5" />
+            android:layout_alignLeft="@+id/button_up"
+            android:layout_alignStart="@+id/button_up" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="UP"
-            android:id="@+id/button5"
+            android:id="@+id/button_up"
             android:layout_gravity="left|top"
-            android:layout_above="@+id/button3"
+            android:layout_above="@+id/button_left"
             android:layout_alignLeft="@+id/mazeSurfaceView"
             android:layout_alignStart="@+id/mazeSurfaceView" />
 
@@ -74,7 +74,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Timer"
             android:id="@+id/textView4"
-            android:layout_above="@+id/button3"
+            android:layout_above="@+id/button_left"
             android:layout_centerHorizontal="true" />
     </RelativeLayout>
 </LinearLayout>

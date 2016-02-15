@@ -15,6 +15,8 @@ public class PortalMaze implements Maze {
     private int width;
     private int height;
     private int currentPlane;
+    private Point3D entry;
+    private Point3D exit;
 
     public PortalMaze(int width, int height, int nplanes) {
         this(width, height, nplanes,
@@ -30,6 +32,8 @@ public class PortalMaze implements Maze {
         this.width = width;
         this.height = height;
         this.nplanes = nplanes;
+        this.entry = entry;
+        this.exit = exit;
 
         for (int i = 0; i < nplanes; ++i) {
             planes[i] = new BaseMaze(width, height);
@@ -160,5 +164,16 @@ public class PortalMaze implements Maze {
             planes[i].logMat();
             System.out.println();
         }
+    }
+
+    @Override
+    public Point3D entry() {return entry;}
+
+    @Override
+    public Point3D exit() {return exit;}
+
+    @Override
+    public boolean isJunction(Point point) {
+        return planes[currentPlane].isJunction(point);
     }
 }

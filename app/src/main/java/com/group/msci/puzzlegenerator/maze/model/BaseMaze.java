@@ -1,5 +1,7 @@
 package com.group.msci.puzzlegenerator.maze.model;
 
+import android.util.SparseArray;
+
 import com.group.msci.puzzlegenerator.maze.Maze;
 
 import java.util.*;
@@ -10,7 +12,22 @@ import java.util.*;
 public class BaseMaze implements Maze {
 
     public static final int EAST = 0, SOUTH = 1, WEST = 2, NORTH = 3;
-    public static final byte PATH = 2, SPACE = 1, WALL = 0, WALL_JUNCTION = -1;
+    public static final byte PATH = 2, SPACE = 1, WALL = 0, WALL_JUNCTION = -1, HORIZONTAL_WALL = -2, VERTICAL_WALL = -3;
+
+    public static final SparseArray<Integer> opposite = new SparseArray<>(4);
+    private static final SparseArray<Point> neighbours = new SparseArray<>(4);
+
+    static {
+        opposite.put(EAST, WEST);
+        opposite.put(SOUTH, NORTH);
+        opposite.put(WEST, EAST);
+        opposite.put(NORTH, SOUTH);
+
+        neighbours.put(EAST, new Point(1,0));
+        neighbours.put(SOUTH, new Point(1,0));
+        neighbours.put(WEST, new Point(1,0));
+        neighbours.put(NORTH, new Point(1,0));
+    }
 
     private static final List<Integer>
             DIRECTIONS = Arrays.asList(EAST, SOUTH, WEST, NORTH);
@@ -36,7 +53,8 @@ public class BaseMaze implements Maze {
         grid = new byte[height][width];
         int carveStart = (this instanceof Maze3D) ? width / 3 : 1;
         carve(carveStart, 1);
-        markWallJunctions();
+        specifyWalls();
+        setDefaultOpenings();
     }
 
     protected void setOpenings(Point entry, Point exit) {
@@ -122,6 +140,17 @@ public class BaseMaze implements Maze {
         return false;
     }
 
+    @Override
+    public Point entry() {
+        return entry;
+    }
+
+    @Override
+    public Point exit() {
+        return exit;
+    }
+
+
     //Convenience methods
 
     protected void regenerate(boolean keepPlayerPos) {
@@ -141,8 +170,9 @@ public class BaseMaze implements Maze {
         writeAt(exit, SPACE);
         int carveStart = (this instanceof Maze3D) ? width / 3 : 1;
         carve(carveStart, 1);
-        markWallJunctions();
+        specifyWalls();
     }
+
 
     public int height() {
         return height;
@@ -170,10 +200,6 @@ public class BaseMaze implements Maze {
 
     public boolean withinBounds(int x, int y) {
         return x < width && x > 0 && y > 0 && y < height;
-    }
-
-    public Point exit() {
-        return exit;
     }
 
     protected boolean withinBounds(Point p) {
@@ -214,20 +240,50 @@ public class BaseMaze implements Maze {
         return null;
     }
 
-    public static Map<Integer, Point> all_neighbours(Point p) {
-        Map<Integer, Point> all = new HashMap<Integer, Point>();
-
+    public static SparseArray<Point> all_neighbours(Point p) {
+        SparseArray<Point> all = new SparseArray<Point>(4);
         all.put(NORTH, new Point(p.x, p.y - 1));
         all.put(EAST, new Point(p.x + 1, p.y));
         all.put(SOUTH, new Point(p.x, p.y + 1));
         all.put(WEST, new Point(p.x - 1, p.y));
 
         return all;
+    }
 
+    public static SparseArray<Point> __all_neighbours(Point p) {
+
+        Point north = neighbours.get(NORTH);
+        north.x = p.x;
+        north.y = p.y - 1;
+        Point south = neighbours.get(SOUTH);
+        south.x = p.x;
+        south.y = p.y + 1;
+        Point west = neighbours.get(WEST);
+        west.x = p.x - 1;
+        west.y = p.y;
+        Point east = neighbours.get(EAST);
+        east.x = p.x + 1;
+        east.y = p.y;
+
+        return neighbours;
     }
 
     public static Point neighbour_at(int direction, Point p) {
         return neighbour_at(direction, p.x, p.y);
+    }
+
+    public boolean isJunction(Point p) {
+       SparseArray<Point> all = all_neighbours(p);
+        int nwalls = 0;
+
+        for (int i = 0; i < all.size(); ++i) {
+            //Log.i("WTF", p.toll.s);
+            if ((!withinBounds(all.get(i))) ||  isWall(all.get(i))) {
+                ++nwalls;
+            }
+        }
+
+        return nwalls < 2;
     }
 
     private boolean carvable(Point wall, Point neighbour) {
@@ -350,16 +406,17 @@ public class BaseMaze implements Maze {
      * walls that are connedted to more than two others should have a
      * different value.
      */
-    private void markWallJunctions() {
+    private void specifyWalls() {
 
         for (int y = 0; y < height; ++y) {
             for (int x = 0; x < width; ++x) {
 
                 int nextWalls = 0;
                 Point current = new Point(x, y);
-                Map<Integer, Point> neighbours = all_neighbours(current);
+                SparseArray<Point> neighbours = all_neighbours(current);
 
-                for (Point neighbour : neighbours.values()) {
+                for (int i = 0; i < neighbours.size(); ++i) {
+                    Point neighbour = neighbours.get(i);
                     if (withinGrid(neighbour.x, neighbour.y) &&
                             isWall(neighbour)) {
                         ++nextWalls;
@@ -370,11 +427,17 @@ public class BaseMaze implements Maze {
                     writeAt(current, WALL_JUNCTION);
                 }
                 /*
+                else if ((y == 0) || (y == height - 1)) {
+                    writeAt(current, HORIZONTAL_WALL);
+                }
+                else if ((x == 0) || (x == width - 1)) {
+                    writeAt(current, VERTICAL_WALL);
+                }
                 else if ((at(neighbours.get(NORTH)) == WALL) && (at(neighbours.get(SOUTH)) == WALL)) {
-                   writeAt(current, HORIZONTAL_WALL);
+                   writeAt(current, VERTICAL_WALL);
                 }
                 else if ((at(neighbours.get(WEST)) == WALL) && (at(neighbours.get(EAST)) == WALL)) {
-                    writeAt(current, VERTICAL_WALL);
+                    writeAt(current, HORIZONTAL_WALL);
                 }
                 */
             }

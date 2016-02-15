@@ -15,9 +15,13 @@ public class CLIMain {
         PortalMaze m2 = new PortalMaze(21, 21, 4);
         Maze3D m3 = new Maze3D(21);
         System.out.println("maze init");
-        test(m1);
-        test(m2);
-        test(m3);
+        //test(m1);
+        //test(m2);
+        //test(m3);
+        BaseMaze m = new BaseMaze(21, 21);
+        m.log();
+        m.logMat();
+
     }
 
     public static void test(Maze maze) {

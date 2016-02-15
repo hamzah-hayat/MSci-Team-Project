@@ -12,4 +12,15 @@ public class Point3D extends Point {
         this.z = z;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof Point3D) {
+            Point3D otherp = (Point3D) other;
+            return (otherp.x == this.x) &&
+                    (otherp.y == this.y) &&
+                    (otherp.z == this.z);
+        }
+        return false;
+    }
+
 }
