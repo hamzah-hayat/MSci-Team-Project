@@ -426,20 +426,6 @@ public class BaseMaze implements Maze {
                 if ((nextWalls > 2) && isWall(current)) {
                     writeAt(current, WALL_JUNCTION);
                 }
-                /*
-                else if ((y == 0) || (y == height - 1)) {
-                    writeAt(current, HORIZONTAL_WALL);
-                }
-                else if ((x == 0) || (x == width - 1)) {
-                    writeAt(current, VERTICAL_WALL);
-                }
-                else if ((at(neighbours.get(NORTH)) == WALL) && (at(neighbours.get(SOUTH)) == WALL)) {
-                   writeAt(current, VERTICAL_WALL);
-                }
-                else if ((at(neighbours.get(WEST)) == WALL) && (at(neighbours.get(EAST)) == WALL)) {
-                    writeAt(current, HORIZONTAL_WALL);
-                }
-                */
             }
         }
     }

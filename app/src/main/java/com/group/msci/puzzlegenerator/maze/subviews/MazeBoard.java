@@ -5,10 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 
 import com.group.msci.puzzlegenerator.maze.Maze;
 import com.group.msci.puzzlegenerator.maze.model.BaseMaze;
@@ -32,6 +30,7 @@ public class MazeBoard extends SurfaceView implements SurfaceHolder.Callback{
     private int mazeHeight;
     private int mazeWidth;
 
+    protected boolean shouldDrawMaze;
     protected float playerDotX;
     protected float playerDotY;
 
@@ -53,8 +52,7 @@ public class MazeBoard extends SurfaceView implements SurfaceHolder.Callback{
     private void init() {
         //setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         setWillNotDraw(false);
-        //setWil
-        //setWillNotCacheDrawing(false);
+        shouldDrawMaze = true;
         extraPathSpace = 0.2f;
         wallPaint = new Paint();
         pathPaint = new Paint();
@@ -75,51 +73,41 @@ public class MazeBoard extends SurfaceView implements SurfaceHolder.Callback{
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawPaint(wallPaint);
-        //canvas.drawColor(Color.BLACK);
         if (currentMaze != null) {
             mazeWidth = currentMaze.width();
             mazeHeight = currentMaze.height();
             cellHeight = getHeight() / (float) mazeHeight;
             cellWidth = getWidth() / (float) mazeWidth;
-            drawMaze2D(canvas);
+            if (shouldDrawMaze) {
+                drawMaze2D(canvas);
+            }
             drawPlayer(canvas);
         }
     }
 
     private void drawMaze2D(Canvas canvas) {
-        //float pathRectWidth = cellWidth + (0.3f * cellWidth);
-        //float pathRectHeight = cellHeight + (0.3f * cellHeight);
         float extraRectWidth = (extraPathSpace * cellWidth);
         float extraRectHeight = (extraPathSpace * cellHeight);
 
         for (int i = 0; i < mazeHeight; ++i) {
-            //pathRectWidth = pathRectWidth
             for (int j = 0; j < mazeWidth; ++j) {
                 if (currentMaze.at(j, i) > BaseMaze.WALL) {
                     float left = j * cellWidth - ((j != 1) ? extraRectWidth : extraRectWidth * 2);
                     float top = i * cellHeight - ((i != 1) ? extraRectHeight : extraRectHeight * 2);
-                    float right = (j + 1) * cellWidth + ((j != mazeWidth - 2) ? extraRectWidth : extraRectWidth * 2);
-                    float bottom = (i + 1) * cellHeight + ((i != mazeHeight - 2) ? extraRectHeight : extraRectHeight * 2);
+                    float right = (j + 1) * cellWidth +
+                                  ((j != mazeWidth - 2) ? extraRectWidth : extraRectWidth * 2);
+                    float bottom = (i + 1) * cellHeight +
+                                   ((i != mazeHeight - 2) ? extraRectHeight : extraRectHeight * 2);
+
                     canvas.drawRect(left, top, right, bottom, pathPaint);
                 }
             }
         }
     }
-   /*
-    private void thinOutEdges(Canvas canvas) {
-
-        //Top
-
-        canvas.drawRect(edgeWidth, edgeHeight,  );
-    }
-    */
 
     public void drawPlayer(Canvas canvas) {
-        Point playerPos = currentMaze.playerPos();
-        float cx = playerDotX * cellWidth;
-        float cy = playerDotY * cellHeight;
-        canvas.drawCircle(cx, cy, cellHeight / 2, playerPaint);
-
+        canvas.drawCircle(playerDotX * cellWidth, playerDotY * cellHeight,
+                          cellHeight / 2, playerPaint);
     }
 
     public Maze getMaze() {
@@ -131,17 +119,18 @@ public class MazeBoard extends SurfaceView implements SurfaceHolder.Callback{
         playerDotX = entry.x + 0.5f;
         playerDotY = entry.y + 0.5f;
         currentMaze = maze;
-
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        /*
         try {
 
 
         } finally {
 
         }
+        */
 
     }
 
