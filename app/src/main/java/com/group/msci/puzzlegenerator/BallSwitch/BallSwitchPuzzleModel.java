@@ -14,6 +14,8 @@ public class BallSwitchPuzzleModel {
 
     }
 
+    public void setController(BallSwitchPuzzleController controllerIn){controller = controllerIn;}
+
     public void setUser(User userIn)
     {
         user = userIn;

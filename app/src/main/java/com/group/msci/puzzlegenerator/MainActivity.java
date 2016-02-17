@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.group.msci.puzzlegenerator.BallSwitch.BallSwitchPuzzleView;
+import com.group.msci.puzzlegenerator.BallSwitch.BallSwitchPuzzleGame;
 import com.group.msci.puzzlegenerator.dottodot.DotToDotView2;
 import com.group.msci.puzzlegenerator.maze.MazeView;
 import com.group.msci.puzzlegenerator.picross.PicrossImageSelectType;
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         ballSwitchMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, BallSwitchPuzzleView.class);
+                Intent intent = new Intent(MainActivity.this, BallSwitchPuzzleGame.class);
                 MainActivity.this.startActivity(intent);
             }
         });

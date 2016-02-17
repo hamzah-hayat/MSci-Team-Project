@@ -13,6 +13,10 @@ public class BallSwitchPuzzleController {
 
     }
 
+    public void setView(BallSwitchPuzzleView viewIn){view=viewIn;}
+
+    public void setModel(BallSwitchPuzzleModel modelIn){model=modelIn;}
+
     public void startPuzzle()
     {
         //Start the current Puzzle (from model)

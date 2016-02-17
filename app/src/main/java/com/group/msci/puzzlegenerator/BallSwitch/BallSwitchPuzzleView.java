@@ -2,27 +2,23 @@ package com.group.msci.puzzlegenerator.BallSwitch;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.group.msci.puzzlegenerator.R;
 
 /**
+ * This class is an "extenstion" of the main activity BallSwitchGame, and is used to show everything
+ * needed for the module
  * Created by Hamzah on 30/11/2015.
  */
-public class BallSwitchPuzzleView extends Activity {
+public class BallSwitchPuzzleView{
 
     BallSwitchPuzzleController controller;
+    BallSwitchPuzzleGame gameActivity;
 
-    @Override
-    protected void onCreate(Bundle savedInstance) {
-        super.onCreate(savedInstance);
-
-        setContentView(R.layout.ballswitch_activity);
-
-    }
-
-    public BallSwitchPuzzleView()
+    public BallSwitchPuzzleView(BallSwitchPuzzleGame gameActivityIn)
     {
-
+        gameActivity = gameActivityIn;
     }
 
     public void createGUI()
@@ -31,9 +27,11 @@ public class BallSwitchPuzzleView extends Activity {
 
     }
 
+    public void setController(BallSwitchPuzzleController controllerIn){controller=controllerIn;}
+
     public void showMainMenu()
     {
-        setContentView(R.layout.ballswitch_activity);
+        gameActivity.setContentView(R.layout.ballswitch_activity);
     }
 
     public void showUser(User user)
