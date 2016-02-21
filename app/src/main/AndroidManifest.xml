@@ -57,6 +57,12 @@
             android:name=".dottodot.DotToDotView2"
             android:label="@string/title_activity_dot_to_dot_view2"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
     </application>
 
 </manifest>

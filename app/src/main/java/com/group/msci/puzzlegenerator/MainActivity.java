@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+
+import com.facebook.FacebookSdk;
 import com.group.msci.puzzlegenerator.BallSwitch.BallSwitchPuzzleGame;
 import com.group.msci.puzzlegenerator.dottodot.DotToDotView2;
 import com.group.msci.puzzlegenerator.maze.MazeView;
@@ -21,6 +23,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Initialize facebook SDK
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
