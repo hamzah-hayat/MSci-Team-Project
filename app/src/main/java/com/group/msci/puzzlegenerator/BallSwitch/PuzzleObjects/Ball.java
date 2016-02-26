@@ -15,4 +15,14 @@ public class Ball extends BallSwitchObject {
     {
         super(startX,startY);
     }
+
+    public void setPosX(int PosX)
+    {
+        posX = PosX;
+    }
+    public void setPosY(int PosY)
+    {
+        posY = PosY;
+    }
+
 }

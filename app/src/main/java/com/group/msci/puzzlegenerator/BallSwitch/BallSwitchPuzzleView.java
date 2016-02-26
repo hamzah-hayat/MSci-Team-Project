@@ -16,6 +16,8 @@ public class BallSwitchPuzzleView{
     BallSwitchPuzzleController controller;
     BallSwitchPuzzleGame gameActivity;
 
+    BallSwitchPuzzleGameCanvas gameCanvas;
+
     public BallSwitchPuzzleView(BallSwitchPuzzleGame gameActivityIn)
     {
         gameActivity = gameActivityIn;
@@ -32,6 +34,14 @@ public class BallSwitchPuzzleView{
     public void showMainMenu()
     {
         gameActivity.setContentView(R.layout.ballswitch_activity);
+    }
+
+    //Show the gameScreen here
+    public void showGameScreen()
+    {
+        //gameActivity.setContentView(R.layout.ballswitch_game);
+        gameCanvas = new BallSwitchPuzzleGameCanvas(gameActivity,gameActivity.getPuzzle());
+        gameActivity.setContentView(gameCanvas);
     }
 
     public void showUser(User user)

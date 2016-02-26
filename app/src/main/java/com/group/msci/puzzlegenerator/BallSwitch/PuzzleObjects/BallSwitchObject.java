@@ -18,4 +18,14 @@ public class BallSwitchObject {
         posX = startX;
         posY = startY;
     }
+
+    public int getPosX()
+    {
+        return posX;
+    }
+
+    public int getPosY()
+    {
+        return posY;
+    }
 }

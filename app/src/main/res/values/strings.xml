@@ -6,9 +6,10 @@
     <string name="title_activity_picross_main">PicrossMain</string>
     <string name="imageSelectStr">Image Selection Type</string>
     <string name="title_activity_picross_puzzle_gui">PicrossPuzzleGUI</string>
-    <string name="ballSiwtchMenuButton_text">BallSwitch Puzzle</string>
+    <string name="BallSwitch_Title">BallSwitch Puzzle</string>
     <string name="dotBtn">Dot to Dot Puzzles</string>
     <string name="test">test</string>
     <string name="facebook_app_id">796557013783402</string>
     <string name="title_activity_dot_to_dot_view2">DotToDotView2</string>
+    <string name="BallSwitch_StartGame">Start Game</string>
 </resources>

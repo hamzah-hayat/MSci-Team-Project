@@ -60,7 +60,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ball-Switch Puzzles"
+        android:text="@string/BallSwitch_Title"
         android:id="@+id/ballSwitchMenuButton"
         android:layout_alignTop="@+id/picrossBtn"
         android:layout_alignParentLeft="true"
