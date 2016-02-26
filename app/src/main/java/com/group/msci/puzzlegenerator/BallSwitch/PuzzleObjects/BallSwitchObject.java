@@ -28,4 +28,10 @@ public class BallSwitchObject {
     {
         return posY;
     }
+
+    @Override
+    public String toString()
+    {
+        return "This is a Object with position " + posX + "," + posY;
+    }
 }

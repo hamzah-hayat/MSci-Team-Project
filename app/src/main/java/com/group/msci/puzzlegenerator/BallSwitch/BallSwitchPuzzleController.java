@@ -41,10 +41,27 @@ public class BallSwitchPuzzleController {
 
     }
 
-
-    public void startPuzzle()
+    public void moveball(int direction)
     {
-        //Start the current Puzzle (from model)
+        //direction 1-north, 2-east,3-south, 4-west
+        switch (direction)
+        {
+            case 1:
+                gameActivity.puzzle.setBall(gameActivity.puzzle.getBall().getPosX(),0);
+                break;
+            case 2:
+                gameActivity.puzzle.setBall(gameActivity.puzzle.getSizeX(),gameActivity.puzzle.getBall().getPosY());
+                break;
+            case 3:
+                gameActivity.puzzle.setBall(gameActivity.puzzle.getBall().getPosX(),gameActivity.puzzle.getSizeY());
+                break;
+            case 4:
+                gameActivity.puzzle.setBall(0,gameActivity.puzzle.getBall().getPosY());
+                break;
+            default:
+                break;
+        }
+        System.out.println(gameActivity.puzzle.getBall());
     }
 
 }

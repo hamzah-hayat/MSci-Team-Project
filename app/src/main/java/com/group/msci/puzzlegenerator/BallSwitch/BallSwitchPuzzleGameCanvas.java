@@ -63,8 +63,6 @@ public class BallSwitchPuzzleGameCanvas extends View {
         //Find the ball and draw it
         Ball ball = puzzle.getBall();
         canvas.drawCircle(ball.getPosX()*gridWidthSpace,ball.getPosY()*gridHeightSpace,100,paint);
-        System.out.println(ball.getPosX() * gridWidthSpace);
-        System.out.println(ball.getPosY()*gridHeightSpace);
         //Then draw switchs
 
     }
