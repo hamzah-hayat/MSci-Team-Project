@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -19,16 +20,14 @@ public class GameView extends Activity {
 
     private BaseMaze maze;
     private MazeBoard board;
+    private MoveAnimation animation;
 
-    //Buttons
     private Button left;
     private Button right;
     private Button up;
     private Button down;
 
     private Dialog solvedDialog;
-
-    private Handler solvedHandle;
 
     @Override
     protected void onCreate(Bundle savedInstance) {
@@ -52,6 +51,7 @@ public class GameView extends Activity {
         solvedDialog.setTitle("Solved!");
 
         drawMaze();
+        animation = new MoveAnimation(board, this);
     }
 
     public void showSolvedDialog() {
@@ -72,8 +72,10 @@ public class GameView extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MoveAnimation animation = new MoveAnimation(direction, board, GameView.this);
-                animation.start();
+                if ((animation != null) && (!animation.isRunning())) {
+                    animation.setDirection(direction);
+                    (new Thread(animation)).start();
+                }
             }
         });
     }
