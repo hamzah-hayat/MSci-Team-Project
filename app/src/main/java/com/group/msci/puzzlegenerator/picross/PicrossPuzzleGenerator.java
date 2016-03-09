@@ -7,7 +7,6 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.util.Log;
 
 /**
  * Created by magdi on 29/11/2015.
@@ -17,6 +16,7 @@ public class PicrossPuzzleGenerator {
     protected int puzzleWidth;
     protected int puzzleHeight;
     protected Bitmap originalImage;
+    private volatile boolean[][] shadedSquares;
 
     public PicrossPuzzleGenerator (Bitmap imageT, int across, int down) {
         foregroundImage = imageT;
@@ -80,7 +80,6 @@ public class PicrossPuzzleGenerator {
         boolean[][] result = new boolean[puzzleHeight][puzzleWidth];
         for (int x = 0; x < binaryImage.getWidth(); x++) {
             for (int y = 0; y < binaryImage.getHeight(); y++) {
-                Log.i("test", "it worked? " + x + " " + binaryImage.getWidth());
                 if (binaryImage.getPixel(x, y) == 0x00000000) {
                     result[x][y] = true;
                 } else {
@@ -92,8 +91,39 @@ public class PicrossPuzzleGenerator {
     }
 
     public PicrossPuzzle createPuzzle() {
-        pixelateImage();
-        boolean[][] shadedSquares = findShadedSquares(binariseImage());
-        return new PicrossPuzzle(shadedSquares, foregroundImage);
+        CreatePuzzle puzThread = new CreatePuzzle(this);
+        Thread x = new Thread(puzThread);
+        x.start();
+        try {
+            x.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return puzThread.getPuzzle();
+    }
+
+    public Bitmap getForegroundImage () {
+        return foregroundImage;
+    }
+}
+
+class CreatePuzzle implements Runnable {
+    private volatile PicrossPuzzle puzzle;
+    private volatile boolean[][] shadedSquares;
+    private PicrossPuzzleGenerator gen;
+
+    public CreatePuzzle (PicrossPuzzleGenerator gen1) {
+        gen = gen1;
+    }
+
+    @Override
+    public void run() {
+        gen.pixelateImage();
+        shadedSquares = gen.findShadedSquares(gen.binariseImage());
+        puzzle = new PicrossPuzzle(shadedSquares, gen.getForegroundImage());
+    }
+
+    public PicrossPuzzle getPuzzle () {
+        return puzzle;
     }
 }
