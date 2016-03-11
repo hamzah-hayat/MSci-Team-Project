@@ -14,16 +14,30 @@ import java.util.ArrayList;
 public class PicrossPuzzle {
     protected boolean[][] answerArray;
     protected Bitmap foregroundImage;
-    protected PicrossGrid grid;
-    protected ArrayList<ArrayList<ImageButton>> buttons;
+    protected int puzzleWidth;
+    protected int puzzleHeight;
 
     public PicrossPuzzle(boolean[][] answerArrayT, Bitmap foregroundImageT) {
         answerArray = answerArrayT;
         foregroundImage = foregroundImageT;
-        grid = new PicrossGrid(answerArray.length, answerArray[0].length);
+        puzzleWidth = answerArray.length;
+        puzzleHeight = answerArray[0].length;
     }
 
-    public void createButtons () {
+    public int getWidth() {
+        return puzzleWidth;
+    }
 
+    public int getHeight () {
+        return puzzleHeight;
+    }
+
+    public boolean checkIfCorrect(int i, int j) {
+        if (answerArray[i][j] == true) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }

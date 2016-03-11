@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.group.msci.puzzlegenerator.R;
 
@@ -54,9 +56,11 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
             e.printStackTrace();
         }
         Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);
-        PicrossPuzzleGenerator puzzleGen = new PicrossPuzzleGenerator(yourSelectedImage, 10, 10);
+        PicrossPuzzleGenerator puzzleGen = new PicrossPuzzleGenerator(yourSelectedImage, 25, 25);
         puzzle = puzzleGen.createPuzzle();
         setButtons();
+        /*ImageView view = (ImageView) findViewById(R.id.testingImage);
+        view.setImageBitmap(puzzle.foregroundImage);*/
         Button shade = (Button) findViewById(R.id.shade);
         shade.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,21 +89,21 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
         ZoomView grid = (ZoomView) findViewById(R.id.puzzleGrid);
         buttonGrid = new GridLayout(this);
         grid.addView(buttonGrid);
-        buttonGrid.setColumnCount(puzzle.grid.getGrid()[0].length);
-        buttonGrid.setRowCount(puzzle.grid.getGrid().length);
+        buttonGrid.setColumnCount(puzzle.getWidth());
+        buttonGrid.setRowCount(puzzle.getHeight());
         buildClues();
         buildGrid();
     }
 
     public void buildGrid() {
         ArrayList<ImageButton> currentIArray;
-        int iLimit = puzzle.grid.getGrid().length;
-        int jLimit = puzzle.grid.getGrid()[0].length;
-        for (int i = 0; i < iLimit; i++) {
+        int iLimit = puzzle.getWidth();
+        int jLimit = puzzle.getHeight();
+        for (int i = 0; i < puzzle.getHeight(); i++) {
             buttonList.add(new ArrayList<ImageButton>());
             currentIArray = buttonList.get(i);
-            for (int j = 0; j < jLimit; j++) {
-                final ImageButton button = new ImageButton(this);
+            for (int j = 0; j < puzzle.getWidth(); j++) {
+                final PicrossSquare button = new PicrossSquare(this, i, j);
                 button.setBackgroundResource(R.drawable.unshaded);
                 button.setOnClickListener(this);
                 currentIArray.add(button);
@@ -122,13 +126,27 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if (v instanceof ImageButton) {
+        if (v instanceof PicrossSquare) {
+            PicrossSquare tile = (PicrossSquare) v;
             if (shading) {
-                shade((ImageButton) v);
+                if (puzzle.checkIfCorrect((tile.getXPosition()), tile.getyPosition())) {
+                    shade(tile);
+                }
+                else {
+                    //penalise score
+                }
+                //tile.setBackground(new BitmapDrawable(puzzle.foregroundImage));
             }
             else {
-                cross((ImageButton) v);
+                cross(tile);
             }
+        }
+        for (int i = 0; i < puzzle.getHeight(); i++) {
+            System.out.print("[");
+            for (int j = 0; j < puzzle.getWidth(); j++) {
+                System.out.print(puzzle.answerArray[i][j] + ", ");
+            }
+            System.out.println("]");
         }
     }
 }

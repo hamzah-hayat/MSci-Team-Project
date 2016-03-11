@@ -15,6 +15,10 @@
         android:layout_above="@+id/relativeLayout"
         android:layout_marginBottom="150px">
     </com.group.msci.puzzlegenerator.picross.ZoomView>
+    <!--<ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/testingImage"/>-->
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
