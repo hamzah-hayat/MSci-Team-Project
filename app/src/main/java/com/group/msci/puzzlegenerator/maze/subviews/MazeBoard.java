@@ -53,6 +53,7 @@ public class MazeBoard extends SurfaceView {
     }
 
     private void init() {
+        //setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         setWillNotDraw(false);
         shouldDrawMaze = true;
         extraPathSpace = 0.2f;

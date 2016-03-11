@@ -12,4 +12,9 @@
     <string name="facebook_app_id">796557013783402</string>
     <string name="title_activity_dot_to_dot_view2">DotToDotView2</string>
     <string name="BallSwitch_StartGame">Start Game</string>
+    <string-array name="maze_types">
+        <item>Simple</item>
+        <item>Portal</item>
+        <item>Cube</item>
+    </string-array>
 </resources>

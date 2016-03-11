@@ -250,6 +250,12 @@ public class BaseMaze implements Maze {
         return all;
     }
 
+
+    /*
+     * This method will be used during the onDraw method
+     * of a surface view. For performance reasons no objects
+     * will be initialised by this method
+     */
     public static SparseArray<Point> __all_neighbours(Point p) {
 
         Point north = neighbours.get(NORTH);
