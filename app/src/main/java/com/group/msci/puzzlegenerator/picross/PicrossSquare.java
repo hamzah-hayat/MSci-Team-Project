@@ -3,6 +3,8 @@ package com.group.msci.puzzlegenerator.picross;
 import android.content.Context;
 import android.widget.ImageButton;
 
+import com.group.msci.puzzlegenerator.R;
+
 /**
  * Created by magdi on 29/11/2015.
  */
@@ -22,18 +24,22 @@ public class PicrossSquare extends ImageButton {
 
     public void shade() {
         shaded = true;
+        setBackgroundResource(R.drawable.shaded);
     }
 
     public void cross() {
         crossed = true;
+        setBackgroundResource(R.drawable.crossed);
     }
 
     public void unshade() {
         shaded = false;
+        setBackgroundResource(R.drawable.unshaded);
     }
 
     public void uncross() {
         crossed = false;
+        setBackgroundResource(R.drawable.unshaded);
     }
 
     public boolean getShadeStatus() {
@@ -48,7 +54,7 @@ public class PicrossSquare extends ImageButton {
         return xPosition;
     }
 
-    public int getyPosition() {
+    public int getYPosition() {
         return yPosition;
     }
 }
