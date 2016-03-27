@@ -218,7 +218,11 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
     }
 
     public void gameOver() { //everything accurate, get current time and upload score
-        //String end
         System.out.println("GAME OVER, YOU WIN");
+        Intent intent = new Intent(PicrossPuzzleGUI.this, PicrossCompleteScreen.class);
+        CharSequence timeSeq = timer.getText();
+        String time = timeSeq.toString();
+        intent.putExtra("FINAL_TIME", time);
+        startActivity(intent);
     }
 }

@@ -46,7 +46,6 @@ public class PicrossPuzzle {
             return true;
         }
         else {
-            currentAnswers[i][j] = true;
             return false;
         }
     }
