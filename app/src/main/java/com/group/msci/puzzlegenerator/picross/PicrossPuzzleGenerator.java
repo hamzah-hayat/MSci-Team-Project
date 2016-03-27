@@ -7,7 +7,6 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.util.Log;
 
 /**
  * Created by magdi on 29/11/2015.
@@ -17,6 +16,7 @@ public class PicrossPuzzleGenerator {
     protected int puzzleWidth;
     protected int puzzleHeight;
     protected Bitmap originalImage;
+    private volatile boolean[][] shadedSquares;
 
     public PicrossPuzzleGenerator (Bitmap imageT, int across, int down) {
         foregroundImage = imageT;
@@ -25,18 +25,7 @@ public class PicrossPuzzleGenerator {
     }
 
     public void pixelateImage() {
-        int oldWidth = foregroundImage.getWidth();
-        int oldHeight = foregroundImage.getHeight();
-        float scaleWidth = ((float) puzzleWidth) / oldWidth;
-        float scaleHeight = ((float) puzzleHeight) / oldHeight;
-        // CREATE A MATRIX FOR THE MANIPULATION
-        Matrix matrix = new Matrix();
-        // RESIZE THE BIT MAP
-        matrix.postScale(scaleWidth, scaleHeight);
-        // "RECREATE" THE NEW BITMAP
-        Bitmap resizedBitmap = Bitmap.createBitmap(foregroundImage, 0, 0, oldWidth, oldHeight, matrix, false);
-        foregroundImage.recycle();
-        foregroundImage = resizedBitmap;
+        foregroundImage = Bitmap.createScaledBitmap(foregroundImage, puzzleWidth, puzzleHeight, true);
         //info found at http://stackoverflow.com/questions/4837715/how-to-resize-a-bitmap-in-android/10703256#10703256
     }
 
@@ -55,21 +44,42 @@ public class PicrossPuzzleGenerator {
         int threshold;
         height = bmpGreyscale.getHeight();
         width = bmpGreyscale.getWidth();
-        threshold = 127;
+        threshold = 150;
         Bitmap bmpBinary = Bitmap.createBitmap(bmpGreyscale);
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 // get one pixel color
                 int pixel = bmpGreyscale.getPixel(x, y);
                 int red = Color.red(pixel);
-
+                int green = Color.green(pixel);
+                int blue = Color.blue(pixel);
                 //get binary value
-                if(red < threshold){
-                    bmpBinary.setPixel(x, y, 0x00000000);
-                } else{
+                boolean marked = false;
+                if (red < threshold && !marked) {
+                    bmpBinary.setPixel(x, y, 0xFF000000);
+                    marked = true;
+                }
+                else {
                     bmpBinary.setPixel(x, y, 0xFFFFFFFF);
                 }
-
+                if (!marked) {
+                    if (green < threshold) {
+                        bmpBinary.setPixel(x, y, 0xFF000000);
+                        marked = true;
+                    }
+                    else {
+                        bmpBinary.setPixel(x, y, 0xFFFFFFFF);
+                    }
+                }
+                if (!marked) {
+                    if (blue < threshold) {
+                        bmpBinary.setPixel(x, y, 0xFF000000);
+                        marked = true;
+                    }
+                    else {
+                        bmpBinary.setPixel(x, y, 0xFFFFFFFF);
+                    }
+                }
             }
         }
         return bmpBinary;
@@ -78,11 +88,11 @@ public class PicrossPuzzleGenerator {
 
     public boolean[][] findShadedSquares(Bitmap binaryImage) {
         boolean[][] result = new boolean[puzzleHeight][puzzleWidth];
-        for (int x = 0; x < binaryImage.getWidth(); x++) {
-            for (int y = 0; y < binaryImage.getHeight(); y++) {
-                Log.i("test", "it worked? " + x + " " + binaryImage.getWidth());
-                if (binaryImage.getPixel(x, y) == 0x00000000) {
+        for (int x = 0; x < binaryImage.getHeight(); x++) {
+            for (int y = 0; y < binaryImage.getWidth(); y++) {
+                if (binaryImage.getPixel(x, y) == Color.BLACK) {
                     result[x][y] = true;
+                    System.out.println("Puzzle Cell Shaded! Pixel Value: " + binaryImage.getPixel(x, y));
                 } else {
                     result[x][y] = false;
                 }
@@ -92,8 +102,39 @@ public class PicrossPuzzleGenerator {
     }
 
     public PicrossPuzzle createPuzzle() {
-        pixelateImage();
-        boolean[][] shadedSquares = findShadedSquares(binariseImage());
-        return new PicrossPuzzle(shadedSquares, foregroundImage);
+        CreatePuzzle puzThread = new CreatePuzzle(this);
+        Thread x = new Thread(puzThread);
+        x.start();
+        try {
+            x.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return puzThread.getPuzzle();
+    }
+
+    public Bitmap getForegroundImage () {
+        return foregroundImage;
+    }
+}
+
+class CreatePuzzle implements Runnable {
+    private volatile PicrossPuzzle puzzle;
+    private volatile boolean[][] shadedSquares;
+    private PicrossPuzzleGenerator gen;
+
+    public CreatePuzzle (PicrossPuzzleGenerator gen1) {
+        gen = gen1;
+    }
+
+    @Override
+    public void run() {
+        gen.pixelateImage();
+        shadedSquares = gen.findShadedSquares(gen.binariseImage());
+        puzzle = new PicrossPuzzle(shadedSquares, gen.getForegroundImage());
+    }
+
+    public PicrossPuzzle getPuzzle () {
+        return puzzle;
     }
 }

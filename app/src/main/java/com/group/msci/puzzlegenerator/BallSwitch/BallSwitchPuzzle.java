@@ -1,5 +1,6 @@
 package com.group.msci.puzzlegenerator.BallSwitch;
 
+import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Ball;
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.BallSwitchObject;
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Switch;
 
@@ -11,7 +12,8 @@ import java.util.Date;
  */
 public class BallSwitchPuzzle {
     int sizeX, sizeY;
-    ArrayList<BallSwitchObject> gameObjects;
+    ArrayList<BallSwitchObject> gameObjects = new ArrayList<>();
+    Ball ball = new Ball();
     int puzzleID;
     String puzzleCreator;
     Date dateMade;
@@ -49,6 +51,17 @@ public class BallSwitchPuzzle {
         gameObjects.remove(obj);
     }
 
+    public Ball getBall()
+    {
+        return ball;
+    }
+
+    public void setBall(int posX,int posY)
+    {
+        ball.setPosX(posX);
+        ball.setPosY(posY);
+    }
+
     public ArrayList<BallSwitchObject> getObjects()
     {
         return gameObjects;
@@ -58,7 +71,7 @@ public class BallSwitchPuzzle {
     {
         for(BallSwitchObject object : gameObjects)
         {
-            if(object.getClass().getName().equals("Switch"))
+            if(object.getClass().getName().equals("com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Switch"))
             {
                 Switch switchObject = (Switch) object;
                 if(switchObject.getSwitched()==false)
@@ -68,5 +81,14 @@ public class BallSwitchPuzzle {
             }
         }
         return true;
+    }
+
+    public int getSizeX()
+    {
+        return sizeX;
+    }
+    public int getSizeY()
+    {
+        return sizeY;
     }
 }

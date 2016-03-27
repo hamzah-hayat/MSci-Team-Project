@@ -18,4 +18,20 @@ public class BallSwitchObject {
         posX = startX;
         posY = startY;
     }
+
+    public int getPosX()
+    {
+        return posX;
+    }
+
+    public int getPosY()
+    {
+        return posY;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "This is a Object with position " + posX + "," + posY;
+    }
 }

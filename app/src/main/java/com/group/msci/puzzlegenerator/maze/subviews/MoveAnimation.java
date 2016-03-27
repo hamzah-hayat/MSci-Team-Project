@@ -10,20 +10,32 @@ import com.group.msci.puzzlegenerator.maze.model.Point;
 /**
  * Created by Filipt on 13/02/2016.
  */
-public class MoveAnimation extends Thread {
+public class MoveAnimation implements Runnable {
+
+    private static final int MOVE_DRAW_CNT = 2;
 
     private MazeBoard board;
     private GameView parentActivity;
     private int direction;
     private Maze currentMaze;
-    private final float moveSize = 0.1f;
+    private final float moveSize = 1f / MOVE_DRAW_CNT;
 
-    public MoveAnimation(int direction, MazeBoard board, GameView activity) {
+    private boolean isRunning;
+
+    public MoveAnimation(MazeBoard board, GameView activity) {
         super();
         this.board = board;
-        this.direction = direction;
         currentMaze = board.getMaze();
         this.parentActivity = activity;
+        isRunning = false;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
+
+    public boolean isRunning() {
+        return isRunning;
     }
 
     private void updatePositions() {
@@ -66,16 +78,17 @@ public class MoveAnimation extends Thread {
 
     @Override
     public void run() {
-        if (currentMaze.at(BaseMaze.neighbour_at(direction, currentMaze.playerPos())) <= BaseMaze.WALL)
+        isRunning = true;
+        if (currentMaze.at(BaseMaze.neighbour_at(direction, currentMaze.playerPos())) <= BaseMaze.WALL) {
+            isRunning = false;
             return;
-        Point current = new Point(0,0);
+        }
+        Point current;
 
         do {
-            int cellMoveCount = 0;
             currentMaze.movePlayer(direction);
 
-            while(cellMoveCount < 10) {
-                ++cellMoveCount;
+            for (int i = 0; i < MOVE_DRAW_CNT; ++i){
                 updatePositions();
 
                 Canvas canvas = null;
@@ -92,12 +105,13 @@ public class MoveAnimation extends Thread {
                 }
 
                 try {
-                    Thread.sleep(1);
+                    Thread.sleep(10);
                 } catch (InterruptedException e) {}
-
             }
+
             current = currentMaze.playerPos();
             direction = nextDirection(direction, current);
+
         } while(!currentMaze.isJunction(current) && (direction > -1) && !atOpening(current));
 
         if (current.equals(currentMaze.exit())) {
@@ -108,5 +122,7 @@ public class MoveAnimation extends Thread {
                 }
             });
         }
+
+        isRunning = false;
     }
 }

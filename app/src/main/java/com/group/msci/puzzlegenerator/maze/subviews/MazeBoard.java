@@ -15,7 +15,7 @@ import com.group.msci.puzzlegenerator.maze.model.Point;
 /**
  * Created by filipt on 12/02/2016.
  */
-public class MazeBoard extends SurfaceView implements SurfaceHolder.Callback{
+public class MazeBoard extends SurfaceView {
 
     private Maze currentMaze;
 
@@ -30,6 +30,9 @@ public class MazeBoard extends SurfaceView implements SurfaceHolder.Callback{
     private int mazeHeight;
     private int mazeWidth;
 
+    /* When onDraw is called before maze is set this should be
+     * false.
+     */
     protected boolean shouldDrawMaze;
     protected float playerDotX;
     protected float playerDotY;
@@ -68,7 +71,6 @@ public class MazeBoard extends SurfaceView implements SurfaceHolder.Callback{
         p.setStyle(Paint.Style.FILL);
         p.setColor(color);
     }
-
 
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -119,28 +121,5 @@ public class MazeBoard extends SurfaceView implements SurfaceHolder.Callback{
         playerDotX = entry.x + 0.5f;
         playerDotY = entry.y + 0.5f;
         currentMaze = maze;
-    }
-
-    @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        /*
-        try {
-
-
-        } finally {
-
-        }
-        */
-
-    }
-
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-
     }
 }

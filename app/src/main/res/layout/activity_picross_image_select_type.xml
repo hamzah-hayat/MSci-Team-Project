@@ -29,15 +29,13 @@
         android:text="Gallery"
         android:id="@+id/galleryBtn"
         android:height="120dp"
-        android:layout_below="@+id/imageSelectionTitle"
+        android:textSize="60px"
+        android:onClick="loadImagefromGallery"
+        android:layout_above="@+id/button3"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp"
-        android:layout_alignParentRight="true"
-        android:textSize="60px"
-        android:layout_alignParentEnd="true"
-        android:onClick="loadImagefromGallery"
-    />
+        android:layout_alignRight="@+id/button2"
+        android:layout_alignEnd="@+id/button2" />
 
     <Button
         android:layout_width="wrap_content"
@@ -45,13 +43,12 @@
         android:text="Random"
         android:id="@+id/button2"
         android:height="120dp"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/button"
+        android:textSize="60px"
+        android:layout_above="@+id/galleryBtn"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:textSize="60px"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignRight="@+id/imageSelectionTitle"
+        android:layout_alignEnd="@+id/imageSelectionTitle" />
 
     <Button
         android:layout_width="wrap_content"
@@ -60,10 +57,9 @@
         android:id="@+id/button3"
         android:height="120dp"
         android:textSize="60px"
-        android:layout_below="@+id/button2"
-        android:layout_alignLeft="@+id/button2"
-        android:layout_alignStart="@+id/button2"
-        android:layout_marginTop="20dp"
-        android:layout_alignRight="@+id/button2"
-        android:layout_alignEnd="@+id/button2" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/galleryBtn"
+        android:layout_alignEnd="@+id/galleryBtn" />
 </RelativeLayout>
