@@ -44,25 +44,34 @@
             android:label="@string/app_name" />
         <activity
             android:name=".picross.PicrossPuzzleGUI"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_picross_puzzle_gui"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".dottodot.DotToDotView"
             android:label="@string/app_name" />
         <activity
             android:name=".BallSwitch.BallSwitchPuzzleGame"
-            android:label="BallSwitch Puzzle Main Menu">
-        </activity>
+            android:label="BallSwitch Puzzle Main Menu"></activity>
         <activity
             android:name=".dottodot.DotToDotView2"
             android:label="@string/title_activity_dot_to_dot_view2"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name=".picross.PicrossCompleteScreen"
+            android:label="@string/title_activity_picross_complete_screen"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name" />
     </application>
 
 </manifest>
