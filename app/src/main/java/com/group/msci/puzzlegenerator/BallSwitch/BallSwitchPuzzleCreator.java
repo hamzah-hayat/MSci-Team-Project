@@ -21,7 +21,7 @@ public class BallSwitchPuzzleCreator {
 
     public BallSwitchPuzzle generatePuzzle()
     {
-        BallSwitchPuzzle puzzle = new BallSwitchPuzzle();
+        BallSwitchPuzzle puzzle = new BallSwitchPuzzle(5,5);
         //Create a puzzle
         return puzzle;
     }

@@ -58,6 +58,9 @@ public class BallSwitchPuzzleGame extends AppCompatActivity {
     {
         puzzle = new BallSwitchPuzzle(5,5);
         puzzle.setBall(2,3);
+        puzzle.addObject(puzzle.getBall());
+        puzzle.addObject(new Switch(1,1));
+        puzzle.addObject(new Switch(0,4));
         gameStarted = true;
     }
 
@@ -103,17 +106,17 @@ public class BallSwitchPuzzleGame extends AppCompatActivity {
 
                 if (initialX > finalX && initialX-finalX>100) {
                     System.out.println("Right to Left swipe performed");
-                    controller.moveball(1);
+                    controller.moveball(4);
                 }
 
                 if (initialY< finalY && finalY-initialY>100) {
                     System.out.println("Up to Down swipe performed");
-                    controller.moveball(4);
+                    controller.moveball(3);
                 }
 
                 if (initialY > finalY && initialY-finalY>100) {
                     System.out.println("Down to Up swipe performed");
-                    controller.moveball(3);
+                    controller.moveball(1);
                 }
                 break;
 
@@ -129,7 +132,7 @@ public class BallSwitchPuzzleGame extends AppCompatActivity {
         if (puzzle.checkPuzzleComplete())
         {
             //Game is won
-            view.showScoreBoard();
+            //view.showScoreBoard();
             //gameStarted = false;
         }
         return super.onTouchEvent(event);

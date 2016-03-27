@@ -1,5 +1,8 @@
 package com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
+
 /**
  * Created by Hamzah on 21/01/2016.
  */
@@ -34,4 +37,13 @@ public class BallSwitchObject {
     {
         return "This is a Object with position " + posX + "," + posY;
     }
+
+    //This method is used to draw for each object
+    public void draw(int posXDraw,int posYDraw,Canvas canvas,Paint paint)
+    {
+        //This method should be overridden by child classes, but this is the default
+        //Just a Circle
+        canvas.drawCircle(posXDraw,posYDraw,100,paint);
+    }
+
 }
