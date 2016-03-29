@@ -52,6 +52,12 @@
             android:name=".dottodot.DotToDotView"
             android:label="@string/app_name" />
         <activity
+            android:name=".dottodot.DotToDotImageSelectType"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".dottodot.DotToDotPreviewAndWord"
+            android:label="@string/app_name" />
+        <activity
             android:name=".BallSwitch.BallSwitchPuzzleGame"
             android:label="BallSwitch Puzzle Main Menu"></activity>
         <activity
