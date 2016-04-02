@@ -1,7 +1,5 @@
 package com.group.msci.puzzlegenerator.maze;
 
-import android.graphics.Canvas;
-
 import com.group.msci.puzzlegenerator.maze.model.Point;
 
 /**
@@ -24,5 +22,15 @@ public interface Maze {
     int width();
     Point entry();
     Point exit();
+    Point entryGate();
+    Point exitGate();
     boolean isJunction(Point point);
+    boolean isWall(Point point);
+    boolean atGate(Point point);
+
+    int getCurrentPlane();
+    int getNumberOfPlanes();
+
+
+    //Timer
 }

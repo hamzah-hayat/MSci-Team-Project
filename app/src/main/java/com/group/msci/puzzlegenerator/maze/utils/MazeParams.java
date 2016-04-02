@@ -13,6 +13,7 @@ public class MazeParams implements Parcelable {
     private String type;
     private int time;
     private int nplanes;
+    private boolean useTimer;
 
     @Override
     public void writeToParcel(Parcel out, int flags) {
@@ -21,14 +22,16 @@ public class MazeParams implements Parcelable {
         out.writeString(type);
         out.writeInt(time);
         out.writeInt(nplanes);
+        out.writeByte((useTimer) ? (byte)1 : (byte)0);
     }
 
-    public MazeParams(int width, int height, int time, int nplanes, String type) {
+    public MazeParams(int width, int height, int time, int nplanes, String type, boolean useTimer) {
         this.width = width;
         this.height = height;
         this.time = time;
         this.nplanes = nplanes;
         this.type = type;
+        this.useTimer = useTimer;
     }
 
     public MazeParams(Parcel in) {
@@ -37,6 +40,8 @@ public class MazeParams implements Parcelable {
         this.type = in.readString();
         this.time = in.readInt();
         this.nplanes = in.readInt();
+        this.useTimer = in.readByte() != 0;
+
     }
 
     @Override
@@ -76,5 +81,9 @@ public class MazeParams implements Parcelable {
 
     public int getHeight() {
         return height;
+    }
+
+    public boolean getUseTimer() {
+        return useTimer;
     }
 }

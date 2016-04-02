@@ -8,9 +8,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.group.msci.puzzlegenerator.R;
 import com.group.msci.puzzlegenerator.maze.Maze;
+import com.group.msci.puzzlegenerator.maze.MazeTimer;
 import com.group.msci.puzzlegenerator.maze.model.BaseMaze;
 import com.group.msci.puzzlegenerator.maze.model.Maze3D;
 import com.group.msci.puzzlegenerator.maze.model.PortalMaze;
@@ -33,6 +35,11 @@ public class GameView extends Activity {
     private Button up;
     private Button down;
 
+    private TextView timeNotif;
+    private TextView timeField;
+
+    private MazeTimer timer;
+
     private SolvedDialog solvedDialog;
 
     @Override
@@ -41,7 +48,7 @@ public class GameView extends Activity {
         setContentView(R.layout.maze_game);
 
 
-        MazeParams params = (MazeParams) getIntent().getParcelableExtra("maze_params");
+        MazeParams params = getIntent().getParcelableExtra("maze_params");
         String mazeType = params.getType();
 
         if (mazeType.equals("Portal")) {
@@ -51,16 +58,20 @@ public class GameView extends Activity {
             maze = new Maze3D(params.getWidth());
         }
         else if (mazeType.equals("Simple")) {
-            maze = new BaseMaze(params.getWidth(), params.getHeight());
+            maze = new BaseMaze(params.getWidth(), params.getHeight(), true);
         }
         else {
             throw new IllegalArgumentException("Wrong Maze type selected in parcel: " + mazeType);
         }
 
+
         left = (Button) findViewById(R.id.button_left);
         right = (Button) findViewById(R.id.button_right);
         up = (Button) findViewById(R.id.button_up);
         down = (Button) findViewById(R.id.button_down);
+
+        timeNotif = (TextView) findViewById(R.id.time_notification);
+        timeField = (TextView) findViewById(R.id.time_field);
 
         board = (MazeBoard) findViewById(R.id.mazeSurfaceView);
 
@@ -71,9 +82,19 @@ public class GameView extends Activity {
 
         solvedDialog = new SolvedDialog(this);
         solvedDialog.setContentView(R.layout.maze_solved_alert);
-        solvedDialog.setTitle("Solved!");
 
         drawMaze();
+
+        if (params.getUseTimer()) {
+            timer = new MazeTimer(params.getTime() * 1000, maze, timeField, board, this);
+            timer.start();
+        }
+        else {
+            timeField.setVisibility(View.GONE);
+            timeNotif.setVisibility(View.GONE);
+        }
+
+
         animation = new MoveAnimation(board, this);
     }
 

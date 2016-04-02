@@ -71,10 +71,21 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Timer"
-            android:id="@+id/textView4"
-            android:layout_above="@+id/button_left"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Time Left"
+            android:id="@+id/time_notification"
+            android:layout_alignBaseline="@+id/button_left"
+            android:layout_alignBottom="@+id/button_left"
             android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="00:00"
+            android:id="@+id/time_field"
+            android:layout_above="@+id/button_right"
+            android:layout_centerHorizontal="true" />
+
     </RelativeLayout>
 </LinearLayout>

@@ -1,8 +1,10 @@
 package com.group.msci.puzzlegenerator.maze.model;
 
+import android.util.Log;
 import android.util.SparseArray;
 
 import com.group.msci.puzzlegenerator.maze.Maze;
+import com.group.msci.puzzlegenerator.maze.MazeTimer;
 
 import java.util.*;
 
@@ -54,7 +56,13 @@ public class BaseMaze implements Maze {
         int carveStart = (this instanceof Maze3D) ? width / 3 : 1;
         carve(carveStart, 1);
         specifyWalls();
-        setDefaultOpenings();
+        //setDefaultOpenings();
+    }
+
+    public BaseMaze(int width, int height, boolean useDefaultOpenings) {
+        this(width, height);
+        if (useDefaultOpenings)
+            setDefaultOpenings();
     }
 
     protected void setOpenings(Point entry, Point exit) {
@@ -145,11 +153,31 @@ public class BaseMaze implements Maze {
         return entry;
     }
 
+    public Point entryGate() {
+        return entry();
+    }
+
+    public Point exitGate() {
+        return exit();
+    }
+
     @Override
     public Point exit() {
         return exit;
     }
 
+    public int getNumberOfPlanes() {
+        return 1;
+    }
+
+    public int getCurrentPlane() {
+        return 0;
+    }
+
+    @Override
+    public boolean atGate(Point point) {
+        return (exit.equals(point) || entry.equals(point));
+    }
 
     //Convenience methods
 
@@ -236,7 +264,6 @@ public class BaseMaze implements Maze {
                 return new Point(x, y - 1);
         }
 
-        //return new Point();
         return null;
     }
 
@@ -275,7 +302,13 @@ public class BaseMaze implements Maze {
     }
 
     public static Point neighbour_at(int direction, Point p) {
-        return neighbour_at(direction, p.x, p.y);
+        Point res = neighbour_at(direction, p.x, p.y);
+        if (p instanceof Point3D) {
+            return new Point3D(res, ((Point3D) p).z);
+        }
+        else {
+            return res;
+        }
     }
 
     public boolean isJunction(Point p) {
@@ -283,7 +316,6 @@ public class BaseMaze implements Maze {
         int nwalls = 0;
 
         for (int i = 0; i < all.size(); ++i) {
-            //Log.i("WTF", p.toll.s);
             if ((!withinBounds(all.get(i))) ||  isWall(all.get(i))) {
                 ++nwalls;
             }

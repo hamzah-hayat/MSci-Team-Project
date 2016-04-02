@@ -67,13 +67,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/maze_types_dd"
-            android:layout_marginTop="46dp"
-            android:layout_below="@+id/textView6"
-            android:layout_alignRight="@+id/height_field"
-            android:layout_alignEnd="@+id/height_field"
+            android:spinnerMode="dropdown"
+            android:layout_alignTop="@+id/textView7"
             android:layout_alignLeft="@+id/height_field"
-            android:layout_alignStart="@+id/height_field"
-            android:spinnerMode="dropdown" />
+            android:layout_alignStart="@+id/height_field" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -81,9 +78,9 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Maze Type:"
             android:id="@+id/textView7"
-            android:layout_alignTop="@+id/maze_types_dd"
-            android:layout_alignLeft="@+id/textView6"
-            android:layout_alignStart="@+id/textView6" />
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/maze_types_dd"
+            android:layout_toStartOf="@+id/maze_types_dd" />
 
         <CheckBox
             android:layout_width="wrap_content"
@@ -92,16 +89,49 @@
             android:id="@+id/time_check_box"
             android:checked="false"
             android:layout_below="@+id/maze_types_dd"
-            android:layout_toLeftOf="@+id/maze_types_dd"
-            android:layout_toStartOf="@+id/maze_types_dd" />
+            android:layout_alignLeft="@+id/textView7"
+            android:layout_alignStart="@+id/textView7" />
 
-        <TimePicker
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/time_picker"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Timer Minutes"
+            android:id="@+id/textView9"
             android:layout_below="@+id/time_check_box"
-            android:layout_alignLeft="@+id/time_picker"
-            android:layout_alignStart="@+id/time_picker" />
+            android:layout_alignLeft="@+id/time_check_box"
+            android:layout_alignStart="@+id/time_check_box" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Timer Seconds"
+            android:id="@+id/textView10"
+            android:layout_below="@+id/textView9"
+            android:layout_alignLeft="@+id/textView9"
+            android:layout_alignStart="@+id/textView9"
+            android:layout_marginTop="39dp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/minutes_field"
+            android:layout_above="@+id/textView10"
+            android:layout_toRightOf="@+id/textView10"
+            android:layout_toEndOf="@+id/textView10" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/seconds_field"
+            android:layout_alignBottom="@+id/textView10"
+            android:layout_toRightOf="@+id/textView10"
+            android:layout_toEndOf="@+id/textView10" />
 
     </RelativeLayout>
 
