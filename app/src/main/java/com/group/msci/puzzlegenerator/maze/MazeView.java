@@ -30,8 +30,11 @@ public class MazeView extends Activity {
     private EditText heightField;
     private EditText minutesField;
     private EditText secondsField;
+    private EditText planeNoField;
     private CheckBox useTimerCheckBox;
     private String currentMazeChoice;
+
+    private int nplanes;
 
 
     @Override
@@ -39,16 +42,22 @@ public class MazeView extends Activity {
         super.onCreate(savedInstance);
         setContentView(R.layout.maze_activity);
 
+        nplanes = 1;
         Button startBtn = (Button) findViewById(R.id.startButton);
         mazeTypeChoices = (Spinner) findViewById(R.id.maze_types_dd);
         widthField = (EditText) findViewById(R.id.width_field);
         heightField = (EditText) findViewById(R.id.height_field);
         secondsField = (EditText) findViewById(R.id.seconds_field);
         minutesField = (EditText) findViewById(R.id.minutes_field);
+        planeNoField = (EditText) findViewById(R.id.plane_no_field);
         useTimerCheckBox = (CheckBox) findViewById(R.id.time_check_box);
 
+        //Will be disabled unless 'use timer' is checked'.
         secondsField.setEnabled(false);
         minutesField.setEnabled(false);
+
+        //By default this will be disabled until portal maze is selected
+        planeNoField.setEnabled(false);
 
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -61,6 +70,11 @@ public class MazeView extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 currentMazeChoice = (String) parent.getItemAtPosition(position);
+                if (currentMazeChoice.equals("Portal")) {
+                    planeNoField.setEnabled(true);
+                } else {
+                    planeNoField.setEnabled(false);
+                }
             }
 
             @Override
@@ -91,10 +105,10 @@ public class MazeView extends Activity {
 
 
                 int time = (useTimer) ? Integer.parseInt(minutesField.getText().toString()) * 60 +
-                           Integer.parseInt(secondsField.getText().toString()) : 0;
+                        Integer.parseInt(secondsField.getText().toString()) : 0;
                 String kind = currentMazeChoice;
                 //TODO: add a field for planes and make it appear if Portal Maze is chosen
-                int nplanes = 4;
+                nplanes = (planeNoField.isEnabled()) ? Integer.parseInt(planeNoField.getText().toString()) : nplanes;
 
                 Intent intent = new Intent(MazeView.this, GameView.class);
                 intent.putExtra("maze_params", new MazeParams(width, height, time, nplanes, kind, useTimer));

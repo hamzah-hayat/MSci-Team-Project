@@ -107,7 +107,9 @@ public class GameView extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Log.i("GameView", "Direction button Clicked!");
                 if ((animation != null) && (!animation.isRunning())) {
+                    //Log.i("GameView", "Starting Thread");
                     animation.setDirection(direction);
                     (new Thread(animation)).start();
                 }
