@@ -42,7 +42,8 @@ public class BallSwitchPuzzleView{
     public void showGameScreen()
     {
         //gameActivity.setContentView(R.layout.ballswitch_game);
-        if(gameCanvas!=null)
+        //Make sure the gameCanvas isnt null, create it if it is
+        if(gameCanvas==null)
         {
             gameCanvas = new BallSwitchPuzzleGameCanvas(gameActivity,gameActivity.getPuzzle());
         }

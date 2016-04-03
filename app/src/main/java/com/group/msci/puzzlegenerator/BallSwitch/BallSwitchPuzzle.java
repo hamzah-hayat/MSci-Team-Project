@@ -18,10 +18,6 @@ public class BallSwitchPuzzle {
     String puzzleCreator;
     Date dateMade;
 
-    public BallSwitchPuzzle()
-    {
-
-    }
 
     public BallSwitchPuzzle(int sizeXIn,int sizeYIn) { sizeX = sizeXIn;sizeY = sizeYIn; }
 

@@ -1,5 +1,7 @@
 package com.group.msci.puzzlegenerator.maze.model;
 
+import android.util.Log;
+
 import com.group.msci.puzzlegenerator.maze.Maze;
 
 import java.util.Random;
@@ -20,7 +22,7 @@ public class PortalMaze implements Maze {
 
     public PortalMaze(int width, int height, int nplanes) {
         this(width, height, nplanes,
-                new Point3D(1, 1, 0),
+                new Point3D(1, 0, 0),
                 new Point3D(width - 2, height - 1, nplanes - 1));
     }
 
@@ -62,8 +64,6 @@ public class PortalMaze implements Maze {
 
     private int genXpos(Random randomizer, int currentPlane) {
         int xpos = 1 + randomizer.nextInt(width - 2);
-        //BaseMaze current = planes[currentPlane];
-        //BaseMaze next = planes[currentPlane + 1];
         int currentExit = planes[currentPlane].at(xpos, height - 1);
         int nextEntrance = planes[currentPlane + 1].at(xpos, 0);
 
@@ -129,10 +129,9 @@ public class PortalMaze implements Maze {
         Point next = BaseMaze.neighbour_at(direction, current.playerPos());
         if (current.withinBounds(next)) {
             planes[currentPlane].movePlayer(direction);
-            return true;
-        }
-        else if (next.equals(current.exit())) {
-            ++currentPlane;
+            if (next.equals(current.exit())) {
+                ++currentPlane;
+            }
             return true;
         }
 
@@ -152,6 +151,14 @@ public class PortalMaze implements Maze {
     @Override
     public int width() {
         return planes[currentPlane].width();
+    }
+
+    public Point entryGate() {
+        return planes[currentPlane].entryGate();
+    }
+
+    public Point exitGate() {
+        return planes[currentPlane].exitGate();
     }
 
     @Override public int height() {
@@ -175,5 +182,27 @@ public class PortalMaze implements Maze {
     @Override
     public boolean isJunction(Point point) {
         return planes[currentPlane].isJunction(point);
+    }
+
+    public int getNumberOfPlanes() {
+        return nplanes;
+    }
+
+    public int getCurrentPlane() {
+        return currentPlane;
+    }
+
+    public boolean atGate(Point point) {
+        return planes[currentPlane].atGate(point);
+    }
+
+    @Override
+    public boolean isWall(Point point) {
+        if (currentPlane >= nplanes) {
+            Log.i("Current Plane", Integer.toString(currentPlane));
+            Log.i("nplanes", Integer.toString(nplanes));
+            return true;
+        }
+        return planes[getCurrentPlane()].isWall(point);
     }
 }

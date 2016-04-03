@@ -12,11 +12,64 @@
     tools:context="com.group.msci.puzzlegenerator.dottodot.DotToDotView2"
     tools:showIn="@layout/activity_dot_to_dot_view2">
 
-    <ImageView
-        android:layout_width="350dp"
-        android:layout_height="350dp"
-        android:id="@+id/imageView2"
+    <com.group.msci.puzzlegenerator.dottodot.DotsView
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:id="@+id/dotsView2"
+        android:layout_marginTop="59dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:singleLine="true"
+        android:maxLength="18"
+        android:layout_below="@+id/dotsView2"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GUESS"
+        android:id="@+id/button4"
+        android:layout_below="@+id/editText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Exit"
+        android:id="@+id/button"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/editText"
+        android:layout_toEndOf="@+id/editText"
+        android:clickable="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Score:"
+        android:id="@+id/textView9"
+        android:layout_alignTop="@+id/button"
+        android:layout_alignLeft="@+id/dotsView2"
+        android:layout_alignStart="@+id/dotsView2"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="0"
+        android:id="@+id/textView10"
+        android:layout_alignTop="@+id/textView9"
+        android:layout_toLeftOf="@+id/button4"
+        android:layout_toStartOf="@+id/button4" />
+
+
 </RelativeLayout>

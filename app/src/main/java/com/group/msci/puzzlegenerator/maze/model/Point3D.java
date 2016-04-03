@@ -12,6 +12,11 @@ public class Point3D extends Point {
         this.z = z;
     }
 
+    public Point3D(Point p, int z) {
+        super(p.x, p.y);
+        this.z = z;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other instanceof Point3D) {
@@ -21,6 +26,11 @@ public class Point3D extends Point {
                     (otherp.z == this.z);
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("[%d,%d,%d]", x, y, z);
     }
 
 }

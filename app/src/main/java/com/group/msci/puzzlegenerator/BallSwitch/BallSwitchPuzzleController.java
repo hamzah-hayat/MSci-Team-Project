@@ -61,6 +61,15 @@ public class BallSwitchPuzzleController {
             default:
                 break;
         }
+        //Have to make sure the ball stays on the grid, so if its on the edge (eg its equal to grid size) make it -1 pos
+        if(gameActivity.puzzle.getBall().getPosY()==gameActivity.puzzle.getSizeY())
+        {
+            gameActivity.puzzle.setBall(gameActivity.puzzle.getBall().getPosX(),gameActivity.puzzle.getBall().getPosY()-1);
+        }
+        else if(gameActivity.puzzle.getBall().getPosX()==gameActivity.puzzle.getSizeX())
+        {
+            gameActivity.puzzle.setBall(gameActivity.puzzle.getBall().getPosX()-1,gameActivity.puzzle.getBall().getPosY());
+        }
         System.out.println(gameActivity.puzzle.getBall());
     }
 

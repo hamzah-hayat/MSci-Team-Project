@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -53,7 +54,6 @@ public class MazeBoard extends SurfaceView {
     }
 
     private void init() {
-        //setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         setWillNotDraw(false);
         shouldDrawMaze = true;
         extraPathSpace = 0.2f;
@@ -88,6 +88,9 @@ public class MazeBoard extends SurfaceView {
     }
 
     private void drawMaze2D(Canvas canvas) {
+        //Log.i("MazeBoard", String.format("playerdotx: %f", playerDotX));
+        //Log.i("MazeBoard", String.format("playerdoty: %f", playerDotY));
+
         float extraRectWidth = (extraPathSpace * cellWidth);
         float extraRectHeight = (extraPathSpace * cellHeight);
 
@@ -116,8 +119,8 @@ public class MazeBoard extends SurfaceView {
         return currentMaze;
     }
 
-    protected void setMaze(Maze maze) {
-        Point entry = maze.entry();
+    public void setMaze(Maze maze) {
+        Point entry = maze.entryGate();
         playerDotX = entry.x + 0.5f;
         playerDotY = entry.y + 0.5f;
         currentMaze = maze;

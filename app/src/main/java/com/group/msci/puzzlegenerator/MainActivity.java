@@ -14,7 +14,7 @@ import android.widget.Button;
 
 import com.facebook.FacebookSdk;
 import com.group.msci.puzzlegenerator.BallSwitch.BallSwitchPuzzleGame;
-import com.group.msci.puzzlegenerator.dottodot.DotToDotView2;
+import com.group.msci.puzzlegenerator.dottodot.DotToDotImageSelectType;
 import com.group.msci.puzzlegenerator.maze.MazeView;
 import com.group.msci.puzzlegenerator.picross.PicrossImageSelectType;
 
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         dotBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, DotToDotView2.class);
+                Intent intent = new Intent(MainActivity.this, DotToDotImageSelectType.class);
                 MainActivity.this.startActivity(intent);
             }
         });
