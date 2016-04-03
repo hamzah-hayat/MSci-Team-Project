@@ -17,6 +17,7 @@ public class PicrossPuzzleGenerator {
     protected int puzzleHeight;
     protected Bitmap originalImage;
     private volatile boolean[][] shadedSquares;
+    private int threshold = 125;
 
     public PicrossPuzzleGenerator (Bitmap imageT, int across, int down) {
         foregroundImage = imageT;
@@ -41,10 +42,8 @@ public class PicrossPuzzleGenerator {
         ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
         paint.setColorFilter(f);
         c.drawBitmap(foregroundImage, 0, 0, paint);
-        int threshold;
         height = bmpGreyscale.getHeight();
         width = bmpGreyscale.getWidth();
-        threshold = 150;
         Bitmap bmpBinary = Bitmap.createBitmap(bmpGreyscale);
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -115,6 +114,14 @@ public class PicrossPuzzleGenerator {
 
     public Bitmap getForegroundImage () {
         return foregroundImage;
+    }
+
+    public void setForegroundImage(Bitmap newForeground) {
+        foregroundImage = newForeground;
+    }
+
+    public void setThreshold (int newThreshold) {
+        threshold = newThreshold;
     }
 }
 

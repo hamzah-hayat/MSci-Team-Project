@@ -26,9 +26,22 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Load Saved Puzzle"
+        android:id="@+id/savedPuzzles"
+        android:height="90dp"
+        android:textSize="60px"
+        android:layout_above="@+id/button2"
+        android:layout_alignRight="@+id/button2"
+        android:layout_alignEnd="@+id/button2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Gallery"
         android:id="@+id/galleryBtn"
-        android:height="120dp"
+        android:height="90dp"
         android:textSize="60px"
         android:onClick="loadImagefromGallery"
         android:layout_above="@+id/button3"
@@ -42,7 +55,7 @@
         android:layout_height="wrap_content"
         android:text="Random"
         android:id="@+id/button2"
-        android:height="120dp"
+        android:height="90dp"
         android:textSize="60px"
         android:layout_above="@+id/galleryBtn"
         android:layout_alignParentLeft="true"
@@ -55,11 +68,13 @@
         android:layout_height="wrap_content"
         android:text="Internet Link"
         android:id="@+id/button3"
-        android:height="120dp"
+        android:height="90dp"
         android:textSize="60px"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignRight="@+id/galleryBtn"
         android:layout_alignEnd="@+id/galleryBtn" />
+
+
 </RelativeLayout>
