@@ -1,13 +1,10 @@
 package com.group.msci.puzzlegenerator.maze.subviews;
 
 import android.app.Activity;
-import android.app.Dialog;
+import android.graphics.Canvas;
 import android.os.Bundle;
-import android.os.Looper;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.group.msci.puzzlegenerator.R;
@@ -19,12 +16,12 @@ import com.group.msci.puzzlegenerator.maze.model.PortalMaze;
 import com.group.msci.puzzlegenerator.maze.utils.MazeParams;
 import com.group.msci.puzzlegenerator.maze.utils.SolvedDialog;
 
-import java.util.logging.Handler;
-
 /**
  * Created by filipt on 11/02/2016.
+ * Activity that acts as a controller class
+ * for a single game designed by a user.
  */
-public class GameView extends Activity {
+public class GameInstanceController extends Activity {
 
     private Maze maze;
     private MazeBoard board;
@@ -34,6 +31,7 @@ public class GameView extends Activity {
     private Button right;
     private Button up;
     private Button down;
+    private Button solveBtn;
 
     private TextView timeNotif;
     private TextView timeField;
@@ -69,11 +67,20 @@ public class GameView extends Activity {
         right = (Button) findViewById(R.id.button_right);
         up = (Button) findViewById(R.id.button_up);
         down = (Button) findViewById(R.id.button_down);
+        solveBtn = (Button) findViewById(R.id.solve_btn);
 
         timeNotif = (TextView) findViewById(R.id.time_notification);
         timeField = (TextView) findViewById(R.id.time_field);
 
         board = (MazeBoard) findViewById(R.id.mazeSurfaceView);
+
+        solveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                maze.solve();
+                GameInstanceController.this.reDrawMaze();
+            }
+        });
 
         setMoveListener(BaseMaze.EAST, right);
         setMoveListener(BaseMaze.WEST, left);
@@ -83,11 +90,10 @@ public class GameView extends Activity {
         solvedDialog = new SolvedDialog(this);
         solvedDialog.setContentView(R.layout.maze_solved_alert);
 
-        drawMaze();
+        board.setMaze(maze);
 
         if (params.getUseTimer()) {
-            timer = new MazeTimer(params.getTime() * 1000, maze, timeField, board, this);
-            timer.start();
+            setAndStartTimer(new MazeTimer(params.getTime() * 1000, maze, timeField, board, this));
         }
         else {
             timeField.setVisibility(View.GONE);
@@ -98,8 +104,33 @@ public class GameView extends Activity {
         animation = new MoveAnimation(board, this);
     }
 
+    public void setAndStartTimer(MazeTimer timer) {
+        this.timer = timer;
+        this.timer.start();
+    }
+
     public void showSolvedDialog() {
         solvedDialog.show();
+    }
+
+    public void reDrawMaze() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Canvas canvas = null;
+                try {
+                    canvas = board.getHolder().lockCanvas();
+                    synchronized (board.getHolder()) {
+                        board.draw(canvas);
+                        board.postInvalidate();
+                    }
+                } finally {
+                    if (canvas != null) {
+                        board.getHolder().unlockCanvasAndPost(canvas);
+                    }
+                }
+            }
+        });
     }
 
     private void setMoveListener(final int direction, Button button) {
@@ -107,17 +138,11 @@ public class GameView extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Log.i("GameView", "Direction button Clicked!");
                 if ((animation != null) && (!animation.isRunning())) {
-                    //Log.i("GameView", "Starting Thread");
                     animation.setDirection(direction);
                     (new Thread(animation)).start();
                 }
             }
         });
-    }
-
-    private void drawMaze() {
-        board.setMaze(maze);
     }
 }

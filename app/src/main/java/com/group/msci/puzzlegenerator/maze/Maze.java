@@ -31,6 +31,4 @@ public interface Maze {
     int getCurrentPlane();
     int getNumberOfPlanes();
 
-
-    //Timer
 }

@@ -1,10 +1,8 @@
 package com.group.msci.puzzlegenerator.maze.model;
 
-import android.util.Log;
 import android.util.SparseArray;
 
 import com.group.msci.puzzlegenerator.maze.Maze;
-import com.group.msci.puzzlegenerator.maze.MazeTimer;
 
 import java.util.*;
 
@@ -14,7 +12,7 @@ import java.util.*;
 public class BaseMaze implements Maze {
 
     public static final int EAST = 0, SOUTH = 1, WEST = 2, NORTH = 3;
-    public static final byte PATH = 2, SPACE = 1, WALL = 0, WALL_JUNCTION = -1, HORIZONTAL_WALL = -2, VERTICAL_WALL = -3;
+    public static final byte PATH = 2, SPACE = 1, WALL = 0, WALL_JUNCTION = -1;
 
     public static final SparseArray<Integer> opposite = new SparseArray<>(4);
     private static final SparseArray<Point> neighbours = new SparseArray<>(4);
@@ -56,7 +54,6 @@ public class BaseMaze implements Maze {
         int carveStart = (this instanceof Maze3D) ? width / 3 : 1;
         carve(carveStart, 1);
         specifyWalls();
-        //setDefaultOpenings();
     }
 
     public BaseMaze(int width, int height, boolean useDefaultOpenings) {
@@ -91,7 +88,7 @@ public class BaseMaze implements Maze {
                     System.out.print(" *");
                 } else {
                     /**Space (dead ends or unvisited).
-                     * So a number thats lower than space if unvisited
+                     * So a number that's lower than space if unvisited
                      * and higher if it's a filled out path to a dead end.
                      */
                     System.out.print("  ");
@@ -126,11 +123,6 @@ public class BaseMaze implements Maze {
         fill(entry, exit, SPACE);
         writeAt(exit, PATH);
         solved = true;
-    }
-
-    @Override
-    public void regenerate() {
-        regenerate(true);
     }
 
     @Override
@@ -179,26 +171,26 @@ public class BaseMaze implements Maze {
         return (exit.equals(point) || entry.equals(point));
     }
 
-    //Convenience methods
+    @Override
+    public void regenerate() {
+       regenerate(true);
+    }
 
-    protected void regenerate(boolean keepPlayerPos) {
+
+    //Convenience methods
+    protected void regenerate(boolean playerInPlane) {
         for (int i = 0; i < width; ++i) {
             Arrays.fill(grid[i], (byte)0);
         }
 
-        //Make sure the previous player position is carved
-        if (keepPlayerPos) {
-            writeAt(playerPos, PATH);
-        }
-        else {
-            playerPos = entry;
-        }
-
-        writeAt(entry, SPACE);
-        writeAt(exit, SPACE);
         int carveStart = (this instanceof Maze3D) ? width / 3 : 1;
         carve(carveStart, 1);
+        writeAt(entry, SPACE);
+        writeAt(exit, SPACE);
         specifyWalls();
+        //In case the player happens to be on a wall of the new maze.
+        if (playerInPlane)
+            shiftPlayerToSpace();
     }
 
 
@@ -214,10 +206,6 @@ public class BaseMaze implements Maze {
         return grid[y][x];
     }
 
-    public void writeAt(int i, int j, byte value) {
-        grid[i][j] = value;
-    }
-
     public void writeAt(Point p, byte value) {
         grid[p.y][p.x] = value;
     }
@@ -230,6 +218,20 @@ public class BaseMaze implements Maze {
         return x < width && x > 0 && y > 0 && y < height;
     }
 
+    private void shiftPlayerToSpace() {
+        Point cur = playerPos;
+
+        if (isWall(cur)) {
+            SparseArray<Point> neighbours = all_neighbours(cur);
+            for (int i = 0; i < neighbours.size(); ++i) {
+                if (!isWall(neighbours.get(i))) {
+                    playerPos = neighbours.get(i);
+                    break;
+                }
+            }
+        }
+    }
+
     protected boolean withinBounds(Point p) {
         return withinBounds(p.x, p.y);
     }
@@ -240,10 +242,6 @@ public class BaseMaze implements Maze {
 
     public void inc(Point p) {
         grid[p.y][p.x] += 1;
-    }
-
-    public void dec(Point p) {
-        grid[p.y][p.x] -= 1;
     }
 
     public List<Integer> randomizedDirections() {
@@ -424,10 +422,8 @@ public class BaseMaze implements Maze {
                 Point wall = neighbour_at(directions.get(i), curPos);
                 Point neighbour = neighbour_at(directions.get(i), wall);
 
-                //System.out.println(carveable(maze, wall, neighbour));
                 if (carvable(wall, neighbour)) {
                     if (curPos.x != (width - 1))writeAt(curPos, SPACE);
-                    //writeAt(curPos, SPACE);
                     writeAt(wall, SPACE);
                     writeAt(neighbour, SPACE);
 
@@ -441,7 +437,7 @@ public class BaseMaze implements Maze {
 
 
     /**Give different values to walls depending on their kind, e.g
-     * walls that are connedted to more than two others should have a
+     * walls that are connected to more than two others should have a
      * different value.
      */
     private void specifyWalls() {

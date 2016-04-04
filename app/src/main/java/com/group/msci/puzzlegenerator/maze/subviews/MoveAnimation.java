@@ -1,9 +1,7 @@
 package com.group.msci.puzzlegenerator.maze.subviews;
 
 import android.graphics.Canvas;
-import android.util.Log;
 import android.util.SparseArray;
-import android.widget.BaseExpandableListAdapter;
 
 import com.group.msci.puzzlegenerator.maze.Maze;
 import com.group.msci.puzzlegenerator.maze.model.BaseMaze;
@@ -19,13 +17,12 @@ public class MoveAnimation implements Runnable {
     private static final float moveSize = 1f / MOVE_DRAW_CNT;
 
     private MazeBoard board;
-    private GameView parentActivity;
+    private GameInstanceController parentActivity;
     private int direction;
     private Maze currentMaze;
     private boolean isRunning;
 
-    public MoveAnimation(MazeBoard board, GameView activity) {
-        super();
+    public MoveAnimation(MazeBoard board, GameInstanceController activity) {
         this.board = board;
         currentMaze = board.getMaze();
         this.parentActivity = activity;
@@ -110,18 +107,23 @@ public class MoveAnimation implements Runnable {
 
         if (validDirection) {
             Point current = currentMaze.playerPos();
-            boolean notInLastPlane = (current instanceof Point3D) ? (((Point3D) current).z != currentMaze.getNumberOfPlanes() - 1) : false;
+            //For portal mazes only
+            boolean notInLastPlane = (current instanceof Point3D) &&
+                                     (((Point3D) current).z != currentMaze.getNumberOfPlanes() - 1);
 
             do {
                 if (currentMaze.atGate(nextCell) && notInLastPlane)   {
+                    //Time to move through portal to another plane
+
                     currentMaze.movePlayer(direction);
-                    board.playerDotX = currentMaze.entryGate().x + 0.5f;
-                    board.playerDotY = currentMaze.entryGate().y + 0.5f;
+                    board.playerDotX = currentMaze.entryGate().x + moveSize;
+                    board.playerDotY = currentMaze.entryGate().y + moveSize;
                     current = currentMaze.playerPos();
                     reDrawMaze();
                     break;
                 }
                 currentMaze.movePlayer(direction);
+
                 if (currentMaze.getCurrentPlane() >= currentMaze.getNumberOfPlanes()) {
                     displaySolved();
                     break;
@@ -138,7 +140,7 @@ public class MoveAnimation implements Runnable {
 
                 current = currentMaze.playerPos();
                 direction = nextDirection(direction, current);
-                nextCell = (direction > -1) ? BaseMaze.neighbour_at(direction, current) : nextCell;
+                if (direction > -1) nextCell = BaseMaze.neighbour_at(direction, current);
 
             } while (!currentMaze.isJunction(current) && (direction > -1) && !atOpening(current));
 

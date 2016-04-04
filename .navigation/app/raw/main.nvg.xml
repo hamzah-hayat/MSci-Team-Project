@@ -14,7 +14,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.group.msci.puzzlegenerator.maze.MazeView"/>
+        className = "com.group.msci.puzzlegenerator.maze.MazeController"/>
       <point      
         x = "550"      
         y = "150"/>

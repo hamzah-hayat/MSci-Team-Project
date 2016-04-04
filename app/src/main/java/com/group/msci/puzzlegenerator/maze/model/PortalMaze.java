@@ -7,7 +7,7 @@ import com.group.msci.puzzlegenerator.maze.Maze;
 import java.util.Random;
 
 /*
- * Composition of 2D Mazes.
+ * Composition of BaseMazes.
  */
 
 public class PortalMaze implements Maze {
@@ -39,8 +39,6 @@ public class PortalMaze implements Maze {
 
         for (int i = 0; i < nplanes; ++i) {
             planes[i] = new BaseMaze(width, height);
-            //System.out.println("Plane " + i);
-            //planes[i].logMat();
         }
 
         /**Random horizontal entry/exit point for the intermediate planes.
@@ -198,11 +196,7 @@ public class PortalMaze implements Maze {
 
     @Override
     public boolean isWall(Point point) {
-        if (currentPlane >= nplanes) {
-            Log.i("Current Plane", Integer.toString(currentPlane));
-            Log.i("nplanes", Integer.toString(nplanes));
-            return true;
-        }
-        return planes[getCurrentPlane()].isWall(point);
+        //Anything outside the existing planes is considered a wall.
+        return (currentPlane >= nplanes) || planes[getCurrentPlane()].isWall(point);
     }
 }

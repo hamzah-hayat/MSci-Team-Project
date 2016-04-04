@@ -5,13 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.group.msci.puzzlegenerator.maze.Maze;
 import com.group.msci.puzzlegenerator.maze.model.BaseMaze;
-import com.group.msci.puzzlegenerator.maze.model.Point;
 
 /**
  * Created by filipt on 12/02/2016.
@@ -88,9 +85,6 @@ public class MazeBoard extends SurfaceView {
     }
 
     private void drawMaze2D(Canvas canvas) {
-        //Log.i("MazeBoard", String.format("playerdotx: %f", playerDotX));
-        //Log.i("MazeBoard", String.format("playerdoty: %f", playerDotY));
-
         float extraRectWidth = (extraPathSpace * cellWidth);
         float extraRectHeight = (extraPathSpace * cellHeight);
 
@@ -104,7 +98,9 @@ public class MazeBoard extends SurfaceView {
                     float bottom = (i + 1) * cellHeight +
                                    ((i != mazeHeight - 2) ? extraRectHeight : extraRectHeight * 2);
 
-                    canvas.drawRect(left, top, right, bottom, pathPaint);
+                    canvas.drawRect(left, top, right, bottom,
+                                   ((currentMaze.at(j, i) == BaseMaze.PATH) ? slnPaint : pathPaint));
+
                 }
             }
         }
@@ -120,9 +116,8 @@ public class MazeBoard extends SurfaceView {
     }
 
     public void setMaze(Maze maze) {
-        Point entry = maze.entryGate();
-        playerDotX = entry.x + 0.5f;
-        playerDotY = entry.y + 0.5f;
+        playerDotX = maze.playerPos().x + 0.5f;
+        playerDotY = maze.playerPos().y + 0.5f;
         currentMaze = maze;
     }
 }
