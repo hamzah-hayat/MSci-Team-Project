@@ -13,6 +13,7 @@ import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
@@ -48,9 +49,9 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_picross_puzzle_gui);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setContentView(R.layout.picross_play);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
         Intent intent = getIntent();
         Uri myImageURI = intent.getParcelableExtra("SELECTED_IMAGE_URI");
         InputStream imageStream = null;
@@ -67,14 +68,14 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
         setButtons();
         /*ImageView view = (ImageView) findViewById(R.id.testingImage);
         view.setImageBitmap(puzzle.foregroundImage);*/
-        Button shade = (Button) findViewById(R.id.shade);
+        ImageButton shade = (ImageButton) findViewById(R.id.shade);
         shade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 shading = true;
             }
         });
-        Button cross = (Button) findViewById(R.id.cross);
+        ImageButton cross = (ImageButton) findViewById(R.id.cross);
         cross.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

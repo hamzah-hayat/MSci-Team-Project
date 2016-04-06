@@ -29,7 +29,9 @@ public class PicrossPuzzleOptionsGUI extends AppCompatActivity implements View.O
     SeekBar thresholdSeek;
     int thresholdInt;
     Uri image_uri;
-
+    Bitmap pixelated;
+    int puzzleWidth;
+    int puzzleHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,15 +61,19 @@ public class PicrossPuzzleOptionsGUI extends AppCompatActivity implements View.O
         original = Bitmap.createBitmap(yourSelectedImage);
         puzzleGen = new PicrossPuzzleGenerator(yourSelectedImage, 25, 25);
         image = (ImageView) findViewById(R.id.previewImage);
+        image.setScaleType(ImageView.ScaleType.FIT_XY);
         image.setImageBitmap(yourSelectedImage);
         SeekBar thresholdSeek = (SeekBar) findViewById(R.id.selectThreshold);
+        SeekBar verticalSeek = (SeekBar) findViewById(R.id.selectVerticalSize);
+        SeekBar horizontalSeek = (SeekBar) findViewById(R.id.selectHorizontalSize);
         final TextView displayThreshold = (TextView) findViewById(R.id.displayThreshold);
+        final TextView displayVertical = (TextView) findViewById(R.id.displayVerticalSize);
+        final TextView displayHorizontal = (TextView) findViewById(R.id.displayHorizontalSize);
         Button previewButton = (Button) findViewById(R.id.previewButton);
         previewButton.setOnClickListener(this);
         Button generateButton = (Button) findViewById(R.id.generateButton);
         generateButton.setOnClickListener(this);
         thresholdSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 // TODO Auto-generated method stub
@@ -88,7 +94,50 @@ public class PicrossPuzzleOptionsGUI extends AppCompatActivity implements View.O
                 }
                 displayThreshold.setText(threshold);
                 thresholdInt = progress;
+            }
+        });
+        verticalSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                String height = String.valueOf(progress);
+                if (height.length() == 1) {
+                    height = "0" + height;
+                }
+                displayVertical.setText(height);
+                puzzleHeight = progress;
+            }
+        });
+        horizontalSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                String width = String.valueOf(progress);
+                if (width.length() == 1) {
+                    width = "0" + width;
+                }
+                displayHorizontal.setText(width);
+                puzzleWidth = progress;
             }
         });
 
@@ -101,12 +150,15 @@ public class PicrossPuzzleOptionsGUI extends AppCompatActivity implements View.O
             puzzleGen.setForegroundImage(original);
             original = Bitmap.createBitmap(original);
             puzzleGen.setThreshold(thresholdInt);
-            image.setImageBitmap(puzzleGen.binariseImage());
+            pixelated = puzzleGen.pixelateImage(original, puzzleWidth, puzzleHeight);
+            image.setImageBitmap(puzzleGen.binariseImage(pixelated));
         }
         else {
             Intent intent = new Intent(PicrossPuzzleOptionsGUI.this, PicrossPuzzleGUI.class);
             intent.putExtra("THRESHOLD", thresholdInt);
             intent.putExtra("SELECTED_IMAGE_URI", image_uri);
+            intent.putExtra("PUZZLE_WIDTH", puzzleWidth);
+            intent.putExtra("PUZZLE_HEIGHT", puzzleHeight);
             startActivity(intent);
         }
     }
