@@ -15,7 +15,7 @@ import android.widget.Button;
 import com.facebook.FacebookSdk;
 import com.group.msci.puzzlegenerator.BallSwitch.BallSwitchPuzzleGame;
 import com.group.msci.puzzlegenerator.dottodot.DotToDotImageSelectType;
-import com.group.msci.puzzlegenerator.maze.MazeView;
+import com.group.msci.puzzlegenerator.maze.MazeController;
 import com.group.msci.puzzlegenerator.picross.PicrossImageSelectType;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         mazeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
         public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, MazeView.class);
+                Intent intent = new Intent(MainActivity.this, MazeController.class);
                 MainActivity.this.startActivity(intent);
             }
         });

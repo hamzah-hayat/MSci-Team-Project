@@ -5,12 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.group.msci.puzzlegenerator.maze.Maze;
 import com.group.msci.puzzlegenerator.maze.model.BaseMaze;
-import com.group.msci.puzzlegenerator.maze.model.Point;
 
 /**
  * Created by filipt on 12/02/2016.
@@ -53,7 +51,6 @@ public class MazeBoard extends SurfaceView {
     }
 
     private void init() {
-        //setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         setWillNotDraw(false);
         shouldDrawMaze = true;
         extraPathSpace = 0.2f;
@@ -101,7 +98,9 @@ public class MazeBoard extends SurfaceView {
                     float bottom = (i + 1) * cellHeight +
                                    ((i != mazeHeight - 2) ? extraRectHeight : extraRectHeight * 2);
 
-                    canvas.drawRect(left, top, right, bottom, pathPaint);
+                    canvas.drawRect(left, top, right, bottom,
+                                   ((currentMaze.at(j, i) == BaseMaze.PATH) ? slnPaint : pathPaint));
+
                 }
             }
         }
@@ -116,10 +115,9 @@ public class MazeBoard extends SurfaceView {
         return currentMaze;
     }
 
-    protected void setMaze(Maze maze) {
-        Point entry = maze.entry();
-        playerDotX = entry.x + 0.5f;
-        playerDotY = entry.y + 0.5f;
+    public void setMaze(Maze maze) {
+        playerDotX = maze.playerPos().x + 0.5f;
+        playerDotY = maze.playerPos().y + 0.5f;
         currentMaze = maze;
     }
 }

@@ -6,6 +6,7 @@ import android.util.SparseArray;
 import com.group.msci.puzzlegenerator.maze.Maze;
 import com.group.msci.puzzlegenerator.maze.model.BaseMaze;
 import com.group.msci.puzzlegenerator.maze.model.Point;
+import com.group.msci.puzzlegenerator.maze.model.Point3D;
 
 /**
  * Created by Filipt on 13/02/2016.
@@ -13,17 +14,15 @@ import com.group.msci.puzzlegenerator.maze.model.Point;
 public class MoveAnimation implements Runnable {
 
     private static final int MOVE_DRAW_CNT = 2;
+    private static final float moveSize = 1f / MOVE_DRAW_CNT;
 
     private MazeBoard board;
-    private GameView parentActivity;
+    private GameInstanceController parentActivity;
     private int direction;
     private Maze currentMaze;
-    private final float moveSize = 1f / MOVE_DRAW_CNT;
-
     private boolean isRunning;
 
-    public MoveAnimation(MazeBoard board, GameView activity) {
-        super();
+    public MoveAnimation(MazeBoard board, GameInstanceController activity) {
         this.board = board;
         currentMaze = board.getMaze();
         this.parentActivity = activity;
@@ -76,53 +75,79 @@ public class MoveAnimation implements Runnable {
         return point.equals(currentMaze.entry()) || point.equals(currentMaze.exit());
     }
 
+    private void reDrawMaze() {
+        Canvas canvas = null;
+        try {
+            canvas = board.getHolder().lockCanvas();
+            synchronized (board.getHolder()) {
+                board.draw(canvas);
+                board.postInvalidate();
+            }
+        } finally {
+            if (canvas != null) {
+                board.getHolder().unlockCanvasAndPost(canvas);
+            }
+        }
+    }
+
+    private void displaySolved() {
+        parentActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                parentActivity.showSolvedDialog();
+            }
+        });
+    }
+
     @Override
     public void run() {
         isRunning = true;
-        if (currentMaze.at(BaseMaze.neighbour_at(direction, currentMaze.playerPos())) <= BaseMaze.WALL) {
-            isRunning = false;
-            return;
-        }
-        Point current;
+        Point nextCell = BaseMaze.neighbour_at(direction, currentMaze.playerPos());
+        boolean validDirection = !currentMaze.isWall(nextCell);
 
-        do {
-            currentMaze.movePlayer(direction);
+        if (validDirection) {
+            Point current = currentMaze.playerPos();
+            //For portal mazes only
+            boolean notInLastPlane = (current instanceof Point3D) &&
+                                     (((Point3D) current).z != currentMaze.getNumberOfPlanes() - 1);
 
-            for (int i = 0; i < MOVE_DRAW_CNT; ++i){
-                updatePositions();
+            do {
+                if (currentMaze.atGate(nextCell) && notInLastPlane)   {
+                    //Time to move through portal to another plane
 
-                Canvas canvas = null;
-                try {
-                    canvas = board.getHolder().lockCanvas();
-                    synchronized (board.getHolder()) {
-                        board.draw(canvas);
-                        board.postInvalidate();
-                    }
-                } finally {
-                    if (canvas != null) {
-                        board.getHolder().unlockCanvasAndPost(canvas);
+                    currentMaze.movePlayer(direction);
+                    board.playerDotX = currentMaze.entryGate().x + moveSize;
+                    board.playerDotY = currentMaze.entryGate().y + moveSize;
+                    current = currentMaze.playerPos();
+                    reDrawMaze();
+                    break;
+                }
+                currentMaze.movePlayer(direction);
+
+                if (currentMaze.getCurrentPlane() >= currentMaze.getNumberOfPlanes()) {
+                    displaySolved();
+                    break;
+                }
+
+                for (int i = 0; i < MOVE_DRAW_CNT; ++i) {
+                    updatePositions();
+                    reDrawMaze();
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
                     }
                 }
 
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {}
+                current = currentMaze.playerPos();
+                direction = nextDirection(direction, current);
+                if (direction > -1) nextCell = BaseMaze.neighbour_at(direction, current);
+
+            } while (!currentMaze.isJunction(current) && (direction > -1) && !atOpening(current));
+
+            if (current.equals(currentMaze.exit())) {
+                displaySolved();
             }
-
-            current = currentMaze.playerPos();
-            direction = nextDirection(direction, current);
-
-        } while(!currentMaze.isJunction(current) && (direction > -1) && !atOpening(current));
-
-        if (current.equals(currentMaze.exit())) {
-            parentActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    parentActivity.showSolvedDialog();
-                }
-            });
         }
-
         isRunning = false;
     }
 }

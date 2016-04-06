@@ -29,6 +29,14 @@ public class PicrossImageSelectType extends Activity {
                 startActivityForResult(photoPickerIntent, SELECT_PHOTO);
             }
         });
+        Button savedPuzzles = (Button) findViewById(R.id.savedPuzzles);
+        savedPuzzles.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent savedPuzzlesIntent = new Intent(PicrossImageSelectType.this, PicrossSavedPuzzles.class);
+                startActivity(savedPuzzlesIntent);
+            }
+        });
     }
 
     @Override
@@ -38,7 +46,7 @@ public class PicrossImageSelectType extends Activity {
                 case SELECT_PHOTO:
                     if (resultCode == RESULT_OK) {
                         Uri selectedImage = imageReturnedIntent.getData();
-                        Intent intent = new Intent(PicrossImageSelectType.this, PicrossPuzzleGUI.class);
+                        Intent intent = new Intent(PicrossImageSelectType.this, PicrossPuzzleOptionsGUI.class);
                         intent.putExtra("SELECTED_IMAGE_URI", selectedImage);
                         startActivity(intent);
                     }

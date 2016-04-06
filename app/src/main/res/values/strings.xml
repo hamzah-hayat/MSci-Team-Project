@@ -15,7 +15,7 @@
     <string-array name="maze_types">
         <item>Simple</item>
         <item>Portal</item>
-        <item>Cube</item>
     </string-array>
     <string name="title_activity_picross_complete_screen">PicrossCompleteScreen</string>
+    <string name="title_activity_picross_saved_puzzles">PicrossSavedPuzzles</string>
 </resources>

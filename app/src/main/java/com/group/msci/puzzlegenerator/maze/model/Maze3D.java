@@ -23,7 +23,7 @@ public class Maze3D extends BaseMaze {
      * of the grid that don't fit onto any face
      * of the cube. So only the faces of the cube get
      * carved. The diagram below demonstrates the
-     * regions to be left out.
+     * regions to be left out(with F being left out).
      *
      *    |F |T| F|
      *    |T |T| T|
