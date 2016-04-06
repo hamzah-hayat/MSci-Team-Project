@@ -3,6 +3,7 @@ package com.group.msci.puzzlegenerator.picross;
 import android.graphics.Bitmap;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
+import java.sql.Connection;
 
 import com.group.msci.puzzlegenerator.R;
 

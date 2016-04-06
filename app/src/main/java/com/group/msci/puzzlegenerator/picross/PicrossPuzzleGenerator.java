@@ -13,6 +13,23 @@ import android.graphics.Paint;
  */
 public class PicrossPuzzleGenerator {
     protected Bitmap foregroundImage;
+
+    public int getPuzzleWidth() {
+        return puzzleWidth;
+    }
+
+    public void setPuzzleWidth(int puzzleWidth) {
+        this.puzzleWidth = puzzleWidth;
+    }
+
+    public int getPuzzleHeight() {
+        return puzzleHeight;
+    }
+
+    public void setPuzzleHeight(int puzzleHeight) {
+        this.puzzleHeight = puzzleHeight;
+    }
+
     protected int puzzleWidth;
     protected int puzzleHeight;
     protected Bitmap originalImage;
@@ -25,15 +42,21 @@ public class PicrossPuzzleGenerator {
         puzzleHeight = down;
     }
 
-    public void pixelateImage() {
-        foregroundImage = Bitmap.createScaledBitmap(foregroundImage, puzzleWidth, puzzleHeight, true);
+    public Bitmap pixelateImage(Bitmap image, int width, int height) {
+        if (width == 0) {
+            width = 10;
+        }
+        if (height == 0) {
+            height = 10;
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
         //info found at http://stackoverflow.com/questions/4837715/how-to-resize-a-bitmap-in-android/10703256#10703256
     }
 
-    public Bitmap binariseImage() {
+    public Bitmap binariseImage(Bitmap pixelated) {
         int width, height;
-        height = foregroundImage.getHeight();
-        width = foregroundImage.getWidth();
+        height = pixelated.getHeight();
+        width = pixelated.getWidth();
         Bitmap bmpGreyscale = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
         Canvas c = new Canvas(bmpGreyscale);
         Paint paint = new Paint();
@@ -41,7 +64,7 @@ public class PicrossPuzzleGenerator {
         cm.setSaturation(0);
         ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
         paint.setColorFilter(f);
-        c.drawBitmap(foregroundImage, 0, 0, paint);
+        c.drawBitmap(pixelated, 0, 0, paint);
         height = bmpGreyscale.getHeight();
         width = bmpGreyscale.getWidth();
         Bitmap bmpBinary = Bitmap.createBitmap(bmpGreyscale);
@@ -136,8 +159,8 @@ class CreatePuzzle implements Runnable {
 
     @Override
     public void run() {
-        gen.pixelateImage();
-        shadedSquares = gen.findShadedSquares(gen.binariseImage());
+        Bitmap pixelated = gen.pixelateImage(gen.getForegroundImage(), gen.getPuzzleWidth(), gen.getPuzzleHeight());
+        shadedSquares = gen.findShadedSquares(gen.binariseImage(pixelated));
         puzzle = new PicrossPuzzle(shadedSquares, gen.getForegroundImage());
     }
 

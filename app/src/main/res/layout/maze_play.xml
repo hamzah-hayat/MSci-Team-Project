@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#ffffffff">
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/up"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="99dp"
+        android:src="@drawable/up"
+        android:background="#ffffffff" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/right"
+        android:src="@drawable/right"
+        android:background="#ffffffff"
+        android:layout_alignTop="@+id/up"
+        android:layout_toRightOf="@+id/up"
+        android:layout_toEndOf="@+id/up"
+        android:layout_marginTop="50dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/left"
+        android:src="@drawable/left"
+        android:background="#ffffffff"
+        android:layout_alignTop="@+id/right"
+        android:layout_toLeftOf="@+id/up"
+        android:layout_toStartOf="@+id/up" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/down"
+        android:src="@drawable/down"
+        android:background="#ffffffff"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/left"
+        android:layout_toEndOf="@+id/left" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageButton3"
+        android:src="@drawable/done"
+        android:background="#ffffffff"
+        android:layout_below="@+id/right"
+        android:layout_toRightOf="@+id/right"
+        android:layout_toEndOf="@+id/right" />
+
+</RelativeLayout>

@@ -1,1 +1,1 @@
-include ':app:libs', ':FacebookSDK', ':AudienceNetwork'
+include ':FacebookSDK', ':AudienceNetwork', ':app', ':app:libs'

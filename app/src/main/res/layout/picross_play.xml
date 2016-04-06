@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#ffffffff">
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cancel"
+        android:src="@drawable/cancelpicross"
+        android:background="#ffffffff" />
+
+    <com.group.msci.puzzlegenerator.picross.ZoomView
+        android:layout_width="235px"
+        android:layout_height="235px"
+        android:id="@+id/puzzleGrid"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_gravity="center"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/linearLayout"
+        android:layout_below="@+id/cancel">
+    </com.group.msci.puzzlegenerator.picross.ZoomView>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:clickable="false"
+        android:focusableInTouchMode="false"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:paddingBottom="5dp"
+        android:background="#ffffffff"
+        android:id="@+id/linearLayout">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/shade"
+            android:layout_gravity="bottom"
+            android:src="@drawable/ic_shade"
+            android:background="#ffffffff"
+            android:layout_weight="1"
+             />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cross"
+            android:src="@drawable/ic_cross"
+            android:background="#ffffffff"
+            android:layout_weight="1" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/timerView"
+            android:text="0:00"
+            android:layout_weight="1"
+            android:textSize="150px"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>
