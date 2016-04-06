@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <Spinner
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/maze_type"
+        android:paddingTop="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView3"
+        android:src="@drawable/height_maze"
+        android:layout_below="@+id/maze_type"
+        android:layout_alignLeft="@+id/maze_type"
+        android:layout_alignStart="@+id/maze_type" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView4"
+        android:src="@drawable/weight_maze"
+        android:layout_alignTop="@+id/imageView3"
+        android:layout_alignRight="@+id/maze_type"
+        android:layout_alignEnd="@+id/maze_type" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:id="@+id/Height"
+        android:layout_below="@+id/maze_type"
+        android:layout_alignRight="@+id/imageView3"
+        android:layout_alignEnd="@+id/imageView3"
+        android:layout_alignBottom="@+id/imageView3"
+        android:layout_alignLeft="@+id/maze_type"
+        android:layout_alignStart="@+id/maze_type"
+        android:hint="Height"
+        android:inputType="number"
+        android:textColor="#ffffff" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number|phone"
+        android:ems="10"
+        android:id="@+id/weigh_maze"
+        android:layout_below="@+id/maze_type"
+        android:layout_alignRight="@+id/imageView4"
+        android:layout_alignEnd="@+id/imageView4"
+        android:layout_alignBottom="@+id/imageView4"
+        android:layout_alignLeft="@+id/imageView4"
+        android:layout_alignStart="@+id/imageView4"
+        android:hint="Weight"
+        android:textColor="#ffffff"
+        android:textColorHighlight="#4d10f6" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Timed"
+        android:id="@+id/timed"
+        android:hint="Timed"
+        android:layout_below="@+id/imageView3"
+        android:layout_alignLeft="@+id/imageView3"
+        android:layout_alignStart="@+id/imageView3"
+        android:layout_marginTop="109dp" />
+
+</RelativeLayout>

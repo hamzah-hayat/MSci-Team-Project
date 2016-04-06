@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/weblink"
+        android:src="@drawable/ic_weblink"
+        android:background="#ffffffff"
+        android:layout_above="@+id/camera"
+        android:layout_alignLeft="@+id/camera"
+        android:layout_alignStart="@+id/camera"
+        android:layout_marginBottom="51dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/camera"
+        android:src="@drawable/ic_camera"
+        android:background="#ffffffff"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/random"
+        android:layout_alignStart="@+id/random" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/random"
+        android:src="@drawable/ic_random"
+        android:background="#ffffffff"
+        android:layout_below="@+id/camera"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="51dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/picross_choose_puzzle"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/choose_puzzle_header"
+        android:background="#ffffffff"
+        android:paddingTop="15dp" />
+</RelativeLayout>
