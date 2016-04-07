@@ -1,5 +1,9 @@
 package com.group.msci.puzzlegenerator.json;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,7 +35,7 @@ public class AddLoginJSON implements Runnable {
 
     @Override
     public void run() {
-        addNewLogin();
+        buildJSON();
     }
 
 
@@ -40,7 +44,7 @@ public class AddLoginJSON implements Runnable {
     }
 
 
-    public void addNewLogin() {
+    public void buildJSON() {
         try {
             URL url = new URL("https://webprojects.eecs.qmul.ac.uk/ma334/login/save.php?username="
                     + username + "&password=" + password + "&name=" + firstName + lastname
@@ -60,14 +64,5 @@ public class AddLoginJSON implements Runnable {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    public boolean registerSuccessful() {
-        try {
-            return jsonFile.getBoolean("DetailsSaved");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 }

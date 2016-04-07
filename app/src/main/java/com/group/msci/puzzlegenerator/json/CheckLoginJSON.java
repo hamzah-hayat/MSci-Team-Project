@@ -29,7 +29,7 @@ public class CheckLoginJSON implements Runnable {
 
     @Override
     public void run() {
-        checkIfLoginValid();
+        buildJSON();
     }
 
 
@@ -37,7 +37,7 @@ public class CheckLoginJSON implements Runnable {
         return jsonFile;
     }
 
-    public void checkIfLoginValid() {
+    public void buildJSON() {
         try {
             URL url = new URL("https://webprojects.eecs.qmul.ac.uk/ma334/login/load.php?username=" + username + "&password=" + password);
             InputStream urlStream = url.openConnection().getInputStream();
@@ -55,44 +55,5 @@ public class CheckLoginJSON implements Runnable {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    public void addNewLogin() {
-        try {
-            URL url = new URL("https://webprojects.eecs.qmul.ac.uk/ma334/login/save.php?username=" + username + "&password=" + password);
-            InputStream urlStream = url.openConnection().getInputStream();
-            BufferedReader bf = new BufferedReader(new InputStreamReader(urlStream, "UTF-8"));
-            StringBuilder responseBuilder = new StringBuilder();
-
-            String input = bf.readLine();
-            while (input != null) {
-                responseBuilder.append(input);
-                input = bf.readLine();
-            }
-            jsonFile = new JSONObject(responseBuilder.toString());
-            result = jsonFile.getBoolean("Success");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public boolean loginValid() {
-        try {
-            return jsonFile.getBoolean("CorrectDetails");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean registerSuccessful() {
-        try {
-            return jsonFile.getBoolean("DetailsSaved");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 }

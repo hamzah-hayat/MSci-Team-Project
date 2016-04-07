@@ -62,7 +62,7 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
             e.printStackTrace();
         }
         Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);
-        PicrossPuzzleGenerator puzzleGen = new PicrossPuzzleGenerator(yourSelectedImage, 25, 25);
+        PicrossPuzzleGenerator puzzleGen = new PicrossPuzzleGenerator(yourSelectedImage, 5, 5);
         puzzleGen.setThreshold(intent.getIntExtra("THRESHOLD", 125));
         puzzle = puzzleGen.createPuzzle();
         setButtons();

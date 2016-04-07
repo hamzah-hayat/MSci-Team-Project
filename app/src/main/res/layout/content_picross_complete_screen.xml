@@ -38,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Share Puzzle"
-        android:id="@+id/button4"
+        android:id="@+id/sharePuzzle"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/finalTime"
         android:layout_toEndOf="@+id/finalTime" />
@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Upload Score"
-        android:id="@+id/button5"
+        android:id="@+id/uploadScore"
         android:layout_below="@+id/button4"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp" />
