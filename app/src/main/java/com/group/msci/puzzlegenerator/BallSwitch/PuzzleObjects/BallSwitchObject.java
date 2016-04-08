@@ -3,6 +3,8 @@ package com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import com.group.msci.puzzlegenerator.BallSwitch.BallSwitchPuzzleGame;
+
 /**
  * Created by Hamzah on 21/01/2016.
  */
@@ -46,7 +48,7 @@ public class BallSwitchObject {
         canvas.drawCircle(posXDraw,posYDraw,100,paint);
     }
 
-    public void use(Ball ball)
+    public void use(Ball ball,BallSwitchPuzzleGame gameActivity)
     {
         //This method does whatever the object wants to do, can use the ball if necessary
         //Default does nothing

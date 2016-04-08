@@ -17,6 +17,7 @@ public class BallSwitchPuzzle {
     int puzzleID;
     String puzzleCreator;
     Date dateMade;
+    ArrayList<Integer> winningMoves;
 
 
     public BallSwitchPuzzle(int sizeXIn,int sizeYIn) { sizeX = sizeXIn;sizeY = sizeYIn; }
@@ -27,7 +28,7 @@ public class BallSwitchPuzzle {
         //Load puzzle from database
     }
 
-    public BallSwitchPuzzle(int sizeXIn,int sizeYIn,ArrayList<BallSwitchObject> list,int puzzleIDIn,String puzzleCreatorIn,Date dateMadeIn)
+    public BallSwitchPuzzle(int sizeXIn,int sizeYIn,ArrayList<BallSwitchObject> list,int puzzleIDIn,String puzzleCreatorIn,Date dateMadeIn,ArrayList<Integer> winningMovesIn)
     {
         sizeX = sizeXIn;
         sizeY = sizeYIn;
@@ -35,6 +36,7 @@ public class BallSwitchPuzzle {
         puzzleID = puzzleIDIn;
         puzzleCreator = puzzleCreatorIn;
         dateMade = dateMadeIn;
+        winningMoves = winningMovesIn;
     }
 
     public void addObject(BallSwitchObject obj)
@@ -56,6 +58,7 @@ public class BallSwitchPuzzle {
     {
         ball.setPosX(posX);
         ball.setPosY(posY);
+        addObject(ball);
     }
 
     public ArrayList<BallSwitchObject> getObjects()

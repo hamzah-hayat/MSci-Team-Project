@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Ball;
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.BallSwitchObject;
+import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Fan;
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Switch;
 import com.group.msci.puzzlegenerator.R;
 
@@ -43,7 +44,6 @@ public class BallSwitchPuzzleGame extends AppCompatActivity {
         //Fully set up
 
         view.showMainMenu();
-        controller.setUpMainMenuButtons();
     }
 
     public Button findButtonById(int id)
@@ -56,12 +56,15 @@ public class BallSwitchPuzzleGame extends AppCompatActivity {
     //This method starts a game
     public void startGame()
     {
+        /*
         puzzle = new BallSwitchPuzzle(5,5);
         puzzle.setBall(2,3);
-        puzzle.addObject(puzzle.getBall());
-        puzzle.addObject(new Switch(1,1));
+        puzzle.addObject(new Switch(1, 1));
         puzzle.addObject(new Switch(0,3));
         puzzle.addObject(new Switch(1,3));
+        */
+        BallSwitchPuzzleCreator creator = new BallSwitchPuzzleCreator(0,new boolean[]{true,false});
+        puzzle = creator.generatePuzzle();
         gameStarted = true;
     }
 
@@ -136,5 +139,8 @@ public class BallSwitchPuzzleGame extends AppCompatActivity {
         return super.onTouchEvent(event);
     }
 
-
+    public BallSwitchPuzzleController getController()
+    {
+        return controller;
+    }
 }

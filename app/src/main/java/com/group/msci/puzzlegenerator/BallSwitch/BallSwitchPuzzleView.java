@@ -36,6 +36,7 @@ public class BallSwitchPuzzleView{
     public void showMainMenu()
     {
         gameActivity.setContentView(R.layout.ballswitch_activity);
+        gameActivity.getController().setUpMainMenuButtons();
     }
 
     //Show the gameScreen here

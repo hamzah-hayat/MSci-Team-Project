@@ -87,7 +87,7 @@ public class BallSwitchPuzzleController {
                 if(object.getPosY()==ball.getPosY() && object.getPosX()==ball.getPosX() && ball!=object)
                 {
                     //Use the object
-                    object.use(ball);
+                    object.use(ball,gameActivity);
                     hitObject=true;
                     break;  //No point checking anything else
                 }
