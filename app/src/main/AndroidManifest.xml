@@ -25,10 +25,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".maze.MazeView"
+            android:name=".maze.MazeController"
             android:label="@string/app_name" />
         <activity
-            android:name=".maze.subviews.GameView"
+            android:name=".maze.subviews.GameInstanceController"
             android:label="@string/app_name" />
         <activity
             android:name=".picross.PicrossPuzzleOptionsGUI"
