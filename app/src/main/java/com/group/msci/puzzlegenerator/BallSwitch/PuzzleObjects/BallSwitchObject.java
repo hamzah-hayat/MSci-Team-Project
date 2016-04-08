@@ -46,4 +46,9 @@ public class BallSwitchObject {
         canvas.drawCircle(posXDraw,posYDraw,100,paint);
     }
 
+    public void use(Ball ball)
+    {
+        //This method does whatever the object wants to do, can use the ball if necessary
+        //Default does nothing
+    }
 }

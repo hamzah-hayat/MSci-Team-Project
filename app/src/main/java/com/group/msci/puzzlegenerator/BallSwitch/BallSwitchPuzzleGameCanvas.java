@@ -34,7 +34,8 @@ public class BallSwitchPuzzleGameCanvas extends View {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         wm.getDefaultDisplay().getMetrics(metrics);
 
-        screenHeight = metrics.heightPixels-200;
+        //-200 is to bottom of screen
+        screenHeight = metrics.heightPixels-500;
         screenWidth = metrics.widthPixels;
     }
 
@@ -56,18 +57,12 @@ public class BallSwitchPuzzleGameCanvas extends View {
             //System.out.println("Drawing line " + i * gridWidthSpace);
             //canvas.drawText(Integer.toString(gridWidthSpace), i * gridWidthSpace, 100, paint);
         }
-        for(int i =1;i<puzzle.getSizeY();i++)
-        {
+        for(int i =1;i<puzzle.getSizeY();i++) {
             canvas.drawLine(0, i * gridHeightSpace, screenWidth, i * gridHeightSpace, paint);
             //System.out.println("Drawing line " + i * gridHeightSpace);
             //canvas.drawText(Integer.toString(gridHeightSpace), 0, i * gridHeightSpace, paint);
         }
 
-        //Now create objects
-        //Find the ball and draw it
-        //Ball ball = puzzle.getBall();
-        //canvas.drawCircle(ball.getPosX() * gridWidthSpace + gridWidthSpace / 2, ball.getPosY() * gridHeightSpace + gridHeightSpace / 2, 100, paint);
-        //System.out.println("Ball Pos = " + (ball.getPosX() * gridWidthSpace + gridWidthSpace / 2) + "," + (ball.getPosY() * gridHeightSpace + gridHeightSpace / 2));
         //Draw all the objects in the puzzle
         for(BallSwitchObject object : puzzle.getObjects())
         {
@@ -77,6 +72,9 @@ public class BallSwitchPuzzleGameCanvas extends View {
             object.draw(objectXDraw, objectYDraw, canvas, paint);
             paint.setColor(Color.BLACK);
         }
+
+
+        //Now draw the menu buttons and bar
 
     }
 

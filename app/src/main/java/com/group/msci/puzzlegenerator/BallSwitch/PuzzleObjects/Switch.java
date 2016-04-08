@@ -54,4 +54,11 @@ public class Switch extends BallSwitchObject {
 
         canvas.drawCircle(posXDraw,posYDraw,50,paint);
     }
+
+    @Override
+    public void use(Ball ball)
+    {
+        //"Uses" this switch
+        switched=!switched;
+    }
 }
