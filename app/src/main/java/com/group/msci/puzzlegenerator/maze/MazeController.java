@@ -14,6 +14,9 @@ import android.widget.Spinner;
 import com.group.msci.puzzlegenerator.R;
 import com.group.msci.puzzlegenerator.maze.subviews.GameInstanceController;
 import com.group.msci.puzzlegenerator.maze.utils.MazeParams;
+import com.group.msci.puzzlegenerator.maze.utils.Seed;
+
+import java.util.Random;
 
 /**
  * Created by filipt on 11/28/15.
@@ -106,7 +109,7 @@ public class MazeController extends Activity {
                 nplanes = (planeNoField.isEnabled()) ? Integer.parseInt(planeNoField.getText().toString()) : nplanes;
 
                 Intent intent = new Intent(MazeController.this, GameInstanceController.class);
-                intent.putExtra("maze_params", new MazeParams(width, height, time, nplanes, kind, useTimer));
+                intent.putExtra("maze_params", new MazeParams(width, height, time, nplanes, kind, new Seed(true)));
 
                 MazeController.this.startActivity(intent);
             }

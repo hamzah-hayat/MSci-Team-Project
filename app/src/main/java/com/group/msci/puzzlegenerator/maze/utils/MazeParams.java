@@ -2,18 +2,22 @@ package com.group.msci.puzzlegenerator.maze.utils;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+
+import java.lang.reflect.Field;
+import java.net.Inet4Address;
 
 /**
  * Created by filipt on 11/03/2016.
  */
 public class MazeParams implements Parcelable {
 
-    private int width;
-    private int height;
+    private Integer width;
+    private Integer height;
     private String type;
-    private int time;
-    private int nplanes;
-    private boolean useTimer;
+    private Integer time;
+    private Integer nplanes;
+    private Seed seed;
 
     @Override
     public void writeToParcel(Parcel out, int flags) {
@@ -22,16 +26,27 @@ public class MazeParams implements Parcelable {
         out.writeString(type);
         out.writeInt(time);
         out.writeInt(nplanes);
-        out.writeByte((useTimer) ? (byte)1 : (byte)0);
+        out.writeString(seed.toString());
+
     }
 
-    public MazeParams(int width, int height, int time, int nplanes, String type, boolean useTimer) {
+    public MazeParams(int width, int height, int time, int nplanes, String type, Seed seed) {
         this.width = width;
         this.height = height;
         this.time = time;
         this.nplanes = nplanes;
         this.type = type;
-        this.useTimer = useTimer;
+        this.seed = seed;
+    }
+
+    public MazeParams(String mpline) {
+        String[] components = mpline.split(" ");
+        this.width = Integer.parseInt(components[0]);
+        this.height = Integer.parseInt(components[1]);
+        this.time = Integer.parseInt(components[2]);
+        this.nplanes = Integer.parseInt(components[3]);
+        this.type = components[4];
+        this.seed = new Seed(components[5]);
     }
 
     public MazeParams(Parcel in) {
@@ -40,7 +55,7 @@ public class MazeParams implements Parcelable {
         this.type = in.readString();
         this.time = in.readInt();
         this.nplanes = in.readInt();
-        this.useTimer = in.readByte() != 0;
+        this.seed = new Seed(in.readString());
 
     }
 
@@ -83,7 +98,23 @@ public class MazeParams implements Parcelable {
         return height;
     }
 
-    public boolean getUseTimer() {
-        return useTimer;
+    public Seed getSeed() {
+        return seed;
+    }
+
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Field field : getClass().getDeclaredFields()) {
+            try {
+                sb.append(field.get(this).toString());
+                sb.append(" ");
+            } catch (IllegalAccessException e) {
+                Log.i("MazeParams", "Access error");
+            }
+            sb.delete(sb.length() - 2, sb.length() - 1);
+        }
+
+        return sb.toString();
     }
 }

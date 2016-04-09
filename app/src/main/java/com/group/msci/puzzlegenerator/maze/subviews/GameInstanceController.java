@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.group.msci.puzzlegenerator.R;
+import com.group.msci.puzzlegenerator.json.UploadPuzzleJSON;
 import com.group.msci.puzzlegenerator.maze.Maze;
 import com.group.msci.puzzlegenerator.maze.MazeTimer;
 import com.group.msci.puzzlegenerator.maze.model.BaseMaze;
@@ -32,6 +33,7 @@ public class GameInstanceController extends Activity {
     private Button up;
     private Button down;
     private Button solveBtn;
+    private Button shareBtn;
 
     private TextView timeNotif;
     private TextView timeField;
@@ -46,17 +48,17 @@ public class GameInstanceController extends Activity {
         setContentView(R.layout.maze_game);
 
 
-        MazeParams params = getIntent().getParcelableExtra("maze_params");
+        final MazeParams params = getIntent().getParcelableExtra("maze_params");
         String mazeType = params.getType();
 
         if (mazeType.equals("Portal")) {
-            maze = new PortalMaze(params.getWidth(), params.getHeight(), params.getNplanes());
+            maze = new PortalMaze(params.getWidth(), params.getHeight(), params.getNplanes(), params.getSeed());
         }
         else if (mazeType.equals("Cube")) {
             maze = new Maze3D(params.getWidth());
         }
         else if (mazeType.equals("Simple")) {
-            maze = new BaseMaze(params.getWidth(), params.getHeight(), true);
+            maze = new BaseMaze(params.getWidth(), params.getHeight(), true, params.getSeed());
         }
         else {
             throw new IllegalArgumentException("Wrong Maze type selected in parcel: " + mazeType);
@@ -68,6 +70,7 @@ public class GameInstanceController extends Activity {
         up = (Button) findViewById(R.id.button_up);
         down = (Button) findViewById(R.id.button_down);
         solveBtn = (Button) findViewById(R.id.solve_btn);
+        shareBtn = (Button) findViewById(R.id.share_button);
 
         timeNotif = (TextView) findViewById(R.id.time_notification);
         timeField = (TextView) findViewById(R.id.time_field);
@@ -92,7 +95,7 @@ public class GameInstanceController extends Activity {
 
         board.setMaze(maze);
 
-        if (params.getUseTimer()) {
+        if (params.getTime() > 0) {
             setAndStartTimer(new MazeTimer(params.getTime() * 1000, maze, timeField, board, this));
         }
         else {
@@ -102,6 +105,17 @@ public class GameInstanceController extends Activity {
 
 
         animation = new MoveAnimation(board, this);
+
+        shareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UploadPuzzleJSON uploader = new UploadPuzzleJSON('m', params.toString(), "maze");
+                Thread uploadThread = new Thread(uploader);
+                uploadThread.start();
+            }
+        });
+
+
     }
 
     public void setAndStartTimer(MazeTimer timer) {

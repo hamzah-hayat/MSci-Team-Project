@@ -3,6 +3,7 @@ package com.group.msci.puzzlegenerator.maze;
 import com.group.msci.puzzlegenerator.maze.model.BaseMaze;
 import com.group.msci.puzzlegenerator.maze.model.Maze3D;
 import com.group.msci.puzzlegenerator.maze.model.PortalMaze;
+import com.group.msci.puzzlegenerator.maze.utils.Seed;
 
 /**
  * For testing on the command line
@@ -12,7 +13,7 @@ public class CLIMain {
 
     public static void main(String[] args) {
         BaseMaze m1 = new BaseMaze(21, 21);
-        PortalMaze m2 = new PortalMaze(21, 21, 4);
+        PortalMaze m2 = new PortalMaze(21, 21, 4, new Seed(true));
         Maze3D m3 = new Maze3D(21);
         System.out.println("maze init");
         //test(m1);
