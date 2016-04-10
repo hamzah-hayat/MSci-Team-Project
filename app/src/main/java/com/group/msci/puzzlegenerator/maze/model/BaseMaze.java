@@ -3,6 +3,7 @@ package com.group.msci.puzzlegenerator.maze.model;
 import android.util.SparseArray;
 
 import com.group.msci.puzzlegenerator.maze.Maze;
+import com.group.msci.puzzlegenerator.maze.utils.Seed;
 
 import java.util.*;
 
@@ -39,6 +40,7 @@ public class BaseMaze implements Maze {
     private Point entry;
     private Point exit;
     private Point playerPos;
+    private Random randomizer;
 
     public BaseMaze(int width, int height, Point entry, Point exit) {
         this(width, height);
@@ -46,6 +48,23 @@ public class BaseMaze implements Maze {
     }
 
     public BaseMaze(int width, int height) {
+        randomizer = new Random();
+        init(width, height);
+    }
+
+    public BaseMaze(int width, int height, Seed seed) {
+        randomizer = (seed.getUseDefault()) ? new Random() : new Random(seed.get());
+        init(width, height);
+    }
+
+    public BaseMaze(int width, int height, boolean useDefaultOpenings, Seed seed) {
+        randomizer = (seed.getUseDefault()) ? new Random() : new Random(seed.get());
+        init(width, height);
+        if (useDefaultOpenings)
+            setDefaultOpenings();
+    }
+
+    private void init(int width, int height) {
         this.height = height;
         this.width = width;
         solved = false;
@@ -54,12 +73,6 @@ public class BaseMaze implements Maze {
         int carveStart = (this instanceof Maze3D) ? width / 3 : 1;
         carve(carveStart, 1);
         specifyWalls();
-    }
-
-    public BaseMaze(int width, int height, boolean useDefaultOpenings) {
-        this(width, height);
-        if (useDefaultOpenings)
-            setDefaultOpenings();
     }
 
     protected void setOpenings(Point entry, Point exit) {
@@ -246,7 +259,7 @@ public class BaseMaze implements Maze {
 
     public List<Integer> randomizedDirections() {
         List<Integer> directions = new ArrayList<Integer>(DIRECTIONS);
-        Collections.shuffle(directions);
+        Collections.shuffle(directions, randomizer);
         return directions;
     }
 

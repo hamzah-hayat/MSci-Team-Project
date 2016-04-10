@@ -3,6 +3,7 @@ package com.group.msci.puzzlegenerator.maze.model;
 import android.util.Log;
 
 import com.group.msci.puzzlegenerator.maze.Maze;
+import com.group.msci.puzzlegenerator.maze.utils.Seed;
 
 import java.util.Random;
 
@@ -20,14 +21,14 @@ public class PortalMaze implements Maze {
     private Point3D entry;
     private Point3D exit;
 
-    public PortalMaze(int width, int height, int nplanes) {
+    public PortalMaze(int width, int height, int nplanes, Seed seed) {
         this(width, height, nplanes,
                 new Point3D(1, 0, 0),
-                new Point3D(width - 2, height - 1, nplanes - 1));
+                new Point3D(width - 2, height - 1, nplanes - 1), seed);
     }
 
     public PortalMaze(int width, int height, int nplanes, Point3D entry,
-                      Point3D exit) {
+                      Point3D exit, Seed seed) {
         Random random = new Random();
         planes = new BaseMaze[nplanes];
         this.currentPlane = entry.z;
@@ -38,7 +39,7 @@ public class PortalMaze implements Maze {
         this.exit = exit;
 
         for (int i = 0; i < nplanes; ++i) {
-            planes[i] = new BaseMaze(width, height);
+            planes[i] = new BaseMaze(width, height, seed);
         }
 
         /**Random horizontal entry/exit point for the intermediate planes.
