@@ -16,21 +16,12 @@ import java.net.URL;
 /**
  * Created by Magdi on 06/04/2016.
  */
-public class AddLoginJSON implements Runnable {
-    private String username;
-    private String password;
-    private String firstName;
-    private String lastname;
-    private String email;
-    private boolean result;
+public class ScoreboardJSON implements Runnable {
+    private String puzzleType;
     private volatile JSONObject jsonFile;
 
-    public AddLoginJSON (String user, String pass, String fName, String lName, String eAddress) {
-        username = user;
-        password = pass;
-        firstName = fName;
-        lastname = lName;
-        email = eAddress;
+    public ScoreboardJSON (String type) {
+        puzzleType = type;
     }
 
     @Override
@@ -46,9 +37,19 @@ public class AddLoginJSON implements Runnable {
 
     public void buildJSON() {
         try {
-            URL url = new URL("https://webprojects.eecs.qmul.ac.uk/ma334/login/save.php?username="
-                    + username + "&password=" + password + "&name=" + firstName + lastname
-                    + "email=" + email);
+            URL url;
+            if (puzzleType.equals("Picross")) {
+                url = new URL("http://webprojects.eecs.qmul.ac.uk/ma334/score/picrossLoad.php");
+            }
+            else if (puzzleType.equals("Dot")) {
+                url = new URL("http://webprojects.eecs.qmul.ac.uk/ma334/score/dotLoad.php");
+            }
+            else if (puzzleType.equals("Ball")) {
+                url = new URL("http://webprojects.eecs.qmul.ac.uk/ma334/score/ballLoad.php");
+            }
+            else {
+                url = new URL("http://webprojects.eecs.qmul.ac.uk/ma334/score/mazeLoad.php");
+            }
             InputStream urlStream = url.openConnection().getInputStream();
             BufferedReader bf = new BufferedReader(new InputStreamReader(urlStream, "UTF-8"));
             StringBuilder responseBuilder = new StringBuilder();

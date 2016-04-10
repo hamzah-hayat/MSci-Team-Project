@@ -1,73 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:id="@+id/picross_weight">
 
-    <Spinner
+    <EditText
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/picross_height"
+        android:layout_marginLeft="48dp"
+        android:layout_marginStart="48dp"
+        android:background="@drawable/picross_height"
+        android:textColor="#ffffffff"
+        android:textColorHint="#ffffffff"
+        android:hint="Height"
+        android:gravity="center"
+        android:layout_below="@+id/threshold_text"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="72dp" />
+
+    <EditText
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/picross_weight"
+        android:background="@drawable/picross_height"
+        android:textColor="#ffffffff"
+        android:textColorHint="#ffffffff"
+        android:layout_alignTop="@+id/picross_height"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="36dp"
+        android:layout_marginEnd="36dp"
+        android:hint="Weight"
+        android:gravity="center" />
+
+    <SeekBar
         android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:id="@+id/maze_type"
-        android:paddingTop="20dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:id="@+id/threshold"
+        android:layout_below="@+id/threshold_text"
+        android:layout_alignLeft="@+id/picross_height"
+        android:layout_alignStart="@+id/picross_height"
+        android:layout_marginTop="20dp" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView3"
-        android:src="@drawable/height_maze"
-        android:layout_below="@+id/maze_type"
-        android:layout_alignLeft="@+id/maze_type"
-        android:layout_alignStart="@+id/maze_type" />
+        android:id="@+id/threshold_text"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/threshold"
+        android:src="@drawable/threshold_text" />
 
-    <ImageView
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView4"
-        android:src="@drawable/weight_maze"
-        android:layout_alignTop="@+id/imageView3"
-        android:layout_alignRight="@+id/maze_type"
-        android:layout_alignEnd="@+id/maze_type" />
+        android:id="@+id/picross_preview"
+        android:src="@drawable/picross_preview_button"
+        android:background="#ffffffff"
+        android:layout_below="@+id/picross_weight"
+        android:layout_alignLeft="@+id/picross_height"
+        android:layout_alignStart="@+id/picross_height"
+        android:layout_marginTop="32dp" />
 
-    <EditText
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:id="@+id/Height"
-        android:layout_below="@+id/maze_type"
-        android:layout_alignRight="@+id/imageView3"
-        android:layout_alignEnd="@+id/imageView3"
-        android:layout_alignBottom="@+id/imageView3"
-        android:layout_alignLeft="@+id/maze_type"
-        android:layout_alignStart="@+id/maze_type"
-        android:hint="Height"
-        android:inputType="number"
-        android:textColor="#ffffff" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="number|phone"
-        android:ems="10"
-        android:id="@+id/weigh_maze"
-        android:layout_below="@+id/maze_type"
-        android:layout_alignRight="@+id/imageView4"
-        android:layout_alignEnd="@+id/imageView4"
-        android:layout_alignBottom="@+id/imageView4"
-        android:layout_alignLeft="@+id/imageView4"
-        android:layout_alignStart="@+id/imageView4"
-        android:hint="Weight"
-        android:textColor="#ffffff"
-        android:textColorHighlight="#4d10f6" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Timed"
-        android:id="@+id/timed"
-        android:hint="Timed"
-        android:layout_below="@+id/imageView3"
-        android:layout_alignLeft="@+id/imageView3"
-        android:layout_alignStart="@+id/imageView3"
-        android:layout_marginTop="109dp" />
-
+        android:id="@+id/picross_play"
+        android:src="@drawable/picross_play_button"
+        android:background="#ffffffff"
+        android:layout_alignTop="@+id/picross_preview"
+        android:layout_alignLeft="@+id/picross_weight"
+        android:layout_alignStart="@+id/picross_weight" />
 </RelativeLayout>

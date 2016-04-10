@@ -32,8 +32,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Timer;
 
-import bolts.Task;
-
 public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickListener {
 
     protected PicrossPuzzle puzzle;

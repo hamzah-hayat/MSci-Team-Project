@@ -9,7 +9,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/ball_header"
         android:src="@drawable/ball_header"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:background="#ffffffff" />
 
     <ImageButton
         android:layout_width="wrap_content"

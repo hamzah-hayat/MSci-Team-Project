@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="seekbar_theme_picross" parent="@style/_seekbar_theme_picross"/>
+
+  <style name="_seekbar_theme_picross" parent="android:Theme.Holo.Light">
+
+    <item name="android:seekBarStyle">@style/SeekBarseekbar_theme_picross</item>
+
+  </style>
+
+</resources>

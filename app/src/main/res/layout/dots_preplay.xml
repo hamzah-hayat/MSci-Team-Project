@@ -10,4 +10,30 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="52dp"
         android:src="@drawable/answer_dots" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dots_answer"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="85dp"
+        android:background="@drawable/dots_answer_type"
+        android:editable="false"
+        android:textColor="#ffffffff"
+        android:textStyle="bold"
+        android:inputType="textCapWords"
+        android:hint="Type Here..."
+        android:gravity="center"
+        android:textColorHint="#ffffffff" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dots_play"
+        android:src="@drawable/picross_play_button"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="#ffffffff"
+        android:layout_marginBottom="10dp" />
 </RelativeLayout>

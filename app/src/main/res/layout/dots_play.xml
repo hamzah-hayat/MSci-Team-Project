@@ -2,4 +2,51 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dots_exit"
+        android:src="@drawable/dots_exit"
+        android:background="#ffffffff"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="15dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dots_score"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/dots_score"
+        android:background="#ffffffff"
+        android:layout_margin="15dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dots_guess"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/dots_guess"
+        android:background="#ffffffff"
+        android:layout_margin="15dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dots_answer"
+        android:layout_alignBottom="@+id/dots_guess"
+        android:layout_alignLeft="@+id/dots_score"
+        android:layout_alignStart="@+id/dots_score"
+        android:hint="Type Answer..."
+        android:background="@drawable/dots_guess_answer"
+        android:gravity="center"
+        android:textColor="#ffffffff"
+        android:textStyle="bold"
+        android:textColorHint="#ffffffff" />
+
 </RelativeLayout>
