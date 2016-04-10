@@ -34,19 +34,20 @@ public class DownloadPuzzleJSON implements Runnable {
 
     public void buildJSON() {
         if (puzzleCode.charAt(0) == 'd') {
-            urlBase = "https://webprojects.eecs.qmul.ac.uk/ma334/puzzle/dotLoad.php?puzzlecode=";
+            urlBase = "http://webprojects.eecs.qmul.ac.uk/ma334/puzzle/dotLoad.php?shareCode=";
         }
         else if (puzzleCode.charAt(0) == 'm') {
-            urlBase = "https://webprojects.eecs.qmul.ac.uk/ma334/puzzle/mazeLoad.php?puzzlecode=";
+            urlBase = "http://webprojects.eecs.qmul.ac.uk/ma334/puzzle/mazeLoad.php?shareCode=";
         }
         else if (puzzleCode.charAt(0) == 'p') {
-            urlBase = "https://webprojects.eecs.qmul.ac.uk/ma334/puzzle/dotLoad.php?puzzlecode=";
+            urlBase = "http://webprojects.eecs.qmul.ac.uk/ma334/puzzle/picrossLoad.php?shareCode=";
         }
         else {
-            urlBase = "https://webprojects.eecs.qmul.ac.uk/ma334/puzzle/ballLoad.php?puzzlecode=";
+            urlBase = "http://webprojects.eecs.qmul.ac.uk/ma334/puzzle/ballLoad.php?shareCode=";
         }
         try {
-            URL url = new URL(urlBase + puzzleCode.substring(1));
+            System.out.println(urlBase + Integer.parseInt(puzzleCode.substring(1)));
+            URL url = new URL(urlBase + Integer.parseInt(puzzleCode.substring(1)));
             InputStream urlStream = url.openConnection().getInputStream();
             BufferedReader bf = new BufferedReader(new InputStreamReader(urlStream, "UTF-8"));
             StringBuilder responseBuilder = new StringBuilder();

@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.group.msci.puzzlegenerator.R;
+import com.group.msci.puzzlegenerator.dottodot.URLBitmap;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -32,6 +33,7 @@ public class PicrossPuzzleOptionsGUI extends AppCompatActivity implements View.O
     Bitmap pixelated;
     int puzzleWidth;
     int puzzleHeight;
+    String urlLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,15 +51,31 @@ public class PicrossPuzzleOptionsGUI extends AppCompatActivity implements View.O
             }
         });
         Intent intent = getIntent();
-        Uri myImageURI = intent.getParcelableExtra("SELECTED_IMAGE_URI");
-        image_uri = myImageURI;
-        InputStream imageStream = null;
-        try {
-            imageStream = getContentResolver().openInputStream(myImageURI);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        Bitmap yourSelectedImage;
+        if (intent.hasExtra("URL_STRING")) {
+            urlLink = intent.getStringExtra("URL_STRING");
+            URLBitmap retImg = new URLBitmap(urlLink);
+            Thread x = new Thread(retImg);
+            x.start();
+            try {
+                x.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            yourSelectedImage = retImg.getrImg();
         }
-        Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);
+        else {
+            Uri myImageURI = intent.getParcelableExtra("SELECTED_IMAGE_URI");
+            image_uri = myImageURI;
+            InputStream imageStream = null;
+            try {
+                imageStream = getContentResolver().openInputStream(myImageURI);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            yourSelectedImage = BitmapFactory.decodeStream(imageStream);
+        }
+
         original = Bitmap.createBitmap(yourSelectedImage);
         puzzleGen = new PicrossPuzzleGenerator(yourSelectedImage, 25, 25);
         image = (ImageView) findViewById(R.id.previewImage);
@@ -156,7 +174,12 @@ public class PicrossPuzzleOptionsGUI extends AppCompatActivity implements View.O
         else {
             Intent intent = new Intent(PicrossPuzzleOptionsGUI.this, PicrossPuzzleGUI.class);
             intent.putExtra("THRESHOLD", thresholdInt);
-            intent.putExtra("SELECTED_IMAGE_URI", image_uri);
+            if (image_uri == null) {
+                intent.putExtra("URL_STRING", urlLink);
+            } else {
+                intent.putExtra("SELECTED_IMAGE_URI", image_uri);
+            }
+
             intent.putExtra("PUZZLE_WIDTH", puzzleWidth);
             intent.putExtra("PUZZLE_HEIGHT", puzzleHeight);
             startActivity(intent);

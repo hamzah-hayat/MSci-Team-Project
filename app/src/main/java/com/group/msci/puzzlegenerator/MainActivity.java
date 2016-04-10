@@ -24,6 +24,7 @@ import com.group.msci.puzzlegenerator.dottodot.DotToDotImageSelectType;
 import com.group.msci.puzzlegenerator.json.DownloadPuzzleJSON;
 import com.group.msci.puzzlegenerator.maze.MazeController;
 import com.group.msci.puzzlegenerator.picross.PicrossImageSelectType;
+import com.group.msci.puzzlegenerator.picross.PicrossMainMenu;
 import com.group.msci.puzzlegenerator.picross.PicrossPuzzleGUI;
 
 import org.json.JSONException;
@@ -65,8 +66,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         picrossBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, PicrossImageSelectType.class);
-                MainActivity.this.startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, PicrossMainMenu.class);
+                startActivity(intent);
             }
         });
 
@@ -128,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Thread x = new Thread(downJson);
                 x.start();
                 try {
+                    System.out.println("Waiting...");
                     x.join();
                 } catch (InterruptedException ex) {
                     //do nothing

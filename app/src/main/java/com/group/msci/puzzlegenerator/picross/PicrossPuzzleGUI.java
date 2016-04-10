@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.group.msci.puzzlegenerator.R;
+import com.group.msci.puzzlegenerator.dottodot.URLBitmap;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -55,19 +56,41 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
         Intent intent = getIntent();
         String answerArrayStr = intent.getStringExtra("ANSWER_ARRAY");
         if (answerArrayStr == null) {
-            Uri myImageURI = intent.getParcelableExtra("SELECTED_IMAGE_URI");
-            InputStream imageStream = null;
-            try {
-                imageStream = getContentResolver().openInputStream(myImageURI);
+            if (intent.hasExtra("SELECTED_IMAGE_URI")) {
+                Uri myImageURI = intent.getParcelableExtra("SELECTED_IMAGE_URI");
+                InputStream imageStream = null;
+                try {
+                    imageStream = getContentResolver().openInputStream(myImageURI);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);
+                PicrossPuzzleGenerator puzzleGen = new PicrossPuzzleGenerator(yourSelectedImage, 5, 5);
+                puzzleGen.setThreshold(intent.getIntExtra("THRESHOLD", 125));
+                puzzle = puzzleGen.createPuzzle();
+                System.out.println("PUZZLE NOT LOADED FROM DB, USED GALLERY");
             }
-            catch (FileNotFoundException e) {
-                e.printStackTrace();
+            else {
+                String urlLink = intent.getStringExtra("URL_STRING");
+                System.out.println("urlLink = " + urlLink);
+                URLBitmap retImg = new URLBitmap(urlLink);
+                Thread x = new Thread(retImg);
+                x.start();
+                try {
+                    x.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                //null error here?
+                Bitmap yourSelectedImage = retImg.getrImg();
+                if (yourSelectedImage == null) {
+                    System.out.println("WHY IS THIS THING NULL?!");
+                }
+                PicrossPuzzleGenerator puzzleGen = new PicrossPuzzleGenerator(yourSelectedImage, 5, 5);
+                puzzleGen.setThreshold(intent.getIntExtra("THRESHOLD", 125));
+                puzzle = puzzleGen.createPuzzle();
+                System.out.println("PUZZLE NOT LOADED FROM DB, USED INTERNET");
             }
-            Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);
-            PicrossPuzzleGenerator puzzleGen = new PicrossPuzzleGenerator(yourSelectedImage, 5, 5);
-            puzzleGen.setThreshold(intent.getIntExtra("THRESHOLD", 125));
-            puzzle = puzzleGen.createPuzzle();
-            System.out.println("PUZZLE NOT LOADED FROM DB");
         }
         else {
             String[] brokenUp = answerArrayStr.split(";");

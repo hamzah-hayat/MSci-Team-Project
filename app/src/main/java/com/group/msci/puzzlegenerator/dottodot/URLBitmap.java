@@ -11,7 +11,7 @@ import java.net.URL;
 /**
  * Created by Mustafa on 06/04/2016.
  */
-class URLBitmap implements Runnable {
+public class URLBitmap implements Runnable {
     private String urlLink;
     private volatile Bitmap rImg;
 
