@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.group.msci.puzzlegenerator.R;
 
@@ -18,8 +19,8 @@ public class PicrossImageSelectType extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_picross_image_select_type);
-        Button galleryButton = (Button) findViewById(R.id.galleryBtn);
+        setContentView(R.layout.picross_create);
+        ImageButton galleryButton = (ImageButton) findViewById(R.id.galleryBtn);
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
         galleryButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -27,14 +28,6 @@ public class PicrossImageSelectType extends Activity {
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
                 startActivityForResult(photoPickerIntent, SELECT_PHOTO);
-            }
-        });
-        Button savedPuzzles = (Button) findViewById(R.id.savedPuzzles);
-        savedPuzzles.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent savedPuzzlesIntent = new Intent(PicrossImageSelectType.this, PicrossSavedPuzzles.class);
-                startActivity(savedPuzzlesIntent);
             }
         });
     }

@@ -161,7 +161,7 @@ class CreatePuzzle implements Runnable {
     public void run() {
         Bitmap pixelated = gen.pixelateImage(gen.getForegroundImage(), gen.getPuzzleWidth(), gen.getPuzzleHeight());
         shadedSquares = gen.findShadedSquares(gen.binariseImage(pixelated));
-        puzzle = new PicrossPuzzle(shadedSquares, gen.getForegroundImage());
+        puzzle = new PicrossPuzzle(shadedSquares);
     }
 
     public PicrossPuzzle getPuzzle () {

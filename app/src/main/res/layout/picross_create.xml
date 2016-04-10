@@ -2,21 +2,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent" android:layout_height="fill_parent">
 
-    <ImageButton
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/weblink"
         android:src="@drawable/ic_weblink"
         android:background="#ffffffff"
-        android:layout_above="@+id/camera"
-        android:layout_alignLeft="@+id/camera"
-        android:layout_alignStart="@+id/camera"
+        android:layout_above="@+id/galleryBtn"
+        android:layout_alignLeft="@+id/galleryBtn"
+        android:layout_alignStart="@+id/galleryBtn"
         android:layout_marginBottom="51dp" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/camera"
+        android:id="@+id/galleryBtn"
         android:src="@drawable/ic_camera"
         android:background="#ffffffff"
         android:layout_centerVertical="true"
@@ -29,12 +29,12 @@
         android:id="@+id/random"
         android:src="@drawable/ic_random"
         android:background="#ffffffff"
-        android:layout_below="@+id/camera"
+        android:layout_below="@+id/galleryBtn"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="51dp" />
 
     <ImageButton
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/picross_choose_puzzle"
         android:layout_alignParentTop="true"

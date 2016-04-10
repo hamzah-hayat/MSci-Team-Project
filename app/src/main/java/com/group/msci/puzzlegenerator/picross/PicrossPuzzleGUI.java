@@ -49,22 +49,41 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.picross_play);
+        setContentView(R.layout.activity_picross_puzzle_gui);
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
         Intent intent = getIntent();
-        Uri myImageURI = intent.getParcelableExtra("SELECTED_IMAGE_URI");
-        InputStream imageStream = null;
-        try {
-            imageStream = getContentResolver().openInputStream(myImageURI);
+        String answerArrayStr = intent.getStringExtra("ANSWER_ARRAY");
+        if (answerArrayStr == null) {
+            Uri myImageURI = intent.getParcelableExtra("SELECTED_IMAGE_URI");
+            InputStream imageStream = null;
+            try {
+                imageStream = getContentResolver().openInputStream(myImageURI);
+            }
+            catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);
+            PicrossPuzzleGenerator puzzleGen = new PicrossPuzzleGenerator(yourSelectedImage, 5, 5);
+            puzzleGen.setThreshold(intent.getIntExtra("THRESHOLD", 125));
+            puzzle = puzzleGen.createPuzzle();
+            System.out.println("PUZZLE NOT LOADED FROM DB");
         }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
+        else {
+            String[] brokenUp = answerArrayStr.split(";");
+            boolean[][] loadedAnswerArray = new boolean[brokenUp.length][brokenUp[0].length()];
+            for (int i = 0; i < loadedAnswerArray.length; i++) {
+                for (int j = 0; j < loadedAnswerArray[i].length; j++) {
+                    if (brokenUp[i].charAt(j) == '0') {
+                        loadedAnswerArray[i][j] = false;
+                    }
+                    else {
+                        loadedAnswerArray[i][j] = true;
+                    }
+                }
+            }
+            puzzle = new PicrossPuzzle(loadedAnswerArray);
         }
-        Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);
-        PicrossPuzzleGenerator puzzleGen = new PicrossPuzzleGenerator(yourSelectedImage, 5, 5);
-        puzzleGen.setThreshold(intent.getIntExtra("THRESHOLD", 125));
-        puzzle = puzzleGen.createPuzzle();
         setButtons();
         /*ImageView view = (ImageView) findViewById(R.id.testingImage);
         view.setImageBitmap(puzzle.foregroundImage);*/
@@ -116,64 +135,49 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
         ZoomView grid = (ZoomView) findViewById(R.id.puzzleGrid);
         buttonGrid = new GridLayout(this);
         grid.addView(buttonGrid);
-        buttonGrid.setColumnCount(puzzle.getWidth() + puzzle.getLargestClueRow());
-        buttonGrid.setRowCount(puzzle.getHeight() + puzzle.getLargestClueColumn());
+        buttonGrid.setColumnCount(puzzle.getWidth() + 1);
+        buttonGrid.setRowCount(puzzle.getHeight() + 1);
         buildGrid();
     }
 
     public void buildGrid() {
-        //alright, starting from last working build.
-        //now, the way this needs to be done is to build the clues up iteratively.
-        //so, that means the first things I'm adding are blank spaces, as I'm adding left-right
-        //so first for loop:
-        for (int i = 0; i < puzzle.getLargestClueColumn(); i++) {
-            for (int j = 0; j < puzzle.getLargestClueRow(); j++) {
-                TextView blank = new TextView(this);
-                blank.setText(" ");
-                buttonGrid.addView(blank);
+        //alright, time to think up a new algo to figure this out.
+        //so currently, the grid is puzzle height + 1 and puzzle width + 1
+        //as we're still working left-right, top-down, we start with the column clues.
+        //now, because the top-left square is blank, we'll add a blank at the beginning
+        TextView blank = new TextView(this);
+        blank.setText(" ");
+        buttonGrid.addView(blank);
+        for (int i = 0; i < puzzle.getWidth(); i++) {
+            String columnBuilder = "";
+            for (int j = 0; j < puzzle.getPuzzleCluesColumns().get(i).size(); j++) {
+                columnBuilder += puzzle.getPuzzleCluesColumns().get(i).get(j) + "\n";
             }
-            for (int j = puzzle.getLargestClueRow(); j < puzzle.getWidth() + puzzle.getLargestClueRow(); j++) {
-                if (puzzle.getPuzzleCluesColumns().get(j - puzzle.getLargestClueRow()).size() <= i || puzzle.getPuzzleCluesColumns().get(j - puzzle.getLargestClueRow()).size() == 0) {
-                    TextView columnClue = new TextView(this);
-                    buttonGrid.addView(columnClue);
-                }
-                else {
-                    TextView columnClue = new TextView(this);
-                    System.out.println(i + " " + j);
-                    columnClue.setText(Integer.toString(puzzle.getPuzzleCluesColumns().get(j - puzzle.getLargestClueRow()).get(i)));
-                    columnClue.setGravity(Gravity.CENTER);
-                    buttonGrid.addView(columnClue);
-                }
+            TextView columnClue = new TextView(this);
+            columnClue.setText(columnBuilder);
+            buttonGrid.addView(columnClue);
+        }
+        //lol columns done, and rows will be just as easy
+        for (int i = 0; i < puzzle.getHeight(); i++) {
+            String rowBuilder = "";
+            for (int j = 0; j < puzzle.getPuzzleCluesRows().get(i).size(); j++) {
+                rowBuilder += puzzle.getPuzzleCluesRows().get(i).get(j) + " ";
+            }
+            TextView rowClue = new TextView(this);
+            rowClue.setText(rowBuilder);
+            buttonGrid.addView(rowClue);
+            for (int j = 0; j < puzzle.getWidth(); j++) {
+                PicrossSquare sq = new PicrossSquare(this, i, j);
+                sq.setOnClickListener(this);
+                sq.setBackgroundResource(R.drawable.unshaded);
+                buttonGrid.addView(sq);
             }
         }
-        //boom, success on column clues! :O
-        //and now for row clues. these will be more complex, as they'll have to be put in with the buttons
-        //however, it's very possible, thankfully
-        ArrayList<ImageButton> currentIArray;
-        for (int i = 0; i < puzzle.getHeight(); i++) {
-            for (int j = 0; j < puzzle.getWidth() + puzzle.getLargestClueRow(); j++) {
-                if (j < puzzle.getLargestClueRow()) { //deal with clues
-                    if (puzzle.getPuzzleCluesRows().get(i).size() <= j || puzzle.getPuzzleCluesRows().get(i).size() == 0) {
-                        TextView columnClue = new TextView(this);
-                        buttonGrid.addView(columnClue);
-                    }
-                    else {
-                        TextView rowClue = new TextView(this);
-                        rowClue.setText(Integer.toString(puzzle.getPuzzleCluesRows().get(i).get(j)) + " ");
-                        rowClue.setGravity(Gravity.CENTER);
-                        buttonGrid.addView(rowClue);
-                    }
-                }
-                else {
-                    buttonList.add(new ArrayList<ImageButton>());
-                    currentIArray = buttonList.get(i);
-                    PicrossSquare button = new PicrossSquare(this, i, j - puzzle.getLargestClueRow());
-                    button.setBackgroundResource(R.drawable.unshaded);
-                    button.setOnClickListener(this);
-                    currentIArray.add(button);
-                    buttonGrid.addView(button);
-                }
+        for (int i = 0; i < puzzle.getPuzzleCluesRows().size(); i++) {
+            for (int j = 0; j < puzzle.getPuzzleCluesRows().get(i).size(); j++) {
+                System.out.print(puzzle.getPuzzleCluesRows().get(i).get(j) + ", ");
             }
+            System.out.println();
         }
     }
 
@@ -225,6 +229,19 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
         CharSequence timeSeq = timer.getText();
         String time = timeSeq.toString();
         intent.putExtra("FINAL_TIME", time);
+        String puzzleData = "";
+        for (int i = 0; i < puzzle.answerArray.length; i++) {
+            for (int j = 0; j < puzzle.answerArray[i].length; j++) {
+                if (puzzle.answerArray[i][j]) {
+                    puzzleData += "1";
+                }
+                else {
+                    puzzleData += "0";
+                }
+            }
+            puzzleData += ";";
+        }
+        intent.putExtra("PUZZLE_DATA", puzzleData);
         startActivity(intent);
     }
 }

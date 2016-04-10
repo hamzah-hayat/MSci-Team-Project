@@ -1,5 +1,6 @@
 package com.group.msci.puzzlegenerator.picross;
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +15,12 @@ import android.widget.TextView;
 import com.group.msci.puzzlegenerator.R;
 import com.group.msci.puzzlegenerator.json.UploadPuzzleJSON;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class PicrossCompleteScreen extends AppCompatActivity implements View.OnClickListener {
+
+    private String puzzleData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +40,7 @@ public class PicrossCompleteScreen extends AppCompatActivity implements View.OnC
         TextView time = (TextView) findViewById(R.id.finalTime);
         Intent intent = getIntent();
         String timeStr = intent.getStringExtra("FINAL_TIME");
+        puzzleData = intent.getStringExtra("PUZZLE_DATA");
         System.out.println("THE PROBLEM CHILD: " + timeStr);
         time.setText(timeStr);
         Button sharePuzzle = (Button) findViewById(R.id.sharePuzzle);
@@ -43,16 +50,26 @@ public class PicrossCompleteScreen extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View v) {
         Button button = (Button) v;
-        //if (button.get.equals("Share Puzzle")) {
-            UploadPuzzleJSON jsonGetter = new UploadPuzzleJSON('p', "gobble", "degook");
-            Thread x = new Thread(jsonGetter);
-            x.start();
-            try {
-                x.join();
+        UploadPuzzleJSON jsonGetter = new UploadPuzzleJSON('p', puzzleData, "hello, world!");
+        Thread x = new Thread(jsonGetter);
+        x.start();
+        try {
+            x.join();
+        }
+        catch (InterruptedException ex) {
+            //do nothing
+        }
+        JSONObject jsonFile = jsonGetter.getJSON();
+        try {
+            if (jsonFile.getBoolean("Success")) {
+                System.out.println("Uploaded!");
             }
-            catch (InterruptedException ex) {
-                //do nothing
+            else {
+                System.out.println("Failed!");
             }
-        //}
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 }

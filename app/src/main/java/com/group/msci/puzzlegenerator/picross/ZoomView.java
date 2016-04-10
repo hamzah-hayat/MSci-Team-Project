@@ -10,12 +10,13 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 
 /**
  * Zooming view.
  */
-public class ZoomView extends GridLayout {
+public class ZoomView extends LinearLayout {
 
     /**
      * Zooming view listener interface.

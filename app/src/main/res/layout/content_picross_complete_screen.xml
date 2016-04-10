@@ -40,17 +40,17 @@
         android:text="Share Puzzle"
         android:id="@+id/sharePuzzle"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/finalTime"
-        android:layout_toEndOf="@+id/finalTime" />
+        android:layout_toEndOf="@+id/uploadScore"
+        android:layout_toRightOf="@+id/uploadScore" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Upload Score"
         android:id="@+id/uploadScore"
-        android:layout_below="@+id/button4"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp" />
+        android:layout_below="@+id/sharePuzzle"
+        android:layout_toRightOf="@+id/button6"
+        android:layout_toEndOf="@+id/button6" />
 
     <Button
         android:layout_width="wrap_content"

@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     android:background="#ffffffff">
 
-    <ImageButton
-        android:layout_width="wrap_content"
+    <ImageView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/picross_header"
         android:src="@drawable/picross_header" />

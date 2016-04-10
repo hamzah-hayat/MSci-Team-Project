@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Coose Puzzle Type"
+        android:text="Choose Puzzle Type"
         android:id="@+id/title0"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
@@ -65,4 +65,14 @@
         android:layout_alignTop="@+id/picrossBtn"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Puzzle Code"
+        android:id="@+id/codeButton"
+        android:layout_marginBottom="59dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/mazeBtn"
+        android:layout_alignEnd="@+id/mazeBtn" />
 </RelativeLayout>

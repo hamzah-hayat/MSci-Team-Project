@@ -14,7 +14,6 @@ import java.util.ArrayList;
  */
 public class PicrossPuzzle {
     protected boolean[][] answerArray;
-    protected Bitmap foregroundImage;
     protected int puzzleWidth;
     protected int puzzleHeight;
     protected int largestClueRow;
@@ -23,9 +22,8 @@ public class PicrossPuzzle {
     protected ArrayList<ArrayList<Integer>> puzzleCluesColumns = new ArrayList<>();
     protected boolean[][] currentAnswers;
 
-    public PicrossPuzzle(boolean[][] answerArrayT, Bitmap foregroundImageT) {
+    public PicrossPuzzle(boolean[][] answerArrayT) {
         answerArray = answerArrayT;
-        foregroundImage = foregroundImageT;
         puzzleWidth = answerArray[0].length;
         puzzleHeight = answerArray.length;
         currentAnswers = new boolean[puzzleHeight][puzzleWidth];
@@ -59,6 +57,7 @@ public class PicrossPuzzle {
         ArrayList<Integer> currentColumn;
         for (int i = 0; i < answerArray.length; i++) {
             currentRow = new ArrayList<>();
+            countUntilBlank = 0;
             for (int j = 0; j < answerArray[i].length; j++) {
                 if (answerArray[i][j]) { //if cell's been shaded
                     countUntilBlank++; //increase the count
@@ -73,11 +72,15 @@ public class PicrossPuzzle {
                     }
                 }
             }
+            if (countUntilBlank != 0) {
+                currentRow.add(countUntilBlank);
+            }
             puzzleCluesRows.add(currentRow);
         }
         countUntilBlank = 0;
         for (int i = 0; i < answerArray[0].length; i++) {
             currentColumn = new ArrayList<>();
+            countUntilBlank = 0;
             for (int j = 0; j < answerArray.length; j++) {
                 if (answerArray[j][i]) { //if cell's been shaded
                     countUntilBlank++; //increase the count
@@ -91,6 +94,9 @@ public class PicrossPuzzle {
                         countUntilBlank = 0;
                     }
                 }
+            }
+            if (countUntilBlank != 0) {
+                currentColumn.add(countUntilBlank);
             }
             puzzleCluesColumns.add(currentColumn);
         }

@@ -2,30 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="#ffffffff">
+
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/cancel"
         android:src="@drawable/cancelpicross"
-        android:background="#ffffffff" />
-
-    <com.group.msci.puzzlegenerator.picross.ZoomView
-        android:layout_width="235px"
-        android:layout_height="235px"
-        android:id="@+id/puzzleGrid"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_gravity="center"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/linearLayout"
-        android:layout_below="@+id/cancel">
-    </com.group.msci.puzzlegenerator.picross.ZoomView>
+        android:background="#ffffffff"/>
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="wrap_content"
+        android:layout_width="410dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
@@ -36,7 +23,8 @@
         android:layout_alignParentEnd="true"
         android:paddingBottom="5dp"
         android:background="#ffffffff"
-        android:id="@+id/linearLayout">
+        android:id="@+id/linearLayout"
+        android:layout_gravity="bottom">
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -54,7 +42,8 @@
             android:id="@+id/cross"
             android:src="@drawable/ic_cross"
             android:background="#ffffffff"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:layout_gravity="bottom"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,10 +51,25 @@
             android:id="@+id/timerView"
             android:text="0:00"
             android:layout_weight="1"
-            android:textSize="150px"
+            android:textSize="60dp"
             android:gravity="center" />
 
     </LinearLayout>
+
+    <com.group.msci.puzzlegenerator.picross.ZoomView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/puzzleGrid"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/linearLayout"
+        android:layout_below="@+id/cancel"
+        android:gravity="center"
+        android:layout_gravity="center">
+    </com.group.msci.puzzlegenerator.picross.ZoomView>
 
 
 </RelativeLayout>
