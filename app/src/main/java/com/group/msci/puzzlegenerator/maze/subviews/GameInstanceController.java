@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.group.msci.puzzlegenerator.R;
@@ -28,14 +29,13 @@ public class GameInstanceController extends Activity {
     private MazeBoard board;
     private MoveAnimation animation;
 
-    private Button left;
-    private Button right;
-    private Button up;
-    private Button down;
+    private ImageButton left;
+    private ImageButton right;
+    private ImageButton up;
+    private ImageButton down;
     private Button solveBtn;
     private Button shareBtn;
 
-    private TextView timeNotif;
     private TextView timeField;
 
     private MazeTimer timer;
@@ -45,7 +45,7 @@ public class GameInstanceController extends Activity {
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        setContentView(R.layout.maze_game);
+        setContentView(R.layout.maze_play);
 
 
         final MazeParams params = getIntent().getParcelableExtra("maze_params");
@@ -65,14 +65,13 @@ public class GameInstanceController extends Activity {
         }
 
 
-        left = (Button) findViewById(R.id.button_left);
-        right = (Button) findViewById(R.id.button_right);
-        up = (Button) findViewById(R.id.button_up);
-        down = (Button) findViewById(R.id.button_down);
+        left = (ImageButton) findViewById(R.id.left);
+        right = (ImageButton) findViewById(R.id.right);
+        up = (ImageButton) findViewById(R.id.up);
+        down = (ImageButton) findViewById(R.id.down);
         solveBtn = (Button) findViewById(R.id.solve_btn);
-        shareBtn = (Button) findViewById(R.id.share_button);
+        shareBtn = (Button) findViewById(R.id.share_btn);
 
-        timeNotif = (TextView) findViewById(R.id.time_notification);
         timeField = (TextView) findViewById(R.id.time_field);
 
         board = (MazeBoard) findViewById(R.id.mazeSurfaceView);
@@ -99,8 +98,8 @@ public class GameInstanceController extends Activity {
             setAndStartTimer(new MazeTimer(params.getTime() * 1000, maze, timeField, board, this));
         }
         else {
-            timeField.setVisibility(View.GONE);
-            timeNotif.setVisibility(View.GONE);
+            //timeField.setVisibility(View.GONE);
+            timeField.setText("".toCharArray(), 0,0);
         }
 
 
@@ -147,7 +146,7 @@ public class GameInstanceController extends Activity {
         });
     }
 
-    private void setMoveListener(final int direction, Button button) {
+    private void setMoveListener(final int direction, ImageButton button) {
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
