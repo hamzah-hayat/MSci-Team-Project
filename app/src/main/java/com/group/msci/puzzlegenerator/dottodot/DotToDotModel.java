@@ -7,11 +7,11 @@ package com.group.msci.puzzlegenerator.dottodot;
  */
 public class DotToDotModel {
     private DotToDotController controller;
-    private DotToDotView2 view;
+    private DotToDotView view;
 
     public DotToDotModel(){
         controller = new DotToDotController();
-        view = new DotToDotView2();
+        view = new DotToDotView();
     }
 
     public void loop(){}

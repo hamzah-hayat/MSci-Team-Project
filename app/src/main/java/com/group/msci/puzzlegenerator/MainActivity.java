@@ -23,7 +23,7 @@ import com.facebook.FacebookSdk;
 import com.group.msci.puzzlegenerator.BallSwitch.BallSwitchPuzzleGame;
 import com.group.msci.puzzlegenerator.dottodot.DotToDotImageSelectType;
 import com.group.msci.puzzlegenerator.dottodot.DotToDotMainScreen;
-import com.group.msci.puzzlegenerator.dottodot.DotToDotView2;
+import com.group.msci.puzzlegenerator.dottodot.DotToDotView;
 import com.group.msci.puzzlegenerator.json.DownloadPuzzleJSON;
 import com.group.msci.puzzlegenerator.maze.MazeController;
 import com.group.msci.puzzlegenerator.picross.PicrossImageSelectType;
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             //problem
                         } else {
                             //no problem
-                            Intent intent = new Intent(MainActivity.this, DotToDotView2.class);
+                            Intent intent = new Intent(MainActivity.this, DotToDotView.class);
                             intent.putExtra("ANSWER_ARRAY", puzD);
                             startActivity(intent);
                         }
