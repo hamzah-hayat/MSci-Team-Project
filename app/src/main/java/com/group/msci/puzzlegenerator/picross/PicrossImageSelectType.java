@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -19,6 +20,15 @@ import android.widget.ImageButton;
 
 import com.group.msci.puzzlegenerator.R;
 import com.group.msci.puzzlegenerator.dottodot.DotToDotPreviewAndWord;
+import com.group.msci.puzzlegenerator.dottodot.URLBitmap;
+import com.group.msci.puzzlegenerator.json.PixabayScraperJSON;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.InputStream;
+import java.util.Random;
 
 public class PicrossImageSelectType extends Activity {
 
@@ -78,6 +88,36 @@ public class PicrossImageSelectType extends Activity {
                 });
                 AlertDialog ad = builder.create();
                 ad.show();
+            }
+        });
+        ImageButton randButton = (ImageButton) findViewById(R.id.random);
+        randButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InputStream in = getResources().openRawResource(R.raw.noundata);
+                PixabayScraperJSON scraper = new PixabayScraperJSON(in);
+                Thread x = new Thread(scraper);
+                x.start();
+                try {
+                    x.join();
+                }
+                catch (InterruptedException ex) {
+                    //do nothing
+                }
+                JSONObject jsonFile = scraper.getJSON();
+                try {
+                    int totalHits = jsonFile.getInt("totalHits");
+                    JSONArray allLinks = jsonFile.getJSONArray("hits");
+                    int randNum = new Random().nextInt(totalHits);
+                    JSONObject imageJson = (JSONObject) allLinks.get(randNum);
+                    String imageURL = imageJson.getString("webformatURL");
+                    Intent intent = new Intent(PicrossImageSelectType.this, PicrossPuzzleOptionsGUI.class);
+                    intent.putExtra("URL_STRING", imageURL);
+                    startActivity(intent);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

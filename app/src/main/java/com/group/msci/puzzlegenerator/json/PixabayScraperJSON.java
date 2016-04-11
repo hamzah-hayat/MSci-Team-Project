@@ -1,5 +1,9 @@
 package com.group.msci.puzzlegenerator.json;
 
+import android.app.Activity;
+
+import com.group.msci.puzzlegenerator.R;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,12 +22,12 @@ import java.util.Random;
  * Created by Magdi on 06/04/2016.
  */
 public class PixabayScraperJSON implements Runnable {
-    private String puzzleCode;
     private volatile JSONObject jsonFile;
+    private InputStream nounDataStream;
     private String urlBase;
 
-    public PixabayScraperJSON (String puzzleCodeT) {
-        puzzleCode = puzzleCodeT;
+    public PixabayScraperJSON (InputStream in) {
+        nounDataStream = in;
     }
 
     @Override
@@ -35,12 +39,11 @@ public class PixabayScraperJSON implements Runnable {
         return jsonFile;
     }
 
-
     public void buildJSON() {
         urlBase = "https://pixabay.com/api/?key=2370232-bcc3504084d5e0efd1dd71d8a&q=";
         String line = "";
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("raw/noundata.txt"));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(nounDataStream));
             Random rand = new Random();
             int lineNumber = rand.nextInt(146603);
             line = "";
@@ -49,6 +52,7 @@ public class PixabayScraperJSON implements Runnable {
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            System.out.println("damn, wrong path -.-");
         } catch (IOException e) {
             e.printStackTrace();
         }
