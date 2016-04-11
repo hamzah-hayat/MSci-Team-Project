@@ -18,8 +18,15 @@
         android:id="@+id/play"
         android:src="@drawable/ic_play"
         android:background="#ffffffff"
-        android:layout_gravity="center"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:layout_gravity="center" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CREATE"
+        android:id="@+id/create"
+        android:layout_gravity="center_horizontal" />
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -27,17 +34,18 @@
         android:id="@+id/help"
         android:background="#ffffffff"
         android:src="@drawable/ic_help"
-        android:layout_gravity="center"
-        android:layout_weight="0.5" />
+        android:layout_weight="0.5"
+        android:layout_marginTop="45dp"
+        android:layout_gravity="center" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/score"
-        android:layout_gravity="center_horizontal"
         android:src="@drawable/ic_score"
         android:background="#ffffffff"
         android:layout_weight="1"
-        android:paddingBottom="12dp" />
+        android:paddingBottom="12dp"
+        android:layout_gravity="center" />
 
 </LinearLayout>

@@ -1,96 +1,151 @@
 package com.group.msci.puzzlegenerator.dottodot;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.group.msci.puzzlegenerator.MainActivity;
 import com.group.msci.puzzlegenerator.R;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * Created by Mustafa on 12/01/2016.
  */
 public class DotToDotView extends Activity {
-    private static final int SELECT_PHOTO = 100;
-
+    //ImageView connDots;
+    //ArrayList<Dot> dots;
+    private TextView time;
+    private long startTime = 0L;
+    private Handler timeHandler = new Handler();
+    private String puzzleWord;
+    private long timeInMS = 0L;
+    private long timeSwapBuff = 0L;
+    private long updatedTime = 0L;
+    //private Bitmap readImage;
+    private String data;
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
+        setContentView(R.layout.dots_play);
+        Intent intent = getIntent();
+        if(intent.hasExtra("ANSWER_ARRAY")) {
+           data = intent.getStringExtra("ANSWER_ARRAY");
+        }
+        String[] dataSplit = data.split(";");
 
+        puzzleWord = dataSplit[dataSplit.length-1];
+        ArrayList<Dot> pDots = new ArrayList<>();
 
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-        photoPickerIntent.setType("image/*");
-
-        startActivityForResult(photoPickerIntent, SELECT_PHOTO);
-        ImageView mImg = (ImageView) findViewById(R.id.imageView2);
-        if (mImg == null) {
-            Log.i("log0.1:", "error");
+        for(int i = 0; i < dataSplit.length-2; i++) {
+            String[] xyPair = dataSplit[i].split(" ");
+            pDots.add(new Dot(Integer.parseInt(xyPair[0]), Integer.parseInt(xyPair[1])));
         }
 
-    }
+        DotsView dv = (DotsView) findViewById(R.id.dotsView2);
+        dv.setDots(pDots);
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
-        Log.i("reqest code:", Integer.toString(requestCode));
-        if (requestCode == SELECT_PHOTO && imageReturnedIntent != null) {
-            super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-            try {
-                switch (requestCode) {
-                    case SELECT_PHOTO:
-                        if (resultCode == RESULT_OK) {
-                            Log.i("log1:", "error");
-                            Uri selectedImage = imageReturnedIntent.getData();
-                            Log.i("log2:", "error");
-                            InputStream imageStream = getContentResolver().openInputStream(selectedImage);
-                            Log.i("log3:", "error");
-                            Bitmap readImage = BitmapFactory.decodeStream(imageStream);
-
-                            if(readImage == null) {
-                                Log.i("log null", "ERROR");
-                            }
-                            Log.i("log4:", "error");
-
-                            AndroidCannyEdgeDetector det = new AndroidCannyEdgeDetector();
-                            Log.i("log5:", "error");
-                            det.setSourceImage(readImage);
-                            Log.i("log6:", "error");
-                            det.process();
-                            Log.i("log7:", "error");
-                            Bitmap edgImg = det.getEdgesImage();
-                            Log.i("log8:", "error");
-                            edgImg = Bitmap.createScaledBitmap(edgImg, 500, 500, true);
-                            Log.i("log9:", "error");
-                            LinearLayout v = (LinearLayout)findViewById(R.id.test);
-                            ImageView mImg = (ImageView) v.findViewById(R.id.imageView2);
-                            Log.i("log11:", "error");
-                            if (edgImg == null || mImg == null) {
-                                Log.i("Log NULL:", "NULL WTF");
-                            }
-                            mImg.setImageBitmap(edgImg);
-                            Log.i("log12:", "error");
-
-
-
-                            setContentView(R.layout.dottodot_activity);
-                            Log.i("log13:", "error");
-
-
-                        }
-                }
-            } catch (FileNotFoundException e) {
+        ImageButton exit = (ImageButton) findViewById(R.id.dots_exit);
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DotToDotView.this, MainActivity.class);
+                startActivity(intent);
             }
-            ;
-        }
+        });
+
+        ImageButton guess = (ImageButton) findViewById(R.id.dots_guess);
+        guess.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final EditText inputText = (EditText) findViewById(R.id.dots_answer);
+                String input = inputText.getText().toString();
+                CharSequence timeSeq = time.getText();
+                String strTime = timeSeq.toString();
+                if(input.equals(puzzleWord)) {
+                    new AlertDialog.Builder(DotToDotView.this)
+                            .setTitle("Correct!")
+                            .setMessage("You have guessed the image correctly. You done it in " + strTime)
+                                    .setPositiveButton("Play Again", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent intent = new Intent(DotToDotView.this, DotToDotImageSelectType.class);
+                                            startActivity(intent);
+                                        }
+                                    })
+                            .setNeutralButton("Return to Main Menu", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(DotToDotView.this, MainActivity.class);
+                                    startActivity(intent);
+                                }
+                            })
+                            .show();
+                }
+                else {
+                    new AlertDialog.Builder(DotToDotView.this)
+                            .setTitle("Incorrect!")
+                            .setMessage("The answer you have given is incorrect")
+                            .setNegativeButton("Try Again", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    inputText.setText("");
+                                }
+                            })
+                            .setPositiveButton("Return to Main Menu", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(DotToDotView.this, MainActivity.class);
+                                    startActivity(intent);
+                                }
+                            })
+                            .show();
+                }
+            }
+        });
+
+        time = (TextView) findViewById(R.id.time);
+        startTime = SystemClock.uptimeMillis();
+        timeHandler.postDelayed(updateTimerThread, 0);
+
     }
+
+    private Runnable updateTimerThread = new Runnable() {
+        @Override
+        public void run() {
+            timeInMS = SystemClock.uptimeMillis() - startTime;
+            updatedTime = timeSwapBuff + timeInMS;
+            int secs = (int) (updatedTime / 1000);
+            int mins = secs / 60;
+            if (secs % 60 < 10) {
+                time.setText(("" + mins + ":0" + Integer.toString(secs % 60)));
+            }
+            else {
+                time.setText(("" + mins + ":" + Integer.toString(secs % 60)));
+            }
+            timeHandler.postDelayed(this, 0);
+        }
+    };
+
 
     public void drawGUI() {}
 
@@ -101,4 +156,5 @@ public class DotToDotView extends Activity {
     public void showLeaderboard() {}
 
     public void showSolution() {}
+
 }
