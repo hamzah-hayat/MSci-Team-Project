@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.group.msci.puzzlegenerator.R;
@@ -38,10 +39,10 @@ public class MazeController extends Activity {
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        setContentView(R.layout.maze_activity);
+        setContentView(R.layout.maze_preplay);
 
         nplanes = 1;
-        Button startBtn = (Button) findViewById(R.id.startButton);
+        ImageButton startBtn = (ImageButton) findViewById(R.id.start_button);
         mazeTypeChoices = (Spinner) findViewById(R.id.maze_types_dd);
         widthField = (EditText) findViewById(R.id.width_field);
         heightField = (EditText) findViewById(R.id.height_field);

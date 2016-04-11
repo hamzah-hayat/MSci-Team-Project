@@ -26,6 +26,7 @@ import com.group.msci.puzzlegenerator.dottodot.DotToDotMainScreen;
 import com.group.msci.puzzlegenerator.dottodot.DotToDotView;
 import com.group.msci.puzzlegenerator.json.DownloadPuzzleJSON;
 import com.group.msci.puzzlegenerator.maze.MazeController;
+import com.group.msci.puzzlegenerator.maze.MazeWallController;
 import com.group.msci.puzzlegenerator.picross.PicrossImageSelectType;
 import com.group.msci.puzzlegenerator.picross.PicrossMainMenu;
 import com.group.msci.puzzlegenerator.picross.PicrossPuzzleGUI;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mazeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, MazeController.class);
+                Intent intent = new Intent(MainActivity.this, MazeWallController.class);
                 MainActivity.this.startActivity(intent);
             }
         });

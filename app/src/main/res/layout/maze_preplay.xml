@@ -6,20 +6,21 @@
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/maze_type"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="43dp"
+        android:id="@+id/maze_types_dd"
         android:background="#D4ADDC"
-        android:gravity="center" />
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:spinnerMode="dropdown" />
 
     <EditText
         android:layout_width="100dp"
         android:layout_height="60dp"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/maze_height"
-        android:layout_below="@+id/maze_type"
+        android:id="@+id/height_field"
+        android:layout_below="@+id/maze_types_dd"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="38dp"
@@ -37,14 +38,14 @@
         android:layout_height="60dp"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/maze_weight"
+        android:id="@+id/width_field"
         android:background="@drawable/picross_height"
         android:hint="Weight"
         android:textColor="#ffffffff"
         android:textColorHint="#ffffffff"
         android:gravity="center"
         android:textStyle="bold"
-        android:layout_alignTop="@+id/maze_height"
+        android:layout_alignTop="@+id/height_field"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="40dp"
@@ -54,72 +55,71 @@
         android:layout_width="200dp"
         android:layout_height="60dp"
         android:text="Timed"
-        android:id="@+id/timed_checkbox"
+        android:id="@+id/time_check_box"
         android:background="#50E3C2"
         android:textColor="#ffffffff"
         android:textSize="25dp"
         android:singleLine="false"
-        android:layout_above="@+id/minutes"
-        android:layout_alignLeft="@+id/maze_height"
-        android:layout_alignStart="@+id/maze_height"
-        android:layout_marginBottom="36dp" />
+        android:layout_above="@+id/minutes_field"
+        android:layout_alignLeft="@+id/plane_no_field"
+        android:layout_alignStart="@+id/plane_no_field"
+        android:checked="false" />
 
     <EditText
         android:layout_width="100dp"
         android:layout_height="60dp"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/minutes"
-        android:layout_marginBottom="95dp"
+        android:id="@+id/minutes_field"
         android:background="@drawable/maze_mins_seconds"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/timed_checkbox"
-        android:layout_alignStart="@+id/timed_checkbox"
         android:hint="Minutes"
         android:gravity="center"
         android:textColor="#ffffffff"
         android:textColorHint="#ffffffff"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_above="@+id/start_button"
+        android:layout_alignLeft="@+id/time_check_box"
+        android:layout_alignStart="@+id/time_check_box" />
 
     <EditText
         android:layout_width="100dp"
         android:layout_height="60dp"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/seconds"
+        android:id="@+id/seconds_field"
         android:background="@drawable/maze_mins_seconds"
-        android:layout_alignBottom="@+id/minutes"
-        android:layout_alignRight="@+id/maze_weight"
-        android:layout_alignEnd="@+id/maze_weight"
         android:textColorHint="#ffffffff"
         android:textColor="#ffffffff"
         android:textStyle="bold"
         android:hint="Seconds"
-        android:gravity="center" />
+        android:gravity="center"
+        android:layout_above="@+id/start_button"
+        android:layout_alignLeft="@+id/width_field"
+        android:layout_alignStart="@+id/width_field" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/maze_play"
-        android:layout_below="@+id/seconds"
-        android:layout_centerHorizontal="true"
+        android:id="@+id/start_button"
         android:src="@drawable/picross_play_button"
-        android:background="#ffffffff" />
+        android:background="#ffffffff"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
     <EditText
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/editText2"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/timed_checkbox"
-        android:layout_alignStart="@+id/timed_checkbox"
+        android:id="@+id/plane_no_field"
         android:background="@drawable/maze_mins_seconds"
         android:hint="Enter the number of planes..."
         android:gravity="center"
         android:textStyle="bold"
         android:textColor="#ffffffff"
-        android:textColorHint="#ffffffff" />
+        android:textColorHint="#ffffffff"
+        android:layout_below="@+id/height_field"
+        android:layout_alignLeft="@+id/height_field"
+        android:layout_alignStart="@+id/height_field" />
 
 </RelativeLayout>

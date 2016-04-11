@@ -4,6 +4,11 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
 
+    packagingOptions {
+        pickFirst 'META-INF/NOTICE.txt'
+        pickFirst 'META-INF/LICENSE.txt'
+    }
+
     defaultConfig {
         applicationId "com.group.msci.puzzlegenerator"
         minSdkVersion 16
@@ -11,6 +16,7 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -18,9 +24,11 @@ android {
         }
     }
 }
+
 repositories {
     mavenCentral()
 }
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -32,3 +40,4 @@ dependencies {
     compile files('libs/mysql-connector-java-3.0.17-ga-bin.jar')
     compile 'org.encog:encog-core:3.3.0'
 }
+
