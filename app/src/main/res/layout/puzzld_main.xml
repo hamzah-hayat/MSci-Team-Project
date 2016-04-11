@@ -4,7 +4,7 @@
     android:background="#ffffffff">
 
     <ImageView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/puzzld_header"
         android:src="@drawable/main_header"
@@ -55,4 +55,13 @@
         android:layout_alignTop="@+id/dots"
         android:layout_alignLeft="@+id/picross"
         android:layout_alignStart="@+id/picross" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/codeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:src="@android:drawable/ic_dialog_email"
+        android:layout_above="@+id/ball"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

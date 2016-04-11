@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 
 
@@ -41,20 +42,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Initialize facebook SDK
         FacebookSdk.sdkInitialize(getApplicationContext());
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.puzzld_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.codeButton);
+        fab.setOnClickListener(this);
 
-        Button mazeBtn = (Button) findViewById(R.id.mazeBtn);
+        ImageButton mazeBtn = (ImageButton) findViewById(R.id.maze);
         mazeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 MainActivity.this.startActivity(intent);
             }
         });
-        Button picrossBtn = (Button) findViewById(R.id.picrossBtn);
+        ImageButton picrossBtn = (ImageButton) findViewById(R.id.picross);
         picrossBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        Button dotBtn = (Button) findViewById(R.id.DotBtn);
+        ImageButton dotBtn = (ImageButton) findViewById(R.id.dots);
         dotBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         //BallSwitch stuff here
-        Button ballSwitchMenuButton = (Button) findViewById(R.id.ballSwitchMenuButton);
+        ImageButton ballSwitchMenuButton = (ImageButton) findViewById(R.id.ball);
         ballSwitchMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,8 +84,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 MainActivity.this.startActivity(intent);
             }
         });
-        Button codeButton = (Button) findViewById(R.id.codeButton);
-        codeButton.setOnClickListener(this);
     }
 
     @Override
