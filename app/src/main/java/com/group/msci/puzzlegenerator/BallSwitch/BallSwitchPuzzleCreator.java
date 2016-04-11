@@ -69,7 +69,7 @@ public class BallSwitchPuzzleCreator {
     {
         BallSwitchPuzzle createdPuzzle = new BallSwitchPuzzle(sizeX,sizeY);
         //By using our obstacles, we create a puzzle and make a movelist for how it works.
-        int obstaclesNum = ((sizeX*sizeY)*(difficulty+1)) / 5;
+        int obstaclesNum = ((sizeX*sizeY)*(difficulty+2)) / 5;
 
         //Randomly make our starting position
         Random rand = new Random();
@@ -86,21 +86,23 @@ public class BallSwitchPuzzleCreator {
             int YPos = 0;
             while(!positionOK)
             {
+                positionOK = true;
+                //We assume this new position is ok until proven wrong
                 XPos = rand.nextInt(sizeX);
                 YPos = rand.nextInt(sizeY);
 
                 for(BallSwitchObject object : createdPuzzle.getObjects())
                 {
-                    if(object.getPosX()!=XPos || object.getPosY()!=YPos)
+                    if(object.getPosX()==XPos && object.getPosY()==YPos)
                     {
-                        positionOK = true;
+                        positionOK = false;
                         break;
                     }
                 }
             }
 
 
-            switch (rand.nextInt(obstaclesUsable.length+2))
+            switch (rand.nextInt(obstaclesUsable.length+3))
             {
                 case 1:
                     createdPuzzle.addObject(new Switch(XPos,YPos));
