@@ -58,7 +58,7 @@
             android:name=".BallSwitch.BallSwitchPuzzleGame"
             android:label="BallSwitch Puzzle Main Menu" />
         <activity
-            android:name=".dottodot.DotToDotView2"
+            android:name=".dottodot.DotToDotView"
             android:label="@string/title_activity_dot_to_dot_view2"
             android:theme="@style/AppTheme.NoActionBar" />
 

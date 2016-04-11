@@ -35,7 +35,7 @@ import java.util.ArrayList;
 /**
  * Created by Mustafa on 12/01/2016.
  */
-public class DotToDotView2 extends Activity {
+public class DotToDotView extends Activity {
     //ImageView connDots;
     //ArrayList<Dot> dots;
     private TextView time;
@@ -72,7 +72,7 @@ public class DotToDotView2 extends Activity {
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DotToDotView2.this, MainActivity.class);
+                Intent intent = new Intent(DotToDotView.this, MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -86,25 +86,25 @@ public class DotToDotView2 extends Activity {
                 CharSequence timeSeq = time.getText();
                 String strTime = timeSeq.toString();
                 if(input.equals(puzzleWord)) {
-                    new AlertDialog.Builder(DotToDotView2.this)
+                    new AlertDialog.Builder(DotToDotView.this)
                             .setTitle("Correct!")
                             .setMessage("You have guessed the image correctly. You done it in " + strTime)
                                     .setPositiveButton("Play Again", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
-                                            Intent intent = new Intent(DotToDotView2.this, DotToDotImageSelectType.class);
+                                            Intent intent = new Intent(DotToDotView.this, DotToDotImageSelectType.class);
                                             startActivity(intent);
                                         }
                                     })
                             .setNeutralButton("Return to Main Menu", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(DotToDotView2.this, MainActivity.class);
+                                    Intent intent = new Intent(DotToDotView.this, MainActivity.class);
                                     startActivity(intent);
                                 }
                             })
                             .show();
                 }
                 else {
-                    new AlertDialog.Builder(DotToDotView2.this)
+                    new AlertDialog.Builder(DotToDotView.this)
                             .setTitle("Incorrect!")
                             .setMessage("The answer you have given is incorrect")
                             .setNegativeButton("Try Again", new DialogInterface.OnClickListener() {
@@ -114,7 +114,7 @@ public class DotToDotView2 extends Activity {
                             })
                             .setPositiveButton("Return to Main Menu", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(DotToDotView2.this, MainActivity.class);
+                                    Intent intent = new Intent(DotToDotView.this, MainActivity.class);
                                     startActivity(intent);
                                 }
                             })
