@@ -42,12 +42,14 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
     private String puzzleDataD = "";
     private int shareCode;
     private ArrayList<Dot> passDot;
+    private String puzData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dots_preplay);
         Intent intent = getIntent();
+
         if(intent.hasExtra("SELECTED_IMAGE_URI")) {
             myImageURI = intent.getParcelableExtra("SELECTED_IMAGE_URI");
             isGallery = true;
@@ -71,6 +73,7 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
             }
             readImage = retImg.getrImg();
         }
+
 
         AndroidCannyEdgeDetector det = new AndroidCannyEdgeDetector();
         det.setSourceImage(readImage);
@@ -106,7 +109,6 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
         dotV.removeOverlappingDots();
 
         passDot = dotV.getDots();
-
 
 
         Button share = (Button) findViewById(R.id.share);

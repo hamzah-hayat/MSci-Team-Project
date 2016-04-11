@@ -27,6 +27,7 @@ public class DotsView extends View {
     protected float startx, starty;
     protected ArrayList<Dot> dots = new ArrayList<>();
     protected int vWidth, vLength;
+    private int DOT_RADIUS = 30;
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -166,28 +167,28 @@ public class DotsView extends View {
     public void removeEdgeDots() {
         for(int i = 0; i < dots.size(); i++) {
             Dot temp = dots.get(i);
-            if(temp.getxPos() - 30 < 0) {
-                temp.setxPos(temp.getxPos() + Math.abs(temp.getxPos() - 30));
-                if(temp.getyPos() - 30 < 0) {
-                    temp.setyPos(temp.getyPos() + Math.abs(temp.getyPos() - 30));
+            if((temp.getxPos() - DOT_RADIUS) < 0) {
+                temp.setxPos(temp.getxPos() + Math.abs(temp.getxPos() - DOT_RADIUS));
+                if((temp.getyPos() - DOT_RADIUS) < 0) {
+                    temp.setyPos(temp.getyPos() + Math.abs(temp.getyPos() - DOT_RADIUS));
                 }
             }
-            else if(temp.getyPos() - 30 < 0) {
-                temp.setyPos(temp.getyPos() + Math.abs(temp.getyPos() - 30));
-                if(temp.getxPos() - 30 < 0) {
-                    temp.setxPos(temp.getxPos() + Math.abs(temp.getxPos() - 30));
+            else if((temp.getyPos() - DOT_RADIUS) < 0) {
+                temp.setyPos(temp.getyPos() + Math.abs(temp.getyPos() - DOT_RADIUS));
+                if((temp.getxPos() - DOT_RADIUS) < 0) {
+                    temp.setxPos(temp.getxPos() + Math.abs(temp.getxPos() - DOT_RADIUS));
                 }
             }
-            else if(temp.getxPos() + 30 > 900) {
-                temp.setxPos(temp.getxPos() - ((temp.getxPos() + 30) - temp.getxPos()));
-                if(temp.getyPos() + 30 > 900) {
-                    temp.setyPos(temp.getyPos() - ((temp.getyPos() + 30) - temp.getyPos()));
+            else if((temp.getxPos() + DOT_RADIUS) > 900) {
+                temp.setxPos(temp.getxPos() - ((temp.getxPos() + DOT_RADIUS) - temp.getxPos()));
+                if((temp.getyPos() + DOT_RADIUS) > 900) {
+                    temp.setyPos(temp.getyPos() - ((temp.getyPos() + DOT_RADIUS) - temp.getyPos()));
                 }
             }
-            else if(temp.getyPos() + 30 > 900) {
-                temp.setyPos(temp.getyPos() - ((temp.getyPos() + 30) - temp.getyPos()));
-                if(temp.getxPos() + 30 > 900) {
-                    temp.setxPos(temp.getxPos() - ((temp.getxPos() + 30) - temp.getxPos()));
+            else if((temp.getyPos() + DOT_RADIUS) > 900) {
+                temp.setyPos(temp.getyPos() - ((temp.getyPos() + DOT_RADIUS) - temp.getyPos()));
+                if((temp.getxPos() + DOT_RADIUS) > 900) {
+                    temp.setxPos(temp.getxPos() - ((temp.getxPos() + DOT_RADIUS) - temp.getxPos()));
                 }
             }
             else {}
