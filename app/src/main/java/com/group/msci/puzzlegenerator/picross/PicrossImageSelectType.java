@@ -107,16 +107,31 @@ public class PicrossImageSelectType extends Activity {
                 JSONObject jsonFile = scraper.getJSON();
                 try {
                     int totalHits = jsonFile.getInt("totalHits");
+                    System.out.println(totalHits);
                     JSONArray allLinks = jsonFile.getJSONArray("hits");
-                    int randNum = new Random().nextInt(totalHits);
-                    JSONObject imageJson = (JSONObject) allLinks.get(randNum);
-                    String imageURL = imageJson.getString("webformatURL");
-                    Intent intent = new Intent(PicrossImageSelectType.this, PicrossPuzzleOptionsGUI.class);
-                    intent.putExtra("URL_STRING", imageURL);
-                    startActivity(intent);
+                    int randCap = 0;
+                    if (totalHits >= 20) {
+                        randCap = 20;
+                    }
+                    else {
+                        randCap = totalHits;
+                    }
+                    try {
+                        int randNum = new Random().nextInt(randCap);
+                        JSONObject imageJson = (JSONObject) allLinks.get(randNum);
+                        String imageURL = imageJson.getString("webformatURL");
+                        Intent intent = new Intent(PicrossImageSelectType.this, PicrossPuzzleOptionsGUI.class);
+                        intent.putExtra("URL_STRING", imageURL);
+                        startActivity(intent);
+                    }
+                    catch (IllegalArgumentException ex) {
+                        //alert dialog here, 0 results found
+                    }
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    return;
                 }
             }
         });

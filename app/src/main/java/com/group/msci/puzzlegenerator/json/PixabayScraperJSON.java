@@ -26,6 +26,12 @@ public class PixabayScraperJSON implements Runnable {
     private InputStream nounDataStream;
     private String urlBase;
 
+    public String getNoun() {
+        return noun;
+    }
+
+    private String noun;
+
     public PixabayScraperJSON (InputStream in) {
         nounDataStream = in;
     }
@@ -41,14 +47,13 @@ public class PixabayScraperJSON implements Runnable {
 
     public void buildJSON() {
         urlBase = "https://pixabay.com/api/?key=2370232-bcc3504084d5e0efd1dd71d8a&q=";
-        String line = "";
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(nounDataStream));
             Random rand = new Random();
             int lineNumber = rand.nextInt(146603);
-            line = "";
+            noun = "";
             for (int i = 0; i < lineNumber; i++) {
-                line = reader.readLine();
+                noun = reader.readLine();
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -57,7 +62,7 @@ public class PixabayScraperJSON implements Runnable {
             e.printStackTrace();
         }
         try {
-            String urlStr = urlBase + line;
+            String urlStr = urlBase + noun;
             URL urlTemp = new URL(urlStr);
             URI uri = new URI(urlTemp.getProtocol(), urlTemp.getUserInfo(), urlTemp.getHost(), urlTemp.getPort(), urlTemp.getPath(), urlTemp.getQuery(), urlTemp.getRef());
             URL url = uri.toURL();
