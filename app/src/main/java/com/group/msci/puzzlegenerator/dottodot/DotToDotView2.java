@@ -20,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,93 +36,40 @@ import java.util.ArrayList;
  * Created by Mustafa on 12/01/2016.
  */
 public class DotToDotView2 extends Activity {
-    private static final int SELECT_PHOTO = 100;
-    ImageView connDots;
-    ArrayList<Dot> dots;
-    protected TextView time;
+    //ImageView connDots;
+    //ArrayList<Dot> dots;
+    private TextView time;
     private long startTime = 0L;
     private Handler timeHandler = new Handler();
-    float x , y;
-    float startx, starty;
-    String puzzleWord;
-    long timeInMS = 0L;
-    long timeSwapBuff = 0L;
-    long updatedTime = 0L;
-    private Bitmap readImage;
+    private String puzzleWord;
+    private long timeInMS = 0L;
+    private long timeSwapBuff = 0L;
+    private long updatedTime = 0L;
+    //private Bitmap readImage;
+    private String data;
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        setContentView(R.layout.activity_dot_to_dot_view2);
+        setContentView(R.layout.dots_play);
         Intent intent = getIntent();
-        if(intent.hasExtra("FINAL_IMG_URI")) {
-            Uri myImageURI = intent.getParcelableExtra("FINAL_IMG_URI");
-            InputStream imageStream = null;
-            try {
-                imageStream = getContentResolver().openInputStream(myImageURI);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            readImage = BitmapFactory.decodeStream(imageStream);
+        if(intent.hasExtra("ANSWER_ARRAY")) {
+           data = intent.getStringExtra("ANSWER_ARRAY");
         }
-        else if(intent.hasExtra("FINAL_IMG_URL")) {
-            String finalURL = intent.getStringExtra("FINAL_IMG_URL");
-            URLBitmap retImg = new URLBitmap(finalURL);
-            Thread x = new Thread(retImg);
-            x.start();
-            try {
-                x.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            readImage = retImg.getrImg();
-        }
-        puzzleWord = intent.getStringExtra("WORD_STRING");
+        String[] dataSplit = data.split(";");
 
-        AndroidCannyEdgeDetector det = new AndroidCannyEdgeDetector();
-        det.setSourceImage(readImage);
-        det.process();
-        Bitmap edgImg = det.getEdgesImage();
-        //ImageView mImg = (ImageView) findViewById(R.id.imageView2);
-        //connDots = (ImageView) findViewById(R.id.imageView2);
-        //mImg.setImageBitmap(scaledImg);
-        //setContentView(R.layout.dottodot_activity);
+        puzzleWord = dataSplit[dataSplit.length-1];
+        ArrayList<Dot> pDots = new ArrayList<>();
+
+        for(int i = 0; i < dataSplit.length-2; i++) {
+            String[] xyPair = dataSplit[i].split(" ");
+            pDots.add(new Dot(Integer.parseInt(xyPair[0]), Integer.parseInt(xyPair[1])));
+        }
 
         DotsView dv = (DotsView) findViewById(R.id.dotsView2);
-        Bitmap scaledImg = Bitmap.createScaledBitmap(edgImg, dv.getLayoutParams().width, dv.getLayoutParams().height, true);
-        Log.i("orig width", Integer.toString(dv.getLayoutParams().width));
-        Log.i("orig length", Integer.toString(dv.getLayoutParams().height));
+        dv.setDots(pDots);
 
-        dots = new ArrayList<>();
-        ArrayList<Dot> fDots = new ArrayList<>();
-        for (int x = 0; x < scaledImg.getWidth(); x++) {
-            for (int y = 0; y < scaledImg.getHeight(); y++) {
-                if (scaledImg.getPixel(x, y) != Color.BLACK) {
-                    dots.add(new Dot(x, y));
-                }
-            }
-        }
-
-        Bitmap dotted = Bitmap.createBitmap(dv.getLayoutParams().width, dv.getLayoutParams().height, Bitmap.Config.ARGB_8888);
-        //canvas.drawBitmap(scaledImg, 0, 0, paint);
-        fDots.add(dots.get(0));
-        for (int i = 0; i < dots.size(); i = i + 250) {
-            Dot cDot = dots.get(i);
-            fDots.add(cDot);
-        }
-
-        dv.setDots(fDots);
-        dv.removeEdgeDots();
-        dv.setvWidth(dv.getLayoutParams().width);
-        dv.setvLength(dv.getLayoutParams().height);
-
-        dv.removeOverlappingDots(); //VERY INEFFICIENT USE ITERATOR
-        dv.removeOverlappingDots();
-        dv.removeOverlappingDots();
-        dv.removeOverlappingDots();
-        dv.removeOverlappingDots();
-
-        Button exitButton = (Button) findViewById(R.id.button);
-        exitButton.setOnClickListener(new View.OnClickListener() {
+        ImageButton exit = (ImageButton) findViewById(R.id.dots_exit);
+        exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(DotToDotView2.this, MainActivity.class);
@@ -129,11 +77,11 @@ public class DotToDotView2 extends Activity {
             }
         });
 
-        Button guessButton = (Button) findViewById(R.id.button4);
-        guessButton.setOnClickListener(new View.OnClickListener() {
+        ImageButton guess = (ImageButton) findViewById(R.id.dots_guess);
+        guess.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final EditText inputText = (EditText) findViewById(R.id.editText);
+                final EditText inputText = (EditText) findViewById(R.id.dots_answer);
                 String input = inputText.getText().toString();
                 CharSequence timeSeq = time.getText();
                 String strTime = timeSeq.toString();
@@ -175,13 +123,10 @@ public class DotToDotView2 extends Activity {
             }
         });
 
-        time = (TextView) findViewById(R.id.textView10);
+        time = (TextView) findViewById(R.id.time);
         startTime = SystemClock.uptimeMillis();
         timeHandler.postDelayed(updateTimerThread, 0);
 
-        //mImg.setImageBitmap(dotted);
-
-        //mImg.setOnTouchListener(this);
     }
 
     private Runnable updateTimerThread = new Runnable() {

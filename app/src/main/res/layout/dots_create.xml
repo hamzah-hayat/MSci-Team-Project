@@ -29,18 +29,8 @@
         android:id="@+id/camera"
         android:src="@drawable/ic_camera"
         android:background="#ffffffff"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/random"
-        android:layout_alignStart="@+id/random" />
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/random"
-        android:src="@drawable/ic_random"
-        android:background="#ffffffff"
-        android:layout_below="@+id/camera"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="51dp" />
+        android:layout_marginBottom="153dp" />
 
 </RelativeLayout>

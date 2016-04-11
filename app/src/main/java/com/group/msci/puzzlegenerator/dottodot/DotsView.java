@@ -59,11 +59,11 @@ public class DotsView extends View {
         dotsPaint = new Paint();
         dotsPaint.setAntiAlias(true);
         dotsPaint.setDither(true);
-        dotsPaint.setColor(Color.GREEN);
+        dotsPaint.setColor(Color.GRAY);
         //dotsPaint.setStyle(Paint.Style.STROKE);
         dotsPaint.setStrokeJoin(Paint.Join.ROUND);
         dotsPaint.setStrokeCap(Paint.Cap.ROUND);
-        dotsPaint.setStrokeWidth(5);
+        dotsPaint.setStrokeWidth(15);
 
     }
 
@@ -118,8 +118,10 @@ public class DotsView extends View {
         }
     }
 
-    public void setDots(ArrayList<Dot> a) {
-        dots = a;
+    public void setDots(ArrayList<Dot> a) { dots = a; }
+
+    public ArrayList<Dot> getDots() {
+        return dots;
     }
 
     public int getvWidth() {

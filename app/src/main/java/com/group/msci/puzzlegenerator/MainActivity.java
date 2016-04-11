@@ -22,6 +22,8 @@ import android.widget.Spinner;
 import com.facebook.FacebookSdk;
 import com.group.msci.puzzlegenerator.BallSwitch.BallSwitchPuzzleGame;
 import com.group.msci.puzzlegenerator.dottodot.DotToDotImageSelectType;
+import com.group.msci.puzzlegenerator.dottodot.DotToDotMainScreen;
+import com.group.msci.puzzlegenerator.dottodot.DotToDotView2;
 import com.group.msci.puzzlegenerator.json.DownloadPuzzleJSON;
 import com.group.msci.puzzlegenerator.maze.MazeController;
 import com.group.msci.puzzlegenerator.picross.PicrossImageSelectType;
@@ -43,8 +45,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         setContentView(R.layout.puzzld_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.codeButton);
         fab.setOnClickListener(this);
@@ -70,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dotBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, DotToDotImageSelectType.class);
+                Intent intent = new Intent(MainActivity.this, DotToDotMainScreen.class);
                 MainActivity.this.startActivity(intent);
             }
         });
@@ -137,6 +139,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             //no problem
                             Intent intent = new Intent(MainActivity.this, PicrossPuzzleGUI.class);
                             intent.putExtra("ANSWER_ARRAY", puzzleData);
+                            startActivity(intent);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else if (input.getText().toString().charAt(0) == 'd') {
+                    try {
+                        String puzD = jsonFile.getString("puzzleData");
+                        if (puzD.equals("")) {
+                            //problem
+                        } else {
+                            //no problem
+                            Intent intent = new Intent(MainActivity.this, DotToDotView2.class);
+                            intent.putExtra("ANSWER_ARRAY", puzD);
                             startActivity(intent);
                         }
                     } catch (JSONException e) {

@@ -17,6 +17,7 @@ import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.group.msci.puzzlegenerator.MainActivity;
 import com.group.msci.puzzlegenerator.R;
@@ -37,8 +38,8 @@ public class DotToDotImageSelectType extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dottodot_image_select_type);
-        Button galleryButton = (Button) findViewById(R.id.galleryBtn);
+        setContentView(R.layout.dots_create);
+        ImageButton galleryButton = (ImageButton) findViewById(R.id.camera);
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
         galleryButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,7 +49,7 @@ public class DotToDotImageSelectType extends Activity {
                 startActivityForResult(photoPickerIntent, SELECT_PHOTO);
             }
         });
-        Button linkButton = (Button) findViewById(R.id.button3);
+        ImageButton linkButton = (ImageButton) findViewById(R.id.weblink);
         linkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

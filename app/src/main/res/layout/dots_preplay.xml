@@ -2,22 +2,27 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
+    <com.group.msci.puzzlegenerator.dottodot.DotsView
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:id="@+id/dotsView"
+        android:layout_marginTop="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/dots_answer"
+        android:id="@+id/dots_text"
+        android:src="@drawable/answer_dots"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="52dp"
-        android:src="@drawable/answer_dots" />
+        android:layout_marginTop="8dp" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/dots_answer"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="85dp"
         android:background="@drawable/dots_answer_type"
         android:editable="false"
         android:textColor="#ffffffff"
@@ -25,15 +30,29 @@
         android:inputType="textCapWords"
         android:hint="Type Here..."
         android:gravity="center"
-        android:textColorHint="#ffffffff" />
+        android:textColorHint="#ffffffff"
+        android:layout_below="@+id/dotsView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
 
-    <ImageButton
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/dots_play"
-        android:src="@drawable/picross_play_button"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="#ffffffff"
-        android:layout_marginBottom="10dp" />
+        android:text="SHARE"
+        android:id="@+id/share"
+        android:layout_marginLeft="59dp"
+        android:layout_marginStart="59dp"
+        android:layout_below="@+id/dots_answer"
+        android:layout_alignLeft="@+id/dots_answer"
+        android:layout_alignStart="@+id/dots_answer" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DISCARD"
+        android:id="@+id/discard"
+        android:layout_alignTop="@+id/share"
+        android:layout_toRightOf="@+id/share"
+        android:layout_toEndOf="@+id/share" />
+
 </RelativeLayout>
