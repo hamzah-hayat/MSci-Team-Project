@@ -32,6 +32,7 @@ public class ForegroundDetection {
     int[][] regions;
     int[][] foreground;
     int background = Color.WHITE;
+    boolean outline = false;
     BasicNetwork network;
     Bitmap image;
     int numberOfRegions;
@@ -47,6 +48,9 @@ public class ForegroundDetection {
     }
     public void setBackground(int b){
         background = b;
+    }
+    public void setOutline(boolean b){
+        outline = b;
     }
     public Bitmap getForeground(Bitmap b) throws IOException {
 
@@ -102,6 +106,11 @@ public class ForegroundDetection {
                     if(output.getData(0)>=threshold){
 
                         foreground[i][y] = 1;
+                        if(b){
+                            if(outline){
+                                image.setPixel(i,y, Color.WHITE);
+                            }
+                        }
                         //System.out.println(Arrays.toString(output.getData()));
                     }
                     else{
@@ -143,6 +152,11 @@ public class ForegroundDetection {
                 if(perc<0.2){
                     image.setPixel(x, y, background);
                     //System.out.println(perc);
+                }
+                else{
+                    if(outline){
+                        image.setPixel(x,y, Color.WHITE);
+                    }
                 }
 
 

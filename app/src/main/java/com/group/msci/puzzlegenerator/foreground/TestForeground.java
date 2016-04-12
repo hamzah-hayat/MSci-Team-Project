@@ -64,6 +64,7 @@ public class TestForeground extends AppCompatActivity {
 
         ForegroundDetection fd = new ForegroundDetection(in);
         fd.setBackground(Color.BLACK);
+        fd.setOutline(true);
         try {
             b = fd.getForegroundNoMerge(b);
         } catch (IOException e) {
