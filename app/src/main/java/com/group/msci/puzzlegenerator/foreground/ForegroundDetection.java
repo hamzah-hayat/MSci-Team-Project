@@ -106,7 +106,7 @@ public class ForegroundDetection {
                     }
                     else{
                         if(b)
-                        image.setPixel(i, y, Color.WHITE);
+                        image.setPixel(i, y, background);
                         //System.out.print("O");
                     }
                     i++;
