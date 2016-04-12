@@ -3,24 +3,43 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ballSwitchHeader"
+        android:src="@drawable/ball_header"
+        android:layout_gravity="center"
+        android:background="#ffffffff"
+        android:clickable="false" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/BallSwitch_Title"
-            android:id="@+id/titleText"
-            android:layout_gravity="center_horizontal" />
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/playButton"
+        android:src="@drawable/ic_play"
+        android:background="#ffffffff"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:clickable="true" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/BallSwitch_StartGame"
-            android:id="@+id/startGame"
-            android:layout_gravity="center_horizontal" />
-    </LinearLayout>
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/helpButton"
+        android:background="#ffffffff"
+        android:src="@drawable/ic_help"
+        android:layout_gravity="center"
+        android:layout_weight="0.5"
+        android:clickable="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scoreboardButton"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/ic_score"
+        android:background="#ffffffff"
+        android:layout_weight="1"
+        android:paddingBottom="12dp"
+        android:clickable="true" />
 </LinearLayout>

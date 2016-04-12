@@ -3,6 +3,7 @@ package com.group.msci.puzzlegenerator.BallSwitch;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Ball;
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.BallSwitchObject;
@@ -32,7 +33,7 @@ public class BallSwitchPuzzleController {
     public void setUpMainMenuButtons()
     {
         //Setup main menu buttons so they work
-        Button ballSwitchStartButton = gameActivity.findButtonById(R.id.startGame);
+        ImageButton ballSwitchStartButton = gameActivity.findButtonById(R.id.playButton);
         ballSwitchStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
