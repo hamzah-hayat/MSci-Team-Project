@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:id="@+id/picross_weight">
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:id="@+id/previewImage"
+        android:scaleType="fitXY"
+        android:layout_above="@+id/threshold_text"
+        android:layout_centerHorizontal="true" />
 
     <EditText
         android:layout_width="80dp"
@@ -26,7 +33,7 @@
         android:layout_height="60dp"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/picross_weight"
+        android:id="@+id/picross_width"
         android:background="@drawable/picross_height"
         android:textColor="#ffffffff"
         android:textColorHint="#ffffffff"
@@ -45,7 +52,8 @@
         android:layout_below="@+id/threshold_text"
         android:layout_alignLeft="@+id/picross_height"
         android:layout_alignStart="@+id/picross_height"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:max="255"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -61,7 +69,7 @@
         android:id="@+id/picross_preview"
         android:src="@drawable/picross_preview_button"
         android:background="#ffffffff"
-        android:layout_below="@+id/picross_weight"
+        android:layout_below="@+id/picross_width"
         android:layout_alignLeft="@+id/picross_height"
         android:layout_alignStart="@+id/picross_height"
         android:layout_marginTop="32dp" />
@@ -73,6 +81,6 @@
         android:src="@drawable/picross_play_button"
         android:background="#ffffffff"
         android:layout_alignTop="@+id/picross_preview"
-        android:layout_alignLeft="@+id/picross_weight"
-        android:layout_alignStart="@+id/picross_weight" />
+        android:layout_alignLeft="@+id/picross_width"
+        android:layout_alignStart="@+id/picross_width" />
 </RelativeLayout>

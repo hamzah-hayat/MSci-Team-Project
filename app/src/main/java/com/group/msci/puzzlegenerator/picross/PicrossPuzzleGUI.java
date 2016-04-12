@@ -48,7 +48,7 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_picross_puzzle_gui);
+        setContentView(R.layout.picross_play);
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
         Intent intent = getIntent();
@@ -65,6 +65,8 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
                 Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);
                 PicrossPuzzleGenerator puzzleGen = new PicrossPuzzleGenerator(yourSelectedImage, 5, 5);
                 puzzleGen.setThreshold(intent.getIntExtra("THRESHOLD", 125));
+                puzzleGen.setPuzzleWidth(intent.getIntExtra("PUZZLE_WIDTH", 25));
+                puzzleGen.setPuzzleHeight(intent.getIntExtra("PUZZLE_HEIGHT", 25));
                 puzzle = puzzleGen.createPuzzle();
                 System.out.println("PUZZLE NOT LOADED FROM DB, USED GALLERY");
             }
@@ -172,17 +174,21 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
         for (int i = 0; i < puzzle.getWidth(); i++) {
             String columnBuilder = "";
             for (int j = 0; j < puzzle.getPuzzleCluesColumns().get(i).size(); j++) {
-                columnBuilder += puzzle.getPuzzleCluesColumns().get(i).get(j) + "\n";
+                columnBuilder += "\n" + puzzle.getPuzzleCluesColumns().get(i).get(j);
+            }
+            if (columnBuilder.isEmpty()) {
+                columnBuilder = "0";
             }
             TextView columnClue = new TextView(this);
             columnClue.setText(columnBuilder);
+            columnClue.setGravity(Gravity.BOTTOM);
             buttonGrid.addView(columnClue);
         }
         //lol columns done, and rows will be just as easy
         for (int i = 0; i < puzzle.getHeight(); i++) {
             String rowBuilder = "";
             for (int j = 0; j < puzzle.getPuzzleCluesRows().get(i).size(); j++) {
-                rowBuilder += puzzle.getPuzzleCluesRows().get(i).get(j) + " ";
+                rowBuilder += " " + puzzle.getPuzzleCluesRows().get(i).get(j) ;
             }
             TextView rowClue = new TextView(this);
             rowClue.setText(rowBuilder);

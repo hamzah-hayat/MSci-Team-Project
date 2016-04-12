@@ -26,6 +26,8 @@ public class PicrossCompleteScreen extends AppCompatActivity implements View.OnC
 
     private String puzzleData;
     private int shareCode;
+    private boolean puzzleUploaded = false;
+    private boolean scoreUploaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,45 +70,54 @@ public class PicrossCompleteScreen extends AppCompatActivity implements View.OnC
             if (jsonFile.getBoolean("Success")) {
                 shareCode = jsonFile.getInt("shareCode");
                 System.out.println("Uploaded!");
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                String prefix = "";
+                if (shareCode < 10) {
+                    prefix = "00000";
+                }
+                else if (shareCode < 100) {
+                    prefix = "0000";
+                }
+                else if (shareCode < 1000) {
+                    prefix = "000";
+                }
+                else if (shareCode < 10000) {
+                    prefix = "00";
+                }
+                else if (shareCode < 100000) {
+                    prefix = "0";
+                }
+                else if (shareCode < 1000000) {
+                    prefix = "";
+                }
+                builder.setTitle("Puzzle Code: p" + prefix + shareCode);
+                builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(PicrossCompleteScreen.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                puzzleUploaded = true;
             }
             else {
-                System.out.println("Failed!");
+                AlertDialog.Builder builderError = new AlertDialog.Builder(this);
+                builderError.setTitle("Error! Puzzle not uploaded!");
+                builderError.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(PicrossCompleteScreen.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                });
+                AlertDialog dialog = builderError.create();
+                dialog.show();
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Please Enter Code Here");
-        TextView input = new TextView(this);
-        String prefix = "";
-        if (shareCode < 10) {
-            prefix = "00000";
-        }
-        else if (shareCode < 100) {
-            prefix = "0000";
-        }
-        else if (shareCode < 1000) {
-            prefix = "000";
-        }
-        else if (shareCode < 10000) {
-            prefix = "00";
-        }
-        else if (shareCode < 100000) {
-            prefix = "0";
-        }
-        else if (shareCode < 1000000) {
-            prefix = "";
-        }
-        input.setText("Puzzle Code: p" + prefix + shareCode);
-        builder.setView(input);
-        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(PicrossCompleteScreen.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+
     }
 }
