@@ -1,9 +1,17 @@
 package com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects;
 
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Picture;
+import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 
 import com.group.msci.puzzlegenerator.BallSwitch.BallSwitchPuzzleGame;
+import com.group.msci.puzzlegenerator.R;
 
 /**
  * Created by Hamzah on 21/01/2016.
@@ -11,6 +19,7 @@ import com.group.msci.puzzlegenerator.BallSwitch.BallSwitchPuzzleGame;
 public class BallSwitchObject {
 
     int posX,posY;
+    public Bitmap image;
 
     public BallSwitchObject()
     {
@@ -18,10 +27,11 @@ public class BallSwitchObject {
         posY = 0;
     }
 
-    public BallSwitchObject(int startX,int startY)
+    public BallSwitchObject(int startX,int startY,Resources r,int imageName)
     {
         posX = startX;
         posY = startY;
+        image = BitmapFactory.decodeResource(r, imageName);
     }
 
     public int getPosX()
@@ -41,11 +51,11 @@ public class BallSwitchObject {
     }
 
     //This method is used to draw for each object
-    public void draw(int posXDraw,int posYDraw,Canvas canvas,Paint paint)
+    public void draw(RectF box,Canvas canvas,Paint paint)
     {
         //This method should be overridden by child classes, but this is the default
         //Just a Circle
-        canvas.drawCircle(posXDraw,posYDraw,100,paint);
+        //canvas.drawCircle(posXDraw,posYDraw,100,paint);
     }
 
     public void use(Ball ball,BallSwitchPuzzleGame gameActivity)

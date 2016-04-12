@@ -1,17 +1,21 @@
 package com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects;
 
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 
 import com.group.msci.puzzlegenerator.BallSwitch.BallSwitchPuzzleGame;
+import com.group.msci.puzzlegenerator.R;
 
 /**
  * This class represents a switch on a puzzle
  * Created by Hamzah on 21/01/2016.
  */
 public class Switch extends BallSwitchObject {
-    int posX,posY;
     boolean switched;
 
     public Switch()
@@ -20,15 +24,15 @@ public class Switch extends BallSwitchObject {
         switched = false;
     }
 
-    public Switch(int startX,int startY)
+    public Switch(int startX,int startY,Resources c)
     {
-        super(startX,startY);
+        super(startX,startY,c,R.drawable.ball);
         switched = false;
     }
 
-    public Switch(int startX,int startY, boolean isSwitched)
+    public Switch(int startX,int startY,Resources c, boolean isSwitched)
     {
-        super(startX,startY);
+        super(startX,startY,c,R.drawable.ball);
         switched = isSwitched;
     }
 
@@ -42,7 +46,7 @@ public class Switch extends BallSwitchObject {
     }
 
     @Override
-    public void draw(int posXDraw,int posYDraw,Canvas canvas,Paint paint)
+    public void draw(RectF box,Canvas canvas,Paint paint)
     {
         if (switched)
         {
@@ -54,7 +58,7 @@ public class Switch extends BallSwitchObject {
         }
 
 
-        canvas.drawCircle(posXDraw,posYDraw,50,paint);
+        canvas.drawBitmap(image, null, box, paint);
     }
 
     @Override

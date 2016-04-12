@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
@@ -66,10 +67,15 @@ public class BallSwitchPuzzleGameCanvas extends View {
         //Draw all the objects in the puzzle
         for(BallSwitchObject object : puzzle.getObjects())
         {
-            int objectXDraw = object.getPosX() * gridWidthSpace + (gridWidthSpace / 2);
-            int objectYDraw = object.getPosY() * gridHeightSpace + (gridHeightSpace / 2);
+            int objectXLeft = object.getPosX() * gridWidthSpace;
+            int objectYTop = object.getPosY() * gridHeightSpace;
+            int objectXRight = (object.getPosX()+1) * gridWidthSpace;
+            int objectYBottom = (object.getPosY()+1) * gridHeightSpace;
             paint.setColor(Color.BLACK);    //Set the colour back to default
-            object.draw(objectXDraw, objectYDraw, canvas, paint);
+
+            //Need to create a rectangle filling the box this object is in
+            RectF box = new RectF(objectXLeft,objectYTop,objectXRight,objectYBottom);
+            object.draw(box, canvas, paint);
             paint.setColor(Color.BLACK);
         }
 

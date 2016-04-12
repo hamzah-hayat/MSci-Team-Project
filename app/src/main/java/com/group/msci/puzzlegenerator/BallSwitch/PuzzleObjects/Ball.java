@@ -1,7 +1,17 @@
 package com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects;
 
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Picture;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
+
+import com.group.msci.puzzlegenerator.R;
 
 /**
  * This Class represents a ball
@@ -9,14 +19,9 @@ import android.graphics.Paint;
  */
 public class Ball extends BallSwitchObject {
 
-    public Ball()
+    public Ball(int startX,int startY,Resources c)
     {
-        super();
-    }
-
-    public Ball(int startX,int startY)
-    {
-        super(startX,startY);
+        super(startX, startY,c,R.drawable.ball);
     }
 
     public void setPosX(int PosX)
@@ -29,9 +34,10 @@ public class Ball extends BallSwitchObject {
     }
 
     @Override
-    public void draw(int posXDraw,int posYDraw,Canvas canvas,Paint paint)
+    public void draw(RectF box,Canvas canvas,Paint paint)
     {
-        //Just a circle for now
-        canvas.drawCircle(posXDraw,posYDraw,100,paint);
+        //Just a ball bitmap
+        System.out.print("stop");
+        canvas.drawBitmap(image,null,box,paint);
     }
 }

@@ -1,5 +1,8 @@
 package com.group.msci.puzzlegenerator.BallSwitch;
 
+import android.content.Context;
+import android.content.res.Resources;
+
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Ball;
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.BallSwitchObject;
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Fan;
@@ -14,16 +17,19 @@ public class BallSwitchPuzzleCreator {
 
     int difficulty;
     boolean[] useableObstacles;
+    Resources c;
+    //Need the context to load images
 
     public BallSwitchPuzzleCreator()
     {
 
     }
 
-    public BallSwitchPuzzleCreator(int difficultyIn,boolean[] useableObstaclesIn)
+    public BallSwitchPuzzleCreator(int difficultyIn,boolean[] useableObstaclesIn,Resources cIn)
     {
         difficulty = difficultyIn;
         useableObstacles = useableObstaclesIn;
+        c = cIn;
     }
 
     public BallSwitchPuzzle generatePuzzle()
@@ -75,7 +81,7 @@ public class BallSwitchPuzzleCreator {
         Random rand = new Random();
         int startX = rand.nextInt(sizeX);
         int startY = rand.nextInt(sizeY);
-        createdPuzzle.setBall(startX, startY);
+        createdPuzzle.createBall(startX, startY,c);
         //Now our ball is set up
 
         for(int i=0;i<obstaclesNum;i++)
@@ -105,19 +111,19 @@ public class BallSwitchPuzzleCreator {
             switch (rand.nextInt(obstaclesUsable.length+3))
             {
                 case 1:
-                    createdPuzzle.addObject(new Switch(XPos,YPos));
+                    createdPuzzle.addObject(new Switch(XPos,YPos,c));
                     break;
                 case 2:
-                    createdPuzzle.addObject(new Switch(XPos,YPos));
+                    createdPuzzle.addObject(new Switch(XPos,YPos,c));
                     break;
                 case 3:
-                    createdPuzzle.addObject(new Switch(XPos,YPos));
+                    createdPuzzle.addObject(new Switch(XPos,YPos,c));
                     break;
                 case 4:
-                    createdPuzzle.addObject(new Fan(XPos,YPos,rand.nextInt(4)));
+                    createdPuzzle.addObject(new Fan(XPos,YPos,c,rand.nextInt(4)));
                     break;
                 default:
-                    createdPuzzle.addObject(new Switch(XPos,YPos));
+                    createdPuzzle.addObject(new Switch(XPos,YPos,c));
                     break;
                 }
         }
