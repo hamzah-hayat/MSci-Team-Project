@@ -142,22 +142,29 @@ public class DotsView extends View {
     }
 
     public void removeOverlappingDots() {
+        boolean removed = true;
+        int origLength = dots.size();
 
-        for(int i = 1; i < dots.size(); i++) {
-            Dot temp = dots.get(i);
-            for(int j = 0; j < dots.size(); j++) {
-                Dot iDot = dots.get(j);
-                if(i == j) {
-
-                }
-                else if(iDot.getxPos() < temp.getxPos() + 60 && iDot.getxPos() > temp.getxPos() - 60) {
-                    if(iDot.getyPos() < temp.getyPos() + 60 && iDot.getyPos() > temp.getyPos() - 60) {
-                        dots.remove(j);
+        while(removed) {
+            for (int i = 1; i < dots.size(); i++) {
+                Dot temp = dots.get(i);
+                for (int j = 0; j < dots.size(); j++) {
+                    Dot iDot = dots.get(j);
+                    if (i == j) { }
+                    else if (iDot.getxPos() < temp.getxPos() + 60 && iDot.getxPos() > temp.getxPos() - 60) {
+                        if (iDot.getyPos() < temp.getyPos() + 60 && iDot.getyPos() > temp.getyPos() - 60) {
+                            dots.remove(j);
+                        }
                     }
                 }
-
+            }
+            if (dots.size() < origLength) {
+                origLength = dots.size();
+            } else {
+                removed = false;
             }
         }
+
     }
 
         //Check that one dot does not have the same x and y as another dot within the range of the radius (25)

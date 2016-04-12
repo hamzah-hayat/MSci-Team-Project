@@ -101,12 +101,8 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
 
         dotV.setDots(fDots);
         dotV.removeEdgeDots();
+        dotV.removeOverlappingDots();
 
-        dotV.removeOverlappingDots();
-        dotV.removeOverlappingDots();
-        dotV.removeOverlappingDots();
-        dotV.removeOverlappingDots();
-        dotV.removeOverlappingDots();
 
         passDot = dotV.getDots();
 
