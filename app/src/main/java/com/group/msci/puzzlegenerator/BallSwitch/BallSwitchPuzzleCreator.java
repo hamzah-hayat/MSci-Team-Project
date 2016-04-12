@@ -1,5 +1,8 @@
 package com.group.msci.puzzlegenerator.BallSwitch;
 
+import android.content.Context;
+import android.content.res.Resources;
+
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Ball;
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.BallSwitchObject;
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Fan;
@@ -14,16 +17,19 @@ public class BallSwitchPuzzleCreator {
 
     int difficulty;
     boolean[] useableObstacles;
+    Resources c;
+    //Need the context to load images
 
     public BallSwitchPuzzleCreator()
     {
 
     }
 
-    public BallSwitchPuzzleCreator(int difficultyIn,boolean[] useableObstaclesIn)
+    public BallSwitchPuzzleCreator(int difficultyIn,boolean[] useableObstaclesIn,Resources cIn)
     {
         difficulty = difficultyIn;
         useableObstacles = useableObstaclesIn;
+        c = cIn;
     }
 
     public BallSwitchPuzzle generatePuzzle()
@@ -69,13 +75,13 @@ public class BallSwitchPuzzleCreator {
     {
         BallSwitchPuzzle createdPuzzle = new BallSwitchPuzzle(sizeX,sizeY);
         //By using our obstacles, we create a puzzle and make a movelist for how it works.
-        int obstaclesNum = ((sizeX*sizeY)*(difficulty+1)) / 5;
+        int obstaclesNum = ((sizeX*sizeY)*(difficulty+2)) / 5;
 
         //Randomly make our starting position
         Random rand = new Random();
         int startX = rand.nextInt(sizeX);
         int startY = rand.nextInt(sizeY);
-        createdPuzzle.setBall(startX, startY);
+        createdPuzzle.createBall(startX, startY,c);
         //Now our ball is set up
 
         for(int i=0;i<obstaclesNum;i++)
@@ -86,36 +92,38 @@ public class BallSwitchPuzzleCreator {
             int YPos = 0;
             while(!positionOK)
             {
+                positionOK = true;
+                //We assume this new position is ok until proven wrong
                 XPos = rand.nextInt(sizeX);
                 YPos = rand.nextInt(sizeY);
 
                 for(BallSwitchObject object : createdPuzzle.getObjects())
                 {
-                    if(object.getPosX()!=XPos || object.getPosY()!=YPos)
+                    if(object.getPosX()==XPos && object.getPosY()==YPos)
                     {
-                        positionOK = true;
+                        positionOK = false;
                         break;
                     }
                 }
             }
 
 
-            switch (rand.nextInt(obstaclesUsable.length+2))
+            switch (rand.nextInt(obstaclesUsable.length+3))
             {
                 case 1:
-                    createdPuzzle.addObject(new Switch(XPos,YPos));
+                    createdPuzzle.addObject(new Switch(XPos,YPos,c));
                     break;
                 case 2:
-                    createdPuzzle.addObject(new Switch(XPos,YPos));
+                    createdPuzzle.addObject(new Switch(XPos,YPos,c));
                     break;
                 case 3:
-                    createdPuzzle.addObject(new Switch(XPos,YPos));
+                    createdPuzzle.addObject(new Switch(XPos,YPos,c));
                     break;
                 case 4:
-                    createdPuzzle.addObject(new Fan(XPos,YPos,rand.nextInt(4)));
+                    createdPuzzle.addObject(new Fan(XPos,YPos,c,rand.nextInt(4)));
                     break;
                 default:
-                    createdPuzzle.addObject(new Switch(XPos,YPos));
+                    createdPuzzle.addObject(new Switch(XPos,YPos,c));
                     break;
                 }
         }

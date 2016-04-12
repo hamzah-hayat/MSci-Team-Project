@@ -1,11 +1,13 @@
 package com.group.msci.puzzlegenerator.BallSwitch;
 
 import android.app.Activity;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Ball;
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.BallSwitchObject;
@@ -46,25 +48,22 @@ public class BallSwitchPuzzleGame extends AppCompatActivity {
         view.showMainMenu();
     }
 
-    public Button findButtonById(int id)
+    public ImageButton findButtonById(int id)
     {
         //format for id is R.id.ButtonId
         //Button id is name of button eg R.id.startGame
-        return  (Button) findViewById(id);
+        return  (ImageButton) findViewById(id);
     }
 
     //This method starts a game
     public void startGame()
     {
-        /*
-        puzzle = new BallSwitchPuzzle(5,5);
-        puzzle.setBall(2,3);
-        puzzle.addObject(new Switch(1, 1));
-        puzzle.addObject(new Switch(0,3));
-        puzzle.addObject(new Switch(1,3));
-        */
-        BallSwitchPuzzleCreator creator = new BallSwitchPuzzleCreator(0,new boolean[]{true,false});
+        BallSwitchPuzzleCreator creator = new BallSwitchPuzzleCreator(0,new boolean[]{true,true},getResources());
         puzzle = creator.generatePuzzle();
+        for(BallSwitchObject object : puzzle.getObjects())
+        {
+            System.out.println(object);
+        }
         gameStarted = true;
     }
 

@@ -1,5 +1,7 @@
 package com.group.msci.puzzlegenerator.BallSwitch;
 
+import android.content.res.Resources;
+
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Ball;
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.BallSwitchObject;
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Switch;
@@ -13,7 +15,7 @@ import java.util.Date;
 public class BallSwitchPuzzle {
     int sizeX, sizeY;
     ArrayList<BallSwitchObject> gameObjects = new ArrayList<>();
-    Ball ball = new Ball();
+    Ball ball;
     int puzzleID;
     String puzzleCreator;
     Date dateMade;
@@ -54,10 +56,10 @@ public class BallSwitchPuzzle {
         return ball;
     }
 
-    public void setBall(int posX,int posY)
+    public void createBall(int posX,int posY,Resources c)
     {
-        ball.setPosX(posX);
-        ball.setPosY(posY);
+        //Makes the ball
+        ball = new Ball(posX,posY,c);
         addObject(ball);
     }
 

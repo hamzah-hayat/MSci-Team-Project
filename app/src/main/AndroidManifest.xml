@@ -94,6 +94,10 @@
         <activity
             android:name=".picross.PicrossScoreboard"
             android:label="@string/title_activity_picross_scoreboard"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".foreground.TestForeground"
+            android:label="@string/title_activity_test_foreground"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

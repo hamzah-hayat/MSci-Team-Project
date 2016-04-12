@@ -101,12 +101,8 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
 
         dotV.setDots(fDots);
         dotV.removeEdgeDots();
+        dotV.removeOverlappingDots();
 
-        dotV.removeOverlappingDots();
-        dotV.removeOverlappingDots();
-        dotV.removeOverlappingDots();
-        dotV.removeOverlappingDots();
-        dotV.removeOverlappingDots();
 
         passDot = dotV.getDots();
 
@@ -127,9 +123,10 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
             else {
                 for(int i = 0; i < passDot.size(); i++) {
                     Dot temp = passDot.get(i);
-                    puzzleDataD += temp.getxPos() + " " + temp.getyPos() +";";
+                    puzzleDataD += temp.getxPos() + "," + temp.getyPos() +";";
                 }
                 puzzleDataD += word.getText().toString() + ";";
+                System.out.println(puzzleDataD);
                 UploadPuzzleJSON jsonGetter = new UploadPuzzleJSON('d', puzzleDataD, "hello, world!");
                 Thread x = new Thread(jsonGetter);
                 x.start();

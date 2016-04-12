@@ -61,16 +61,15 @@ public class DotToDotView extends Activity {
         if(intent.hasExtra("ANSWER_ARRAY")) {
             data = intent.getStringExtra("ANSWER_ARRAY");
             dataSplit = data.split(";");
-            puzzleWord = dataSplit[dataSplit.length-1];
+            puzzleWord = dataSplit[dataSplit.length-1].toLowerCase();
             pDots = new ArrayList<>();
             for(int i = 0; i < dataSplit.length-2; i++) {
-                String[] xyPair = dataSplit[i].split(" ");
+                String[] xyPair = dataSplit[i].split(",");
                 pDots.add(new Dot(Integer.parseInt(xyPair[0]), Integer.parseInt(xyPair[1])));
             }
         }
         else if(intent.hasExtra("URL_STRING_RAND")) {
-            puzzleWord = intent.getStringExtra("ANSWER");
-            System.out.println(puzzleWord);
+            puzzleWord = intent.getStringExtra("ANSWER").toLowerCase();
             urlLink = intent.getStringExtra("URL_STRING_RAND");
             URLBitmap retImg = new URLBitmap(urlLink);
             Thread xx = new Thread(retImg);
@@ -109,11 +108,6 @@ public class DotToDotView extends Activity {
         dv.setDots(pDots);
         if(intent.hasExtra("URL_STRING_RAND")) {
             dv.removeEdgeDots();
-
-            dv.removeOverlappingDots();
-            dv.removeOverlappingDots();
-            dv.removeOverlappingDots();
-            dv.removeOverlappingDots();
             dv.removeOverlappingDots();
 
         }
@@ -142,10 +136,10 @@ public class DotToDotView extends Activity {
                 if(input.equals(puzzleWord)) {
                     new AlertDialog.Builder(DotToDotView.this)
                             .setTitle("Correct!")
-                            .setMessage("You have guessed the image correctly. You done it in " + strTime)
+                            .setMessage("You have guessed the image correctly. You completed the puzzle in " + strTime)
                                     .setPositiveButton("Play Again", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
-                                            Intent intent = new Intent(DotToDotView.this, DotToDotImageSelectType.class);
+                                            Intent intent = new Intent(DotToDotView.this, DotToDotMainScreen.class);
                                             startActivity(intent);
                                         }
                                     })

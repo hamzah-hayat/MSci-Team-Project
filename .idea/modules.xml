@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AudienceNetwork/AudienceNetwork.iml" filepath="$PROJECT_DIR$/AudienceNetwork/AudienceNetwork.iml" />
-      <module fileurl="file://$PROJECT_DIR$/AudienceNetwork/AudienceNetwork.iml" filepath="$PROJECT_DIR$/AudienceNetwork/AudienceNetwork.iml" />
-      <module fileurl="file://$PROJECT_DIR$/FacebookSDK/FacebookSDK.iml" filepath="$PROJECT_DIR$/FacebookSDK/FacebookSDK.iml" />
       <module fileurl="file://$PROJECT_DIR$/FacebookSDK/FacebookSDK.iml" filepath="$PROJECT_DIR$/FacebookSDK/FacebookSDK.iml" />
       <module fileurl="file://$PROJECT_DIR$/MSci-Team-Project.iml" filepath="$PROJECT_DIR$/MSci-Team-Project.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
