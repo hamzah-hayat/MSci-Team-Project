@@ -130,35 +130,13 @@ public class ForegroundDetection {
                 double perc = regionHist[regions[x][y]][1];
                 perc = perc/regionHist[regions[x][y]][0];
                 
-                image.setPixel(x, y, Color.WHITE);
-                if(perc>0.3){
+
+
+                if(perc<0.6){
                     image.setPixel(x, y, Color.WHITE);
                     //System.out.println(perc);
                 }
-                if(perc>0.4){
-                    image.setPixel(x, y, Color.BLUE);
-                    //System.out.println(perc);
-                }
-                if(perc>0.5){
-                    image.setPixel(x, y, Color.GREEN);
-                    //System.out.println(perc);
-                }
-                if(perc>0.6){
-                    image.setPixel(x, y, Color.YELLOW);
-                    //System.out.println(perc);
-                }
-                if(perc>0.7){
-                image.setPixel(x, y, Color.MAGENTA);
-                    //System.out.println(perc);
-                }
-                if(perc>0.8){
-                    image.setPixel(x, y, Color.RED);
-                    //System.out.println(perc);
-                }
-                if(perc>0.9){
-                    image.setPixel(x, y, Color.BLACK);
-                    //System.out.println(perc);
-                }
+
 
                 
             }
