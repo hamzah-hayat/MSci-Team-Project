@@ -1,6 +1,7 @@
 package com.group.msci.puzzlegenerator.maze;
 
 import com.group.msci.puzzlegenerator.maze.model.Point;
+import com.group.msci.puzzlegenerator.maze.utils.Seed;
 
 /**
  * Created by Filipt on 19/01/2016.
@@ -27,6 +28,7 @@ public interface Maze {
     boolean isJunction(Point point);
     boolean isWall(Point point);
     boolean atGate(Point point);
+    Seed getSeed();
 
     int getCurrentPlane();
     int getNumberOfPlanes();

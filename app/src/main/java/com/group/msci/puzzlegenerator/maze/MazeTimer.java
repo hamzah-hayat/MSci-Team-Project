@@ -33,6 +33,10 @@ public class MazeTimer extends CountDownTimer {
         timeField.setText(formatMilis(time), FMT_START, FMT_LEN);
     }
 
+    public long getTimeSeconds() {
+        return time / (long) 10e6;
+    }
+
     //Copy constructor to be used when timer runs out to set a new one.
     private MazeTimer(MazeTimer other) {
        this(other.time, other.maze, other.timeField, other.board, other.parentActivity);
@@ -41,6 +45,7 @@ public class MazeTimer extends CountDownTimer {
     @Override
     public void onTick(long millisUntilFinished) {
         timeField.setText(formatMilis(millisUntilFinished), FMT_START, FMT_LEN);
+        parentActivity.updateRemainingTime(millisUntilFinished);
     }
 
     @Override

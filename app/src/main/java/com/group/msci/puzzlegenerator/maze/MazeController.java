@@ -17,6 +17,9 @@ import com.group.msci.puzzlegenerator.maze.subviews.GameInstanceController;
 import com.group.msci.puzzlegenerator.maze.utils.MazeParams;
 import com.group.msci.puzzlegenerator.maze.utils.Seed;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -110,7 +113,21 @@ public class MazeController extends Activity {
                 nplanes = (planeNoField.isEnabled()) ? Integer.parseInt(planeNoField.getText().toString()) : nplanes;
 
                 Intent intent = new Intent(MazeController.this, GameInstanceController.class);
-                intent.putExtra("maze_params", new MazeParams(width, height, time, nplanes, kind, new Seed(true)));
+                Seed seed;
+                Random random = new Random();
+
+                if (kind.equals("Portal")) {
+                    List<Long> seeds = new ArrayList<Long>(nplanes);
+                    for (int i = 0; i < nplanes; ++i)
+                        seeds.add(System.currentTimeMillis() + random.nextLong());
+
+                    seed = new Seed(seeds);
+                }
+                else {
+                   seed = new Seed(System.currentTimeMillis());
+                }
+
+                intent.putExtra("maze_params", new MazeParams(width, height, time, nplanes, kind, seed));
 
                 MazeController.this.startActivity(intent);
             }
