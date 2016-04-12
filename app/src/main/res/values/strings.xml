@@ -20,4 +20,5 @@
     <string name="title_activity_picross_saved_puzzles">PicrossSavedPuzzles</string>
     <string name="title_activity_picross_help_page">PicrossHelpPage</string>
     <string name="title_activity_picross_scoreboard">Scoreboard</string>
+    <string name="title_activity_test_foreground">TestForeground</string>
 </resources>
