@@ -90,6 +90,8 @@ public class BallSwitchPuzzleGameCanvas extends View {
         int objectXRight = (puzzle.getBall().getPosX()+1) * gridWidthSpace;
         int objectYBottom = (puzzle.getBall().getPosY()+1) * gridHeightSpace;
         paint.setColor(Color.BLACK);    //Set the colour back to default
+        ColorFilter filter = new LightingColorFilter(Color.BLACK, 1);
+        paint.setColorFilter(filter);
         RectF box = new RectF(objectXLeft,objectYTop,objectXRight,objectYBottom);
         puzzle.getBall().draw(box,canvas,paint);
 
