@@ -3,6 +3,7 @@ package com.group.msci.puzzlegenerator.foreground;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -62,8 +63,9 @@ public class TestForeground extends AppCompatActivity {
 
 
         ForegroundDetection fd = new ForegroundDetection(in);
+        fd.setBackground(Color.BLACK);
         try {
-            b = fd.getForeground(b);
+            b = fd.getForegroundNoMerge(b);
         } catch (IOException e) {
             e.printStackTrace();
         }

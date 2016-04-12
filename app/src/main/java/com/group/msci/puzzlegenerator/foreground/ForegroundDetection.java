@@ -31,6 +31,7 @@ import android.graphics.Color;
 public class ForegroundDetection {
     int[][] regions;
     int[][] foreground;
+    int background = Color.WHITE;
     BasicNetwork network;
     Bitmap image;
     int numberOfRegions;
@@ -44,18 +45,25 @@ public class ForegroundDetection {
         image = Bitmap.createBitmap(b);
         foreground = new int[image.getWidth()][image.getHeight()];
     }
-
+    public void setBackground(int b){
+        background = b;
+    }
     public Bitmap getForeground(Bitmap b) throws IOException {
 
         setImage(b);
-        getForegroundPixels();
+        getForegroundPixels(false);
         generateRegions();
         thresholdRegions();
         return image;
 
     }
+    public Bitmap getForegroundNoMerge(Bitmap b) throws IOException {
+        setImage(b);
+        getForegroundPixels(true);
+        return image;
+    }
 
-    public void getForegroundPixels(){
+    public void getForegroundPixels(boolean b){
         
         
         double[][] inputs = new double[image.getWidth()][3];
@@ -73,7 +81,7 @@ public class ForegroundDetection {
                 final int green = (clr & 0x0000ff00) >> 8;
                 final int blue = clr & 0x000000ff;
                 
-                inputs[x] = new double[]{red, green, blue, red*red, green*green, blue*blue, red*green, red*blue, green*blue};
+                inputs[x] = new double[]{1,red, green, blue, red*red, green*green, blue*blue, red*green, red*blue, green*blue};
                     
                     //System.out.println("Hello");
                     
@@ -97,7 +105,8 @@ public class ForegroundDetection {
                         //System.out.println(Arrays.toString(output.getData()));
                     }
                     else{
-                        //image.setRGB(i, y, Color.WHITE.getRGB());
+                        if(b)
+                        image.setPixel(i, y, background);
                         //System.out.print("O");
                     }
                     i++;
@@ -110,8 +119,7 @@ public class ForegroundDetection {
     }
     public void thresholdRegions(){
         
-        System.out.println(regions.length+", "+regions[0].length);
-        System.out.println(foreground.length+", "+foreground[0].length);
+
         int[][] regionHist = new int[numberOfRegions][2];
         
         for(int x=0; x<regions.length; x++){
@@ -132,8 +140,8 @@ public class ForegroundDetection {
                 
 
 
-                if(perc<0.6){
-                    image.setPixel(x, y, Color.WHITE);
+                if(perc<0.2){
+                    image.setPixel(x, y, background);
                     //System.out.println(perc);
                 }
 
@@ -144,8 +152,8 @@ public class ForegroundDetection {
     }
     public void generateRegions(){
         ImageSegmentation ig = new ImageSegmentation(image);
-        ig.generateSeeds(1000);
-        ig.setThreshold(30);
+        ig.generateSeeds(5000);
+        ig.setThreshold(50);
         ig.setMergeThreshold(20);
         
         numberOfRegions = ig.growRegion();

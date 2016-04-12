@@ -93,7 +93,7 @@ public class ImageSegmentation {
         int rgbRed = 255;
         rgbRed = (rgbRed << 8) + 0;
         rgbRed = (rgbRed << 8) + 0;
-        System.out.println(regions[50][50]);
+
         boolean grown = true;
         
         while(grown){
@@ -159,7 +159,7 @@ public class ImageSegmentation {
             for(int y = 0; y<regions[0].length; y++){
                 
                     if(regions[x][y]!=0){
-                        System.out.println(x+", "+y);
+
                         image.setPixel(x, y, colors.get(regions[x][y]-1)[2]);
                     }
                     
@@ -230,7 +230,7 @@ public class ImageSegmentation {
             else
                 newRegions.add(array);
         }
-        System.out.println(newRegions.size());
+        //.out.println(newRegions.size());
 
         ArrayList<Integer> mergedColors = new ArrayList<>();
 
