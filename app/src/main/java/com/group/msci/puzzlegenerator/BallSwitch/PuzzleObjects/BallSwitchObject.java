@@ -27,8 +27,16 @@ public class BallSwitchObject {
         posY = 0;
     }
 
+    public BallSwitchObject(int startX,int startY)
+    {
+        //Use this one if the subclass has more then one image it needs, then it will handle it on its own
+        posX = startX;
+        posY = startY;
+    }
+
     public BallSwitchObject(int startX,int startY,Resources r,int imageName)
     {
+        //Use this if we just need one image
         posX = startX;
         posY = startY;
         image = BitmapFactory.decodeResource(r, imageName);

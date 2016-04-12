@@ -22,8 +22,24 @@ public class Fan extends BallSwitchObject {
 
     public Fan(int startX,int startY,Resources c,int directionIn)
     {
-        super(startX,startY,c, R.drawable.ball);
+        super(startX,startY);
         direction = directionIn;
+        //Change image based on direction
+        switch (direction)
+        {
+            case 1:
+                image = BitmapFactory.decodeResource(c, R.drawable.up);
+                break;
+            case 2:
+                image = BitmapFactory.decodeResource(c, R.drawable.right);
+                break;
+            case 3:
+                image = BitmapFactory.decodeResource(c, R.drawable.down);
+                break;
+            case 4:
+                image = BitmapFactory.decodeResource(c, R.drawable.left);
+                break;
+        }
     }
 
     @Override

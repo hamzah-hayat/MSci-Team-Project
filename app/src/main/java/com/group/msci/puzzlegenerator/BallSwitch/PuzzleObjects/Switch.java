@@ -1,10 +1,10 @@
 package com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects;
 
-import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
@@ -26,13 +26,13 @@ public class Switch extends BallSwitchObject {
 
     public Switch(int startX,int startY,Resources c)
     {
-        super(startX,startY,c,R.drawable.ball);
+        super(startX,startY,c,R.drawable.switchimage);
         switched = false;
     }
 
     public Switch(int startX,int startY,Resources c, boolean isSwitched)
     {
-        super(startX,startY,c,R.drawable.ball);
+        super(startX,startY,c,R.drawable.switchimage);
         switched = isSwitched;
     }
 
@@ -50,11 +50,14 @@ public class Switch extends BallSwitchObject {
     {
         if (switched)
         {
-            paint.setColor(Color.GREEN);
+            ColorFilter filter = new LightingColorFilter(Color.GREEN, 1);
+            paint.setColorFilter(filter);
         }
         else
         {
-            paint.setColor(Color.RED);
+            ColorFilter filter = new LightingColorFilter(Color.RED, 1);
+            paint.setColorFilter(filter);
+            //paint.setColor(Color.RED);
         }
 
 

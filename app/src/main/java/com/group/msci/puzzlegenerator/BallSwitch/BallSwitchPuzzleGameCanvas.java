@@ -4,6 +4,8 @@ package com.group.msci.puzzlegenerator.BallSwitch;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.DisplayMetrics;
@@ -72,6 +74,8 @@ public class BallSwitchPuzzleGameCanvas extends View {
             int objectXRight = (object.getPosX()+1) * gridWidthSpace;
             int objectYBottom = (object.getPosY()+1) * gridHeightSpace;
             paint.setColor(Color.BLACK);    //Set the colour back to default
+            ColorFilter filter = new LightingColorFilter(Color.BLACK, 1);
+            paint.setColorFilter(filter);
 
             //Need to create a rectangle filling the box this object is in
             RectF box = new RectF(objectXLeft,objectYTop,objectXRight,objectYBottom);
@@ -79,6 +83,15 @@ public class BallSwitchPuzzleGameCanvas extends View {
             paint.setColor(Color.BLACK);
         }
 
+
+        //Draw the ball
+        int objectXLeft = puzzle.getBall().getPosX() * gridWidthSpace;
+        int objectYTop = puzzle.getBall().getPosY() * gridHeightSpace;
+        int objectXRight = (puzzle.getBall().getPosX()+1) * gridWidthSpace;
+        int objectYBottom = (puzzle.getBall().getPosY()+1) * gridHeightSpace;
+        paint.setColor(Color.BLACK);    //Set the colour back to default
+        RectF box = new RectF(objectXLeft,objectYTop,objectXRight,objectYBottom);
+        puzzle.getBall().draw(box,canvas,paint);
 
         //Now draw the menu buttons and bar
 
