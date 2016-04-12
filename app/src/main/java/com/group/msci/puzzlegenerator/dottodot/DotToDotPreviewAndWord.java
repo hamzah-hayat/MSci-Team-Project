@@ -21,12 +21,14 @@ import android.widget.TextView;
 
 import com.group.msci.puzzlegenerator.MainActivity;
 import com.group.msci.puzzlegenerator.R;
+import com.group.msci.puzzlegenerator.foreground.ForegroundDetection;
 import com.group.msci.puzzlegenerator.json.UploadPuzzleJSON;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
@@ -35,6 +37,7 @@ import java.util.ArrayList;
  */
 public class DotToDotPreviewAndWord extends AppCompatActivity implements View.OnClickListener {
     protected Bitmap readImage;
+    private Bitmap mutableImg;
     protected Uri myImageURI;
     protected String urlLink;
     protected boolean isGallery = false;
@@ -74,9 +77,19 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
             readImage = retImg.getrImg();
         }
 
+        InputStream in = getResources().openRawResource(R.raw.network);
+        ForegroundDetection fd = new ForegroundDetection(in);
+        try {
+            mutableImg = readImage.copy(Bitmap.Config.ARGB_8888, true);
+            mutableImg = fd.getForeground(mutableImg);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
+
 
         AndroidCannyEdgeDetector det = new AndroidCannyEdgeDetector();
-        det.setSourceImage(readImage);
+        det.setSourceImage(mutableImg);
         det.process();
         Bitmap edgImg = det.getEdgesImage();
 
@@ -94,7 +107,7 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
         }
 
         fDots.add(dots.get(0));
-        for (int i = 0; i < dots.size(); i = i + 150) {
+        for (int i = 0; i < dots.size(); i = i + 100) {
             Dot cDot = dots.get(i);
             fDots.add(cDot);
         }

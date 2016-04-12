@@ -45,7 +45,8 @@
         android:textColorHint="#ffffffff"
         android:layout_marginLeft="10dp"
         android:maxLength="16"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:singleLine="true" />
 
     <TextView
         android:layout_width="wrap_content"

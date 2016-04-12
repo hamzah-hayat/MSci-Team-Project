@@ -26,8 +26,10 @@ import android.widget.TextView;
 
 import com.group.msci.puzzlegenerator.MainActivity;
 import com.group.msci.puzzlegenerator.R;
+import com.group.msci.puzzlegenerator.foreground.ForegroundDetection;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -80,8 +82,18 @@ public class DotToDotView extends Activity {
                 e.printStackTrace();
             }
             readImage = retImg.getrImg();
+
+            InputStream in = getResources().openRawResource(R.raw.network);
+            ForegroundDetection fd = new ForegroundDetection(in);
+            Bitmap mutableImg = readImage.copy(Bitmap.Config.ARGB_8888, true);
+            try {
+                mutableImg = fd.getForeground(mutableImg);
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+
             AndroidCannyEdgeDetector det = new AndroidCannyEdgeDetector();
-            det.setSourceImage(readImage);
+            det.setSourceImage(mutableImg);
             det.process();
             Bitmap edgImg = det.getEdgesImage();
             det=null;
@@ -98,7 +110,7 @@ public class DotToDotView extends Activity {
                 }
             }
             pDots = new ArrayList<>();
-            for (int i = 0; i < allDots.size(); i = i + 150) {
+            for (int i = 0; i < allDots.size(); i = i + 100) {
                 Dot cDot = allDots.get(i);
                 pDots.add(cDot);
             }
