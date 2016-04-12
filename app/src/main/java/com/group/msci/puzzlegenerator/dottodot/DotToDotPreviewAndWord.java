@@ -79,9 +79,10 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
 
         InputStream in = getResources().openRawResource(R.raw.network);
         ForegroundDetection fd = new ForegroundDetection(in);
+        fd.setBackground(Color.BLACK);
         try {
             mutableImg = readImage.copy(Bitmap.Config.ARGB_8888, true);
-            mutableImg = fd.getForeground(mutableImg);
+            mutableImg = fd.getForegroundNoMerge(mutableImg);
         } catch(IOException e) {
             e.printStackTrace();
         }
