@@ -49,6 +49,7 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
     private int height, width;
     private int butCounter = 0;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,8 +80,8 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
             readImage = retImg.getrImg();
         }
 
-        InputStream in = getResources().openRawResource(R.raw.network);
-        ForegroundDetection fd = new ForegroundDetection(in);
+        //InputStream in = getResources().openRawResource(R.raw.network);
+        //ForegroundDetection fd = new ForegroundDetection(in);
         //fd.setBackground(Color.BLACK);
         mutableImg = readImage.copy(Bitmap.Config.ARGB_8888, true);
        // try {

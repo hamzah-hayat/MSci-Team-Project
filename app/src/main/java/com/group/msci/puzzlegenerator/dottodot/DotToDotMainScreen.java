@@ -2,13 +2,16 @@ package com.group.msci.puzzlegenerator.dottodot;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.group.msci.puzzlegenerator.MainActivity;
 import com.group.msci.puzzlegenerator.R;
 import com.group.msci.puzzlegenerator.json.PixabayScraperJSON;
 import com.group.msci.puzzlegenerator.picross.PicrossPuzzleOptionsGUI;
@@ -46,27 +49,34 @@ public class DotToDotMainScreen extends Activity {
                 JSONObject jsonFile = scraper.getJSON();
                 try {
                     int totalHits = jsonFile.getInt("totalHits");
-                    System.out.println(totalHits);
-                    JSONArray allLinks = jsonFile.getJSONArray("hits");
-                    int randCap = 0;
-                    if (totalHits >= 20) {
-                        randCap = 20;
-                    }
-                    else {
-                        randCap = totalHits;
-                    }
-                    try {
-                        int randNum = new Random().nextInt(randCap);
-                        JSONObject imageJson = (JSONObject) allLinks.get(randNum);
-                        String imageURL = imageJson.getString("webformatURL");
-                        Intent intent = new Intent(DotToDotMainScreen.this, DotToDotView.class);
-                        intent.putExtra("URL_STRING_RAND", imageURL);
-                        intent.putExtra("ANSWER", scraper.getNoun());
-                        startActivity(intent);
-                    }
-                    catch (IllegalArgumentException ex) {
-                        //alert dialog here, 0 results found
-                    }
+
+                        JSONArray allLinks = jsonFile.getJSONArray("hits");
+                        int randCap = 0;
+                        if (totalHits >= 20) {
+                            randCap = 20;
+                        } else {
+                            randCap = totalHits;
+                        }
+                        try {
+                            int randNum = new Random().nextInt(randCap);
+                            JSONObject imageJson = (JSONObject) allLinks.get(randNum);
+                            String imageURL = imageJson.getString("webformatURL");
+                            Intent intent = new Intent(DotToDotMainScreen.this, DotToDotView.class);
+                            intent.putExtra("URL_STRING_RAND", imageURL);
+                            intent.putExtra("ANSWER", scraper.getNoun());
+                            startActivity(intent);
+                        } catch (IllegalArgumentException ex) {
+                            new AlertDialog.Builder(DotToDotMainScreen.this)
+                                    .setTitle("No Hits")
+                                    .setMessage("There are no images for that particular word, press Play again to generate a new one")
+                                    .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .show();
+                        }
+
 
 
                 } catch (JSONException e) {
