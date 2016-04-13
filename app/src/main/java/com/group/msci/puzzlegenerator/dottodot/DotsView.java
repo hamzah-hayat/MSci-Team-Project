@@ -21,6 +21,7 @@ public class DotsView extends View {
     public static final float TOUCH_TOLERANCE = 4;
     protected Paint dotsPaint;
     protected Bitmap dotsBitmap;
+    private Bitmap backgroundBitmap;
     protected Canvas dotsCanvas;
     protected boolean isDrawing = false;
     protected float x, y;
@@ -107,9 +108,14 @@ public class DotsView extends View {
         return true;
     }
 
+    public void setBackgroundBitmap(Bitmap b) { backgroundBitmap = b; }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        if(backgroundBitmap != null) {
+            canvas.drawBitmap(backgroundBitmap,0,0,dotsPaint);
+        }
         canvas.drawBitmap(dotsBitmap, 0, 0, dotsPaint);
 
         float dx = Math.abs(x-startx);

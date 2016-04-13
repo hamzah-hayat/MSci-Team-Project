@@ -46,6 +46,8 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
     private int shareCode;
     private ArrayList<Dot> passDot;
     private String puzData;
+    private int height, width;
+    private int butCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +79,8 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
             readImage = retImg.getrImg();
         }
 
-        //InputStream in = getResources().openRawResource(R.raw.network);
-        //ForegroundDetection fd = new ForegroundDetection(in);
+        InputStream in = getResources().openRawResource(R.raw.network);
+        ForegroundDetection fd = new ForegroundDetection(in);
         //fd.setBackground(Color.BLACK);
         mutableImg = readImage.copy(Bitmap.Config.ARGB_8888, true);
        // try {
@@ -94,8 +96,10 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
         det.process();
         Bitmap edgImg = det.getEdgesImage();
 
-        DotsView dotV = (DotsView) findViewById(R.id.dotsView);
-        Bitmap scaledImg = Bitmap.createScaledBitmap(edgImg, dotV.getLayoutParams().width, dotV.getLayoutParams().height, true);
+        final DotsView dotV = (DotsView) findViewById(R.id.dotsView);
+        final Bitmap scaledImg = Bitmap.createScaledBitmap(edgImg, dotV.getLayoutParams().width, dotV.getLayoutParams().height, true);
+        height = dotV.getLayoutParams().height;
+        width = dotV.getLayoutParams().width;
 
         dots = new ArrayList<>();
         ArrayList<Dot> fDots = new ArrayList<>();
@@ -113,12 +117,30 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
             fDots.add(cDot);
         }
 
+        //dotV.setBackgroundBitmap(scaledImg);
         dotV.setDots(fDots);
         dotV.removeEdgeDots();
         dotV.removeOverlappingDots();
 
 
         passDot = dotV.getDots();
+
+        Button show = (Button) findViewById(R.id.show);
+        show.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(butCounter == 0) {
+                    butCounter++;
+                    dotV.setBackgroundBitmap(scaledImg);
+                    dotV.invalidate();
+                }
+                else {
+                    butCounter = 0;
+                    dotV.setBackgroundBitmap(null);
+                    dotV.invalidate();
+                }
+            }
+        });
 
         Button discard = (Button) findViewById(R.id.discard);
         discard.setOnClickListener(new View.OnClickListener() {
@@ -163,6 +185,8 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
                     puzzleDataD += temp.getxPos() + "," + temp.getyPos() +";";
                 }
                 puzzleDataD += word.getText().toString() + ";";
+                puzzleDataD += width + ";" + height;
+
                 System.out.println(puzzleDataD);
                 UploadPuzzleJSON jsonGetter = new UploadPuzzleJSON('d', puzzleDataD, "hello, world!");
                 Thread x = new Thread(jsonGetter);
