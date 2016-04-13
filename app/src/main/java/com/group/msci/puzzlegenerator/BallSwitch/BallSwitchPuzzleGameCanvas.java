@@ -69,18 +69,21 @@ public class BallSwitchPuzzleGameCanvas extends View {
         //Draw all the objects in the puzzle
         for(BallSwitchObject object : puzzle.getObjects())
         {
-            int objectXLeft = object.getPosX() * gridWidthSpace;
-            int objectYTop = object.getPosY() * gridHeightSpace;
-            int objectXRight = (object.getPosX()+1) * gridWidthSpace;
-            int objectYBottom = (object.getPosY()+1) * gridHeightSpace;
-            paint.setColor(Color.BLACK);    //Set the colour back to default
-            ColorFilter filter = new LightingColorFilter(Color.BLACK, 1);
-            paint.setColorFilter(filter);
+            //Dont paint the ball
+            if(object!= puzzle.getBall()) {
+                int objectXLeft = object.getPosX() * gridWidthSpace;
+                int objectYTop = object.getPosY() * gridHeightSpace;
+                int objectXRight = (object.getPosX() + 1) * gridWidthSpace;
+                int objectYBottom = (object.getPosY() + 1) * gridHeightSpace;
+                paint.setColor(Color.BLACK);    //Set the colour back to default
+                ColorFilter filter = new LightingColorFilter(Color.BLACK, 1);
+                paint.setColorFilter(filter);
 
-            //Need to create a rectangle filling the box this object is in
-            RectF box = new RectF(objectXLeft,objectYTop,objectXRight,objectYBottom);
-            object.draw(box, canvas, paint);
-            paint.setColor(Color.BLACK);
+                //Need to create a rectangle filling the box this object is in
+                RectF box = new RectF(objectXLeft, objectYTop, objectXRight, objectYBottom);
+                object.draw(box, canvas, paint);
+                paint.setColor(Color.BLACK);
+            }
         }
 
 

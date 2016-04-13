@@ -23,7 +23,7 @@ public class Fan extends BallSwitchObject {
     public Fan(int startX,int startY,Resources c,int directionIn)
     {
         super(startX,startY);
-        direction = directionIn;
+        direction = directionIn+1;
         //Change image based on direction
         switch (direction)
         {
