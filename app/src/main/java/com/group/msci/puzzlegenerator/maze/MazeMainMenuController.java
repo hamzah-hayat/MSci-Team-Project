@@ -11,7 +11,7 @@ import com.group.msci.puzzlegenerator.R;
 /**
  * Created by filipt on 11/04/2016.
  */
-public class MazeWallController extends Activity {
+public class MazeMainMenuController extends Activity {
 
     private ImageButton play;
 
@@ -25,8 +25,8 @@ public class MazeWallController extends Activity {
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MazeWallController.this, MazeController.class);
-                MazeWallController.this.startActivity(intent);
+                Intent intent = new Intent(MazeMainMenuController.this, MazeController.class);
+                MazeMainMenuController.this.startActivity(intent);
             }
         });
     }

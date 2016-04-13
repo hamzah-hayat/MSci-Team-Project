@@ -2,10 +2,8 @@ package com.group.msci.puzzlegenerator.maze.utils;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
-import java.lang.reflect.Field;
-import java.net.Inet4Address;
+import com.google.gson.Gson;
 
 /**
  * Created by filipt on 11/03/2016.
@@ -21,13 +19,13 @@ public class MazeParams implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel out, int flags) {
+        Gson gson = new Gson();
         out.writeInt(width);
         out.writeInt(height);
         out.writeString(type);
         out.writeInt(time);
         out.writeInt(nplanes);
-        out.writeString(seed.toString());
-
+        out.writeString(gson.toJson(seed));
     }
 
     public MazeParams(int width, int height, int time, int nplanes, String type, Seed seed) {
@@ -39,24 +37,14 @@ public class MazeParams implements Parcelable {
         this.seed = seed;
     }
 
-    public MazeParams(String mpline) {
-        String[] components = mpline.split(" ");
-        this.width = Integer.parseInt(components[0]);
-        this.height = Integer.parseInt(components[1]);
-        this.time = Integer.parseInt(components[2]);
-        this.nplanes = Integer.parseInt(components[3]);
-        this.type = components[4];
-        this.seed = new Seed(components[5]);
-    }
-
     public MazeParams(Parcel in) {
+        Gson gson = new Gson();
         this.width = in.readInt();
         this.height = in.readInt();
         this.type = in.readString();
         this.time = in.readInt();
         this.nplanes = in.readInt();
-        this.seed = new Seed(in.readString());
-
+        this.seed = gson.fromJson(in.readString(), Seed.class);
     }
 
     @Override
@@ -100,21 +88,5 @@ public class MazeParams implements Parcelable {
 
     public Seed getSeed() {
         return seed;
-    }
-
-
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (Field field : getClass().getDeclaredFields()) {
-            try {
-                sb.append(field.get(this).toString());
-                sb.append(" ");
-            } catch (IllegalAccessException e) {
-                Log.i("MazeParams", "Access error");
-            }
-            sb.delete(sb.length() - 2, sb.length() - 1);
-        }
-
-        return sb.toString();
     }
 }

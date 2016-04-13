@@ -41,24 +41,29 @@ public class BaseMaze implements Maze {
     private Point exit;
     private Point playerPos;
     private Random randomizer;
+    private Seed seed;
 
-    public BaseMaze(int width, int height, Point entry, Point exit) {
+    private BaseMaze(int width, int height, Point entry, Point exit) {
         this(width, height);
         setOpenings(entry, exit);
     }
 
-    public BaseMaze(int width, int height) {
-        randomizer = new Random();
+    private BaseMaze(int width, int height) {
+        long nseed = System.currentTimeMillis();
+        randomizer = new Random(nseed);
+        seed = new Seed(nseed);
         init(width, height);
     }
 
     public BaseMaze(int width, int height, Seed seed) {
-        randomizer = (seed.getUseDefault()) ? new Random() : new Random(seed.get());
+        randomizer = new Random(seed.get());
+        this.seed = seed;
         init(width, height);
     }
 
     public BaseMaze(int width, int height, boolean useDefaultOpenings, Seed seed) {
-        randomizer = (seed.getUseDefault()) ? new Random() : new Random(seed.get());
+        randomizer = new Random(seed.get());
+        this.seed = seed;
         init(width, height);
         if (useDefaultOpenings)
             setDefaultOpenings();
@@ -70,7 +75,7 @@ public class BaseMaze implements Maze {
         solved = false;
 
         grid = new byte[height][width];
-        int carveStart = (this instanceof Maze3D) ? width / 3 : 1;
+        int carveStart = 1;
         carve(carveStart, 1);
         specifyWalls();
     }
@@ -84,8 +89,8 @@ public class BaseMaze implements Maze {
     }
 
     private void setDefaultOpenings() {
-        int xEnter = (this instanceof Maze3D) ? width / 3 : 1;
-        int xExit = (this instanceof Maze3D) ? 2 * width / 3 : width - 2;
+        int xEnter = 1;
+        int xExit = width - 2;
         setOpenings(new Point(xEnter, 0), new Point(xExit, height - 1));
     }
     //Interface methods
@@ -189,6 +194,10 @@ public class BaseMaze implements Maze {
        regenerate(true);
     }
 
+    @Override
+    public Seed getSeed() {
+        return seed;
+    }
 
     //Convenience methods
     protected void regenerate(boolean playerInPlane) {
@@ -196,7 +205,7 @@ public class BaseMaze implements Maze {
             Arrays.fill(grid[i], (byte)0);
         }
 
-        int carveStart = (this instanceof Maze3D) ? width / 3 : 1;
+        int carveStart = 1;
         carve(carveStart, 1);
         writeAt(entry, SPACE);
         writeAt(exit, SPACE);
