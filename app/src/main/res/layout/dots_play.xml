@@ -59,4 +59,13 @@
         android:layout_marginStart="54dp"
         android:textSize="32dp" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hint"
+        android:id="@+id/hint"
+        android:layout_alignTop="@+id/dots_exit"
+        android:layout_toLeftOf="@+id/dots_exit"
+        android:layout_toStartOf="@+id/dots_exit" />
+
 </RelativeLayout>

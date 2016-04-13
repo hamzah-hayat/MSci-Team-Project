@@ -183,13 +183,33 @@ public class DotToDotView extends Activity {
             }
         });
 
-        time = (TextView) findViewById(R.id.time);
-        startTime = SystemClock.uptimeMillis();
-        timeHandler.postDelayed(updateTimerThread, 0);
+        Button hint = (Button) findViewById(R.id.hint);
+        hint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                puzzleWord.length();
+                new AlertDialog.Builder(DotToDotView.this)
+                        .setTitle("Hint")
+                        .setMessage("The word has " + puzzleWord.length() + " characters. The word starts with " + puzzleWord.charAt(0) + " and ends with " + puzzleWord.charAt(puzzleWord.length()-1))
+                        .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+            }
+        });
 
-    }
+            time=(TextView)
 
-    private Runnable updateTimerThread = new Runnable() {
+            findViewById(R.id.time);
+
+            startTime=SystemClock.uptimeMillis();
+            timeHandler.postDelayed(updateTimerThread,0);
+
+        }
+
+        private Runnable updateTimerThread = new Runnable() {
         @Override
         public void run() {
             timeInMS = SystemClock.uptimeMillis() - startTime;

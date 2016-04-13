@@ -77,15 +77,15 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
             readImage = retImg.getrImg();
         }
 
-        InputStream in = getResources().openRawResource(R.raw.network);
-        ForegroundDetection fd = new ForegroundDetection(in);
-        fd.setBackground(Color.BLACK);
-        try {
-            mutableImg = readImage.copy(Bitmap.Config.ARGB_8888, true);
-            mutableImg = fd.getForegroundNoMerge(mutableImg);
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+        //InputStream in = getResources().openRawResource(R.raw.network);
+        //ForegroundDetection fd = new ForegroundDetection(in);
+        //fd.setBackground(Color.BLACK);
+        mutableImg = readImage.copy(Bitmap.Config.ARGB_8888, true);
+       // try {
+           // mutableImg = fd.getForegroundNoMerge(mutableImg);
+       // } catch(IOException e) {
+          //  e.printStackTrace();
+       // }
 
 
 
@@ -119,6 +119,29 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
 
 
         passDot = dotV.getDots();
+
+        Button discard = (Button) findViewById(R.id.discard);
+        discard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(DotToDotPreviewAndWord.this)
+                        .setTitle("Confirm")
+                        .setMessage("Are you sure you want to discard this puzzle?")
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                                Intent intent = new Intent(DotToDotPreviewAndWord.this, DotToDotMainScreen.class);
+                                startActivity(intent);
+                            }
+                        })
+                        .show();
+            }
+        });
 
 
         Button share = (Button) findViewById(R.id.share);
