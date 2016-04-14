@@ -18,6 +18,7 @@ import com.group.msci.puzzlegenerator.maze.utils.MazeParams;
 import com.group.msci.puzzlegenerator.maze.utils.Seed;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Random;
@@ -28,15 +29,26 @@ import java.util.Random;
 public class MazeController extends Activity {
 
     private Spinner mazeTypeChoices;
-    private EditText widthField;
-    private EditText heightField;
+    private Spinner mazeDifficultyChoices;
     private EditText minutesField;
     private EditText secondsField;
     private EditText planeNoField;
     private CheckBox useTimerCheckBox;
+
     private String currentMazeChoice;
+    private String currentMazeDifficulty;
 
     private int nplanes;
+
+    private static final HashMap<String, Integer> difficulties = new HashMap<>();
+
+    static {
+        difficulties.put("Easy", 21);
+        difficulties.put("Medium", 41);
+        difficulties.put("Challenging", 61);
+        difficulties.put("Hard", 81);
+        difficulties.put("Very Hard", 101);
+    }
 
 
     @Override
@@ -47,8 +59,7 @@ public class MazeController extends Activity {
         nplanes = 1;
         ImageButton startBtn = (ImageButton) findViewById(R.id.start_button);
         mazeTypeChoices = (Spinner) findViewById(R.id.maze_types_dd);
-        widthField = (EditText) findViewById(R.id.width_field);
-        heightField = (EditText) findViewById(R.id.height_field);
+        mazeDifficultyChoices = (Spinner) findViewById(R.id.maze_difficulty_dd);
         secondsField = (EditText) findViewById(R.id.seconds_field);
         minutesField = (EditText) findViewById(R.id.minutes_field);
         planeNoField = (EditText) findViewById(R.id.plane_no_field);
@@ -86,6 +97,25 @@ public class MazeController extends Activity {
             }
         });
 
+        ArrayAdapter<CharSequence> difficulty_adapter = ArrayAdapter.createFromResource(this,
+                R.array.maze_difficulties, android.R.layout.simple_spinner_item);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mazeDifficultyChoices.setAdapter(difficulty_adapter);
+
+
+        mazeDifficultyChoices.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                currentMazeDifficulty = (String) parent.getItemAtPosition(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+               currentMazeDifficulty = "Medium";
+            }
+        });
+
         useTimerCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,8 +132,7 @@ public class MazeController extends Activity {
                  * Add an extra unit to the width and height parameters
                  * to account for the outer walls
                  */
-                int width = Integer.parseInt(widthField.getText().toString()) + 1;
-                int height = Integer.parseInt(heightField.getText().toString()) + 1;
+                int wallLength = difficulties.get(currentMazeDifficulty);
                 boolean useTimer = useTimerCheckBox.isChecked();
 
 
@@ -127,7 +156,8 @@ public class MazeController extends Activity {
                    seed = new Seed(System.currentTimeMillis());
                 }
 
-                intent.putExtra("maze_params", new MazeParams(width, height, time, nplanes, kind, seed));
+                intent.putExtra("maze_params", new MazeParams(wallLength, wallLength, time,
+                                                              nplanes, kind, seed));
 
                 MazeController.this.startActivity(intent);
             }
