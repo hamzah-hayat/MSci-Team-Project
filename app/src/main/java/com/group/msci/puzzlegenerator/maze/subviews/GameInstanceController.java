@@ -36,6 +36,9 @@ public class GameInstanceController extends Activity {
     private Button solveBtn;
     private Button shareBtn;
 
+    private int width;
+    private int height;
+
     private TextView timeField;
 
     private MazeTimer timer;
@@ -63,6 +66,8 @@ public class GameInstanceController extends Activity {
             throw new IllegalArgumentException("Wrong Maze type selected in parcel: " + mazeType);
         }
 
+        width = maze.width();
+        height = maze.height();
 
         left = (ImageButton) findViewById(R.id.left);
         right = (ImageButton) findViewById(R.id.right);
@@ -164,7 +169,7 @@ public class GameInstanceController extends Activity {
         int score = 10;
 
         //add width and height
-        score += maze.width() + maze.height() - 2;
+        score += width + height - 2;
 
         //10 points for every extra maze plane
         score += ((maze.getNumberOfPlanes() - 1) * 10);
