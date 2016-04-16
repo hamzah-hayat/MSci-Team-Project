@@ -1,15 +1,10 @@
-package com.group.msci.puzzlegenerator.json;
-
-import android.app.Activity;
-
-import com.group.msci.puzzlegenerator.R;
+package com.group.msci.puzzlegenerator.utils.json;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;

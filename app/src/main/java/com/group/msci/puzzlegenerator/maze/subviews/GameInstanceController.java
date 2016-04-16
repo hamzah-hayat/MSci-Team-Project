@@ -10,12 +10,13 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.group.msci.puzzlegenerator.R;
-import com.group.msci.puzzlegenerator.json.UploadPuzzleJSON;
+import com.group.msci.puzzlegenerator.utils.json.UploadPuzzleJSON;
 import com.group.msci.puzzlegenerator.maze.Maze;
 import com.group.msci.puzzlegenerator.maze.MazeTimer;
 import com.group.msci.puzzlegenerator.maze.model.BaseMaze;
 import com.group.msci.puzzlegenerator.maze.model.PortalMaze;
 import com.group.msci.puzzlegenerator.maze.utils.MazeParams;
+import com.group.msci.puzzlegenerator.maze.utils.MazeScoreUploader;
 import com.group.msci.puzzlegenerator.maze.utils.SolvedDialog;
 
 /**
@@ -38,6 +39,7 @@ public class GameInstanceController extends Activity {
 
     private int width;
     private int height;
+    private int score;
 
     private TextView timeField;
 
@@ -126,8 +128,13 @@ public class GameInstanceController extends Activity {
         this.timer.start();
     }
 
+    public void uploadScore() {
+        score = calculateScore();
+        (new Thread(new MazeScoreUploader(score, getApplicationContext()))).start();
+    }
+
     public void showSolvedDialog() {
-        solvedDialog.setScore(calculateScore());
+        solvedDialog.setScore(score);
         solvedDialog.show();
     }
 

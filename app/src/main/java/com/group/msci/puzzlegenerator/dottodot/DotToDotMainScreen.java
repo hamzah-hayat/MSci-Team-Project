@@ -1,20 +1,16 @@
 package com.group.msci.puzzlegenerator.dottodot;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-import com.group.msci.puzzlegenerator.MainActivity;
 import com.group.msci.puzzlegenerator.R;
-import com.group.msci.puzzlegenerator.json.PixabayScraperJSON;
-import com.group.msci.puzzlegenerator.picross.PicrossPuzzleOptionsGUI;
+import com.group.msci.puzzlegenerator.utils.json.PixabayScraperJSON;
 
 import org.json.JSONArray;
 import org.json.JSONException;
