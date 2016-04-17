@@ -55,8 +55,8 @@ public class ForegroundDetection {
     public Bitmap getForeground(Bitmap b) throws IOException {
 
         setImage(b);
-        getForegroundPixels(false);
         generateRegions();
+        getForegroundPixels(false);
         thresholdRegions();
         return image;
 
@@ -166,9 +166,9 @@ public class ForegroundDetection {
     }
     public void generateRegions(){
         ImageSegmentation ig = new ImageSegmentation(image);
-        ig.generateSeeds(5000);
-        ig.setThreshold(50);
-        ig.setMergeThreshold(20);
+        ig.generateSeeds(1000);
+        ig.setThreshold(40);
+        ig.setMergeThreshold(30);
         
         numberOfRegions = ig.growRegion();
         regions = ig.returnRegions();

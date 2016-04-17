@@ -80,18 +80,20 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
             readImage = retImg.getrImg();
         }
 
-        //InputStream in = getResources().openRawResource(R.raw.network);
-        //ForegroundDetection fd = new ForegroundDetection(in);
-        //fd.setBackground(Color.BLACK);
+        InputStream in = getResources().openRawResource(R.raw.network);
+        System.out.println("START FOREGROUND");
+        ForegroundDetection fd = new ForegroundDetection(in);
+        fd.setBackground(Color.BLACK);
+        fd.setOutline(true);
         mutableImg = readImage.copy(Bitmap.Config.ARGB_8888, true);
-       // try {
-           // mutableImg = fd.getForegroundNoMerge(mutableImg);
-       // } catch(IOException e) {
-          //  e.printStackTrace();
-       // }
+        try {
+            mutableImg = fd.getForeground(mutableImg);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
 
 
-
+        System.out.println("START EDGE");
         AndroidCannyEdgeDetector det = new AndroidCannyEdgeDetector();
         det.setSourceImage(mutableImg);
         det.process();
@@ -126,17 +128,19 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
 
         passDot = dotV.getDots();
 
-        Button show = (Button) findViewById(R.id.show);
+        final Button show = (Button) findViewById(R.id.show);
         show.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(butCounter == 0) {
                     butCounter++;
+                    show.setText("DISMISS");
                     dotV.setBackgroundBitmap(scaledImg);
                     dotV.invalidate();
                 }
                 else {
                     butCounter = 0;
+                    show.setText("SHOW");
                     dotV.setBackgroundBitmap(null);
                     dotV.invalidate();
                 }

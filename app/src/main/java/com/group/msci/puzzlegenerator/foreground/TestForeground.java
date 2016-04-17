@@ -61,15 +61,16 @@ public class TestForeground extends AppCompatActivity {
         }
 
 
-
+        System.out.println("START");
         ForegroundDetection fd = new ForegroundDetection(in);
         fd.setBackground(Color.BLACK);
         fd.setOutline(true);
         try {
-            b = fd.getForegroundNoMerge(b);
+            b = fd.getForeground(b);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("END");
 
         iv.setImageBitmap(b);//set bitmap here
     }
