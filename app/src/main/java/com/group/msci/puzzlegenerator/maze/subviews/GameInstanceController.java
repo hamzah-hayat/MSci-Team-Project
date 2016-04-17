@@ -10,12 +10,13 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.group.msci.puzzlegenerator.R;
-import com.group.msci.puzzlegenerator.json.UploadPuzzleJSON;
+import com.group.msci.puzzlegenerator.utils.json.UploadPuzzleJSON;
 import com.group.msci.puzzlegenerator.maze.Maze;
 import com.group.msci.puzzlegenerator.maze.MazeTimer;
 import com.group.msci.puzzlegenerator.maze.model.BaseMaze;
 import com.group.msci.puzzlegenerator.maze.model.PortalMaze;
 import com.group.msci.puzzlegenerator.maze.utils.MazeParams;
+import com.group.msci.puzzlegenerator.maze.utils.MazeScoreUploader;
 import com.group.msci.puzzlegenerator.maze.utils.SolvedDialog;
 
 /**
@@ -35,6 +36,10 @@ public class GameInstanceController extends Activity {
     private ImageButton down;
     private Button solveBtn;
     private Button shareBtn;
+
+    private int width;
+    private int height;
+    private int score;
 
     private TextView timeField;
 
@@ -63,6 +68,8 @@ public class GameInstanceController extends Activity {
             throw new IllegalArgumentException("Wrong Maze type selected in parcel: " + mazeType);
         }
 
+        width = maze.width();
+        height = maze.height();
 
         left = (ImageButton) findViewById(R.id.left);
         right = (ImageButton) findViewById(R.id.right);
@@ -121,8 +128,13 @@ public class GameInstanceController extends Activity {
         this.timer.start();
     }
 
+    public void uploadScore() {
+        score = calculateScore();
+        (new Thread(new MazeScoreUploader(score, getApplicationContext()))).start();
+    }
+
     public void showSolvedDialog() {
-        solvedDialog.setScore(calculateScore());
+        solvedDialog.setScore(score);
         solvedDialog.show();
     }
 
@@ -164,7 +176,7 @@ public class GameInstanceController extends Activity {
         int score = 10;
 
         //add width and height
-        score += maze.width() + maze.height() - 2;
+        score += width + height - 2;
 
         //10 points for every extra maze plane
         score += ((maze.getNumberOfPlanes() - 1) * 10);

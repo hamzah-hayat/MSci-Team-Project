@@ -91,9 +91,11 @@ public class MoveAnimation implements Runnable {
     }
 
     private void displaySolved() {
+        parentActivity.uploadScore();
         parentActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+
                 parentActivity.showSolvedDialog();
             }
         });

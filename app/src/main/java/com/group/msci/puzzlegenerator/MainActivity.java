@@ -20,21 +20,31 @@ import com.google.gson.Gson;
 import com.group.msci.puzzlegenerator.BallSwitch.BallSwitchPuzzleGame;
 import com.group.msci.puzzlegenerator.dottodot.DotToDotMainScreen;
 import com.group.msci.puzzlegenerator.dottodot.DotToDotView;
-import com.group.msci.puzzlegenerator.json.DownloadPuzzleJSON;
+import com.group.msci.puzzlegenerator.utils.json.DownloadPuzzleJSON;
 import com.group.msci.puzzlegenerator.maze.MazeMainMenuController;
 import com.group.msci.puzzlegenerator.maze.subviews.GameInstanceController;
 import com.group.msci.puzzlegenerator.maze.utils.MazeParams;
 import com.group.msci.puzzlegenerator.picross.PicrossMainMenu;
 import com.group.msci.puzzlegenerator.picross.PicrossPuzzleGUI;
+import com.group.msci.puzzlegenerator.utils.user.UserManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        File unameFile = new File(getApplicationContext().getFilesDir(), UserManager.STORAGE_FILE);
+
+        if (!unameFile.exists()) {
+            Intent intent = new Intent(this, UserManager.class);
+            this.startActivity(intent);
+        }
 
         //Initialize facebook SDK
         FacebookSdk.sdkInitialize(getApplicationContext());
