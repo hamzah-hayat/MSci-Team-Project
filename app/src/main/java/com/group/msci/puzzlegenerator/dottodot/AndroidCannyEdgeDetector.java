@@ -160,9 +160,6 @@ public class AndroidCannyEdgeDetector extends Activity {
             data[i] = remap[data[i]];
         }
 
-//        for (int i = 0 ; i < data.length ; i++) {
-//            Log.i("AFTER contrast data", "Pixel number " + i + " = " + data[i]);
-//        }
     }
 
     private void computeGradients(float kernelRadius, int kernelWidth) {

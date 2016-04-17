@@ -7,8 +7,7 @@
         android:layout_height="300dp"
         android:id="@+id/dotsView2"
         android:layout_below="@+id/dots_exit"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp" />
+        android:layout_centerHorizontal="true" />
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -58,5 +57,22 @@
         android:layout_marginLeft="54dp"
         android:layout_marginStart="54dp"
         android:textSize="32dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hint"
+        android:id="@+id/hint"
+        android:layout_alignTop="@+id/dots_exit"
+        android:layout_toLeftOf="@+id/dots_exit"
+        android:layout_toStartOf="@+id/dots_exit" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SHOW"
+        android:id="@+id/show"
+        android:layout_above="@+id/dots_guess"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

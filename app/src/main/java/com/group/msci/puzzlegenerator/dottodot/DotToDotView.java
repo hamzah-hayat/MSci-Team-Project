@@ -54,18 +54,25 @@ public class DotToDotView extends Activity {
     //private Bitmap readImage;
     private String data;
     private ArrayList<Dot> allDots;
+    private double subHeight, subWidth;
+    private double scaleH, scaleW;
+    private Bitmap scaledImg;
+    private DotsView dv;
+    private int showCount = 0;
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
         setContentView(R.layout.dots_play);
         Intent intent = getIntent();
-        DotsView dv = (DotsView) findViewById(R.id.dotsView2);
+        dv = (DotsView) findViewById(R.id.dotsView2);
         if(intent.hasExtra("ANSWER_ARRAY")) {
             data = intent.getStringExtra("ANSWER_ARRAY");
             dataSplit = data.split(";");
-            puzzleWord = dataSplit[dataSplit.length-1].toLowerCase();
+            subWidth = Double.parseDouble(dataSplit[dataSplit.length - 2]);
+            subHeight = Double.parseDouble(dataSplit[dataSplit.length - 1]);
+            puzzleWord = dataSplit[dataSplit.length-3].toLowerCase();
             pDots = new ArrayList<>();
-            for(int i = 0; i < dataSplit.length-2; i++) {
+            for(int i = 0; i < dataSplit.length-4; i++) {
                 String[] xyPair = dataSplit[i].split(",");
                 pDots.add(new Dot(Integer.parseInt(xyPair[0]), Integer.parseInt(xyPair[1])));
             }
@@ -81,10 +88,13 @@ public class DotToDotView extends Activity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            readImage = retImg.getrImg();
+            readImage = Bitmap.createScaledBitmap(retImg.getrImg(), dv.getLayoutParams().width, dv.getLayoutParams().height, true);
 
             InputStream in = getResources().openRawResource(R.raw.network);
+            System.out.println("START FOREGROUND");
             ForegroundDetection fd = new ForegroundDetection(in);
+            fd.setBackground(Color.BLACK);
+            fd.setOutline(true);
             Bitmap mutableImg = readImage.copy(Bitmap.Config.ARGB_8888, true);
             try {
                 mutableImg = fd.getForeground(mutableImg);
@@ -92,6 +102,7 @@ public class DotToDotView extends Activity {
                 e.printStackTrace();
             }
 
+            System.out.println("START EDGE DETECTION");
             AndroidCannyEdgeDetector det = new AndroidCannyEdgeDetector();
             det.setSourceImage(mutableImg);
             det.process();
@@ -99,7 +110,7 @@ public class DotToDotView extends Activity {
             det=null;
             System.gc();
 
-            Bitmap scaledImg = Bitmap.createScaledBitmap(edgImg, dv.getLayoutParams().width, dv.getLayoutParams().height, true);
+            scaledImg = Bitmap.createScaledBitmap(edgImg, dv.getLayoutParams().width, dv.getLayoutParams().height, true);
 
             allDots = new ArrayList<>();
             for (int x = 0; x < scaledImg.getWidth(); x++) {
@@ -116,20 +127,60 @@ public class DotToDotView extends Activity {
             }
         }
 
+        if(intent.hasExtra("ANSWER_ARRAY")) { //SCALE IMAGE TO CORRECT DIMENSIONS
+
+            double newHeight = dv.getLayoutParams().height;
+            double newWidth = dv.getLayoutParams().width;
+
+            scaleH = subHeight / newHeight;
+            scaleW = subWidth / newWidth;
+
+            for (Dot d : pDots) {
+                double newX = d.getxPos() / scaleW;
+                double newY = d.getyPos() / scaleH;
+                d.setxPos((int) (newX + 0.5d));
+                d.setyPos((int) (newY + 0.5d));
+            }
+        }
 
         dv.setDots(pDots);
         if(intent.hasExtra("URL_STRING_RAND")) {
             dv.removeEdgeDots();
             dv.removeOverlappingDots();
+        }
+        else if(intent.hasExtra("ANSWER_ARRAY")) {
+            dv.removeEdgeDots();
+        }
 
+        Button show = (Button) findViewById(R.id.show);
+        if(intent.hasExtra("ARRAY_NAME")) {
+            show.setAlpha(.5f);
+            show.setClickable(false);
+        }
+        else if(intent.hasExtra("URL_STRING_RAND")) {
+            show.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(showCount == 0) {
+                        showCount++;
+                        dv.setBackgroundBitmap(scaledImg);
+                        dv.invalidate();
+                    }
+                    else {
+                        showCount = 0;
+                        dv.setBackgroundBitmap(null);
+                        dv.invalidate();
+                    }
+                }
+            });
         }
 
         ImageButton exit = (ImageButton) findViewById(R.id.dots_exit);
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                readImage=null;
-                allDots=null;
+                readImage = null;
+                allDots = null;
                 System.gc();
                 finish();
                 Intent intent = new Intent(DotToDotView.this, MainActivity.class);
@@ -183,13 +234,33 @@ public class DotToDotView extends Activity {
             }
         });
 
-        time = (TextView) findViewById(R.id.time);
-        startTime = SystemClock.uptimeMillis();
-        timeHandler.postDelayed(updateTimerThread, 0);
+        Button hint = (Button) findViewById(R.id.hint);
+        hint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                puzzleWord.length();
+                new AlertDialog.Builder(DotToDotView.this)
+                        .setTitle("Hint")
+                        .setMessage("The word has " + puzzleWord.length() + " characters. The word starts with " + puzzleWord.charAt(0) + " and ends with " + puzzleWord.charAt(puzzleWord.length()-1))
+                        .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+            }
+        });
 
-    }
+            time=(TextView)
 
-    private Runnable updateTimerThread = new Runnable() {
+            findViewById(R.id.time);
+
+            startTime=SystemClock.uptimeMillis();
+            timeHandler.postDelayed(updateTimerThread,0);
+
+        }
+
+        private Runnable updateTimerThread = new Runnable() {
         @Override
         public void run() {
             timeInMS = SystemClock.uptimeMillis() - startTime;

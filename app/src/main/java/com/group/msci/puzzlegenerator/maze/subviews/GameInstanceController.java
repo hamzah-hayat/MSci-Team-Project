@@ -8,15 +8,18 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.group.msci.puzzlegenerator.R;
-import com.group.msci.puzzlegenerator.json.UploadPuzzleJSON;
+import com.group.msci.puzzlegenerator.utils.PuzzleCode;
+import com.group.msci.puzzlegenerator.utils.json.UploadPuzzleJSON;
 import com.group.msci.puzzlegenerator.maze.Maze;
 import com.group.msci.puzzlegenerator.maze.MazeTimer;
 import com.group.msci.puzzlegenerator.maze.model.BaseMaze;
-import com.group.msci.puzzlegenerator.maze.model.Maze3D;
 import com.group.msci.puzzlegenerator.maze.model.PortalMaze;
 import com.group.msci.puzzlegenerator.maze.utils.MazeParams;
+import com.group.msci.puzzlegenerator.maze.utils.MazeScoreUploader;
 import com.group.msci.puzzlegenerator.maze.utils.SolvedDialog;
+import com.group.msci.puzzlegenerator.utils.json.UploadScoreJSON;
 
 /**
  * Created by filipt on 11/02/2016.
@@ -36,11 +39,16 @@ public class GameInstanceController extends Activity {
     private Button solveBtn;
     private Button shareBtn;
 
+    private int width;
+    private int height;
+    private int score;
+
     private TextView timeField;
 
     private MazeTimer timer;
 
     private SolvedDialog solvedDialog;
+    private long remainingTime;
 
     @Override
     protected void onCreate(Bundle savedInstance) {
@@ -54,16 +62,16 @@ public class GameInstanceController extends Activity {
         if (mazeType.equals("Portal")) {
             maze = new PortalMaze(params.getWidth(), params.getHeight(), params.getNplanes(), params.getSeed());
         }
-        else if (mazeType.equals("Cube")) {
-            maze = new Maze3D(params.getWidth());
-        }
         else if (mazeType.equals("Simple")) {
+
             maze = new BaseMaze(params.getWidth(), params.getHeight(), true, params.getSeed());
         }
         else {
             throw new IllegalArgumentException("Wrong Maze type selected in parcel: " + mazeType);
         }
 
+        width = maze.width();
+        height = maze.height();
 
         left = (ImageButton) findViewById(R.id.left);
         right = (ImageButton) findViewById(R.id.right);
@@ -91,15 +99,13 @@ public class GameInstanceController extends Activity {
 
         solvedDialog = new SolvedDialog(this);
         solvedDialog.setContentView(R.layout.maze_solved_alert);
-
         board.setMaze(maze);
 
         if (params.getTime() > 0) {
             setAndStartTimer(new MazeTimer(params.getTime() * 1000, maze, timeField, board, this));
         }
         else {
-            //timeField.setVisibility(View.GONE);
-            timeField.setText("".toCharArray(), 0,0);
+            timeField.setText(new char[0], 0,0);
         }
 
 
@@ -108,13 +114,13 @@ public class GameInstanceController extends Activity {
         shareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UploadPuzzleJSON uploader = new UploadPuzzleJSON('m', params.toString(), "maze");
+                params.getSeed().resetPos();
+                Gson gson = new Gson();
+                UploadPuzzleJSON uploader = new UploadPuzzleJSON('m', gson.toJson(params), "maze");
                 Thread uploadThread = new Thread(uploader);
                 uploadThread.start();
             }
         });
-
-
     }
 
     public void setAndStartTimer(MazeTimer timer) {
@@ -122,7 +128,23 @@ public class GameInstanceController extends Activity {
         this.timer.start();
     }
 
+    public void stopTimer() {
+        if (timer != null)
+           timer.cancel();
+    }
+
+    public void uploadScoreIfShared() {
+        PuzzleCode pc = PuzzleCode.getInstance();
+        if (pc.isSet()) {
+            score = calculateScore();
+            (new Thread(new UploadScoreJSON(pc.getTypeCode(), pc.numericCode(),
+                                            score, getApplicationContext())))
+                    .start();
+        }
+    }
+
     public void showSolvedDialog() {
+        solvedDialog.setScore(score);
         solvedDialog.show();
     }
 
@@ -157,5 +179,29 @@ public class GameInstanceController extends Activity {
                 }
             }
         });
+    }
+
+    private int calculateScore() {
+        //10 for solving maze
+        int score = 10;
+
+        //add width and height
+        score += width + height - 2;
+
+        //10 points for every extra maze plane
+        score += ((maze.getNumberOfPlanes() - 1) * 10);
+
+        if (timer != null) {
+            //percent of time remaining
+            score += (int) ((double) remainingTime / (double) timer.getTimeSeconds()) * 100;
+
+            //give score for short times
+            score += (60 * 10) - timer.getTimeSeconds();
+        }
+        return score;
+    }
+
+    public void updateRemainingTime(long millisUntilFinished) {
+        remainingTime = millisUntilFinished / (long) 10e6;
     }
 }

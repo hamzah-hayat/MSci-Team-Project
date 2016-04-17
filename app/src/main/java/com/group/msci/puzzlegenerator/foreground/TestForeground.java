@@ -61,7 +61,7 @@ public class TestForeground extends AppCompatActivity {
         }
 
 
-
+        System.out.println("START");
         ForegroundDetection fd = new ForegroundDetection(in);
         fd.setBackground(Color.BLACK);
         fd.setOutline(true);
@@ -70,6 +70,7 @@ public class TestForeground extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("END");
 
        // b = ImageProcessing.blur(b);
         iv.setImageBitmap(b);//set bitmap here

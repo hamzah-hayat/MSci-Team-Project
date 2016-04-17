@@ -20,6 +20,7 @@ public class PortalMaze implements Maze {
     private int currentPlane;
     private Point3D entry;
     private Point3D exit;
+    private Seed seed;
 
     public PortalMaze(int width, int height, int nplanes, Seed seed) {
         this(width, height, nplanes,
@@ -27,8 +28,9 @@ public class PortalMaze implements Maze {
                 new Point3D(width - 2, height - 1, nplanes - 1), seed);
     }
 
-    public PortalMaze(int width, int height, int nplanes, Point3D entry,
-                      Point3D exit, Seed seed) {
+    public PortalMaze(int width, int height, int nplanes, Point3D entry, Point3D exit, Seed seed) {
+        this.seed = seed;
+        //This randomizer is for picking entrances/exits
         Random random = new Random();
         planes = new BaseMaze[nplanes];
         this.currentPlane = entry.z;
@@ -183,16 +185,24 @@ public class PortalMaze implements Maze {
         return planes[currentPlane].isJunction(point);
     }
 
+    @Override
     public int getNumberOfPlanes() {
         return nplanes;
     }
 
+    @Override
     public int getCurrentPlane() {
         return currentPlane;
     }
 
+    @Override
     public boolean atGate(Point point) {
         return planes[currentPlane].atGate(point);
+    }
+
+    @Override
+    public Seed getSeed() {
+        return seed;
     }
 
     @Override

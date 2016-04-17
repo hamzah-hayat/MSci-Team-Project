@@ -16,6 +16,13 @@
         <item>Simple</item>
         <item>Portal</item>
     </string-array>
+    <string-array name="maze_difficulties">
+        <item>Easy</item>
+        <item>Medium</item>
+        <item>Challenging</item>
+        <item>Hard</item>
+        <item>Very Hard</item>
+    </string-array>
     <string name="title_activity_picross_complete_screen">PicrossCompleteScreen</string>
     <string name="title_activity_picross_saved_puzzles">PicrossSavedPuzzles</string>
     <string name="title_activity_picross_help_page">PicrossHelpPage</string>

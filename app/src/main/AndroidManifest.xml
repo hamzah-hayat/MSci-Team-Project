@@ -13,6 +13,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:largeHeap="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
@@ -25,10 +26,13 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".utils.user.UserManager"
+            android:label="@string/app_name" />
+        <activity
             android:name=".maze.MazeController"
             android:label="@string/app_name" />
         <activity
-            android:name=".maze.MazeWallController"
+            android:name=".maze.MazeMainMenuController"
             android:label="@string/app_name" />
         <activity
             android:name=".maze.subviews.GameInstanceController"

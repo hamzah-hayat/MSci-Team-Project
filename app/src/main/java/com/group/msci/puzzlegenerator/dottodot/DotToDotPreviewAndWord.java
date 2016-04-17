@@ -1,28 +1,23 @@
 package com.group.msci.puzzlegenerator.dottodot;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.group.msci.puzzlegenerator.MainActivity;
 import com.group.msci.puzzlegenerator.R;
 import com.group.msci.puzzlegenerator.foreground.ForegroundDetection;
-import com.group.msci.puzzlegenerator.json.UploadPuzzleJSON;
+import com.group.msci.puzzlegenerator.utils.json.UploadPuzzleJSON;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,6 +41,9 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
     private int shareCode;
     private ArrayList<Dot> passDot;
     private String puzData;
+    private int height, width;
+    private int butCounter = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,24 +76,28 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
         }
 
         InputStream in = getResources().openRawResource(R.raw.network);
+        System.out.println("START FOREGROUND");
         ForegroundDetection fd = new ForegroundDetection(in);
         fd.setBackground(Color.BLACK);
+        fd.setOutline(true);
+        mutableImg = readImage.copy(Bitmap.Config.ARGB_8888, true);
         try {
-            mutableImg = readImage.copy(Bitmap.Config.ARGB_8888, true);
-            mutableImg = fd.getForegroundNoMerge(mutableImg);
+            mutableImg = fd.getForeground(mutableImg);
         } catch(IOException e) {
             e.printStackTrace();
         }
 
 
-
+        System.out.println("START EDGE");
         AndroidCannyEdgeDetector det = new AndroidCannyEdgeDetector();
         det.setSourceImage(mutableImg);
         det.process();
         Bitmap edgImg = det.getEdgesImage();
 
-        DotsView dotV = (DotsView) findViewById(R.id.dotsView);
-        Bitmap scaledImg = Bitmap.createScaledBitmap(edgImg, dotV.getLayoutParams().width, dotV.getLayoutParams().height, true);
+        final DotsView dotV = (DotsView) findViewById(R.id.dotsView);
+        final Bitmap scaledImg = Bitmap.createScaledBitmap(edgImg, dotV.getLayoutParams().width, dotV.getLayoutParams().height, true);
+        height = dotV.getLayoutParams().height;
+        width = dotV.getLayoutParams().width;
 
         dots = new ArrayList<>();
         ArrayList<Dot> fDots = new ArrayList<>();
@@ -113,12 +115,55 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
             fDots.add(cDot);
         }
 
+        //dotV.setBackgroundBitmap(scaledImg);
         dotV.setDots(fDots);
         dotV.removeEdgeDots();
         dotV.removeOverlappingDots();
 
 
         passDot = dotV.getDots();
+
+        final Button show = (Button) findViewById(R.id.show);
+        show.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(butCounter == 0) {
+                    butCounter++;
+                    show.setText("DISMISS");
+                    dotV.setBackgroundBitmap(scaledImg);
+                    dotV.invalidate();
+                }
+                else {
+                    butCounter = 0;
+                    show.setText("SHOW");
+                    dotV.setBackgroundBitmap(null);
+                    dotV.invalidate();
+                }
+            }
+        });
+
+        Button discard = (Button) findViewById(R.id.discard);
+        discard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(DotToDotPreviewAndWord.this)
+                        .setTitle("Confirm")
+                        .setMessage("Are you sure you want to discard this puzzle?")
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                                Intent intent = new Intent(DotToDotPreviewAndWord.this, DotToDotMainScreen.class);
+                                startActivity(intent);
+                            }
+                        })
+                        .show();
+            }
+        });
 
 
         Button share = (Button) findViewById(R.id.share);
@@ -140,6 +185,8 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
                     puzzleDataD += temp.getxPos() + "," + temp.getyPos() +";";
                 }
                 puzzleDataD += word.getText().toString() + ";";
+                puzzleDataD += width + ";" + height;
+
                 System.out.println(puzzleDataD);
                 UploadPuzzleJSON jsonGetter = new UploadPuzzleJSON('d', puzzleDataD, "hello, world!");
                 Thread x = new Thread(jsonGetter);
