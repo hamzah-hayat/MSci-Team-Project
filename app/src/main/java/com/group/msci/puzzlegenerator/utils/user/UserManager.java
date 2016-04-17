@@ -39,6 +39,7 @@ public class UserManager extends Activity {
         super.onCreate(savedInstance);
 
         setContentView(R.layout.activity_register);
+        Log.i("UserManager", "Files dir: " + getApplicationContext().getFilesDir());
 
         unameField = (EditText) findViewById(R.id.uname_field);
         registerButton = (Button) findViewById(R.id.register_btn);
@@ -50,10 +51,9 @@ public class UserManager extends Activity {
                 Log.i("UserManager", username);
                if (validateUname(username)) {
                    File unameFile = new File(getApplicationContext().getFilesDir(), STORAGE_FILE);
-                   unameFile.mkdirs();
                    Log.i("UserManager", username);
                    uploadUser(username);
-                   writeUsername(username);
+                   writeUsername(unameFile, username);
                    Intent intent = new Intent(UserManager.this, MainActivity.class);
                    UserManager.this.startActivity(intent);
                }
@@ -65,14 +65,15 @@ public class UserManager extends Activity {
         });
     }
 
-    private void writeUsername(String username) {
+    private void writeUsername(File file, String username) {
         try {
+            file.createNewFile();
             OutputStreamWriter os = new OutputStreamWriter(openFileOutput(STORAGE_FILE,
                                                                            Context.MODE_PRIVATE));
             os.write(username);
             os.close();
         } catch (IOException e) {
-
+            e.printStackTrace();
         }
     }
 
@@ -87,7 +88,7 @@ public class UserManager extends Activity {
            }
 
        } catch (IOException e) {
-
+           e.printStackTrace();
        }
         return sb.toString();
     }
@@ -128,5 +129,6 @@ public class UserManager extends Activity {
     //Convenicence for testing
     public static void deleteStorageFile(Context ctx) {
         File file = new File(ctx.getFilesDir(), STORAGE_FILE);
+        file.delete();
     }
 }
