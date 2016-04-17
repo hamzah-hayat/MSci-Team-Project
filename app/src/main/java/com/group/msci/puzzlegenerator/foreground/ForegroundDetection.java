@@ -165,8 +165,9 @@ public class ForegroundDetection {
         }
     }
     public void generateRegions(){
+        image = ImageProcessing.blur(image);
         ImageSegmentation ig = new ImageSegmentation(image);
-        ig.generateSeeds(5000);
+        ig.generateSeeds(500);
         ig.setThreshold(50);
         ig.setMergeThreshold(20);
         

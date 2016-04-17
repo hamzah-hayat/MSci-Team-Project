@@ -66,11 +66,12 @@ public class TestForeground extends AppCompatActivity {
         fd.setBackground(Color.BLACK);
         fd.setOutline(true);
         try {
-            b = fd.getForegroundNoMerge(b);
+            b = fd.getForeground(b);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+       // b = ImageProcessing.blur(b);
         iv.setImageBitmap(b);//set bitmap here
     }
     private File createFileFromInputStream(InputStream inputStream) {
