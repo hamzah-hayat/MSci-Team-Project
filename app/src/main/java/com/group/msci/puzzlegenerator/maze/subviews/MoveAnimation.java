@@ -91,9 +91,11 @@ public class MoveAnimation implements Runnable {
     }
 
     private void displaySolved() {
+        parentActivity.uploadScoreIfShared();
         parentActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+
                 parentActivity.showSolvedDialog();
             }
         });
@@ -145,6 +147,7 @@ public class MoveAnimation implements Runnable {
             } while (!currentMaze.isJunction(current) && (direction > -1) && !atOpening(current));
 
             if (current.equals(currentMaze.exit())) {
+                parentActivity.stopTimer();
                 displaySolved();
             }
         }

@@ -10,13 +10,16 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.group.msci.puzzlegenerator.R;
-import com.group.msci.puzzlegenerator.json.UploadPuzzleJSON;
+import com.group.msci.puzzlegenerator.utils.PuzzleCode;
+import com.group.msci.puzzlegenerator.utils.json.UploadPuzzleJSON;
 import com.group.msci.puzzlegenerator.maze.Maze;
 import com.group.msci.puzzlegenerator.maze.MazeTimer;
 import com.group.msci.puzzlegenerator.maze.model.BaseMaze;
 import com.group.msci.puzzlegenerator.maze.model.PortalMaze;
 import com.group.msci.puzzlegenerator.maze.utils.MazeParams;
+import com.group.msci.puzzlegenerator.maze.utils.MazeScoreUploader;
 import com.group.msci.puzzlegenerator.maze.utils.SolvedDialog;
+import com.group.msci.puzzlegenerator.utils.json.UploadScoreJSON;
 
 /**
  * Created by filipt on 11/02/2016.
@@ -38,6 +41,7 @@ public class GameInstanceController extends Activity {
 
     private int width;
     private int height;
+    private int score;
 
     private TextView timeField;
 
@@ -101,7 +105,7 @@ public class GameInstanceController extends Activity {
             setAndStartTimer(new MazeTimer(params.getTime() * 1000, maze, timeField, board, this));
         }
         else {
-            timeField.setText("".toCharArray(), 0,0);
+            timeField.setText(new char[0], 0,0);
         }
 
 
@@ -117,8 +121,6 @@ public class GameInstanceController extends Activity {
                 uploadThread.start();
             }
         });
-
-
     }
 
     public void setAndStartTimer(MazeTimer timer) {
@@ -126,8 +128,22 @@ public class GameInstanceController extends Activity {
         this.timer.start();
     }
 
+    public void stopTimer() {
+       timer.cancel();
+    }
+
+    public void uploadScoreIfShared() {
+        PuzzleCode pc = PuzzleCode.getInstance();
+        if (pc.isSet()) {
+            score = calculateScore();
+            (new Thread(new UploadScoreJSON(pc.getTypeCode(), pc.numericCode(),
+                                            score, getApplicationContext())))
+                    .start();
+        }
+    }
+
     public void showSolvedDialog() {
-        solvedDialog.setScore(calculateScore());
+        solvedDialog.setScore(score);
         solvedDialog.show();
     }
 

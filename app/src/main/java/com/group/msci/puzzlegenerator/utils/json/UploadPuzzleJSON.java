@@ -1,4 +1,4 @@
-package com.group.msci.puzzlegenerator.json;
+package com.group.msci.puzzlegenerator.utils.json;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,13 +12,17 @@ import java.net.URL;
 /**
  * Created by Magdi on 06/04/2016.
  */
-public class DownloadPuzzleJSON implements Runnable {
-    private String puzzleCode;
+public class UploadPuzzleJSON implements Runnable { //DON'T KNOW HOW TO IMPLEMENT THIS
+    private char puzzleType;
+    private String puzzleData;
+    private String puzzleText;
     private volatile JSONObject jsonFile;
     private String urlBase;
 
-    public DownloadPuzzleJSON (String puzzleCodeT) {
-        puzzleCode = puzzleCodeT;
+    public UploadPuzzleJSON(char puzzleCodeT, String data, String text) {
+        puzzleType = puzzleCodeT;
+        puzzleData = data;
+        puzzleText = text;
     }
 
     @Override
@@ -33,21 +37,20 @@ public class DownloadPuzzleJSON implements Runnable {
 
 
     public void buildJSON() {
-        if (puzzleCode.charAt(0) == 'd') {
-            urlBase = "http://webprojects.eecs.qmul.ac.uk/ma334/puzzle/dotLoad.php?shareCode=";
+        if (puzzleType == 'd') {
+            urlBase = "http://webprojects.eecs.qmul.ac.uk/ma334/puzzle/dotSave.php?puzzleData=" + puzzleData + "&puzzleText=" + puzzleText;
         }
-        else if (puzzleCode.charAt(0) == 'm') {
-            urlBase = "http://webprojects.eecs.qmul.ac.uk/ma334/puzzle/mazeLoad.php?shareCode=";
+        else if (puzzleType == 'm') {
+            urlBase = "http://webprojects.eecs.qmul.ac.uk/ma334/puzzle/mazeSave.php?puzzleData=" + puzzleData + "&puzzleText=" + puzzleText;
         }
-        else if (puzzleCode.charAt(0) == 'p') {
-            urlBase = "http://webprojects.eecs.qmul.ac.uk/ma334/puzzle/picrossLoad.php?shareCode=";
+        else if (puzzleType == 'p') {
+            urlBase = "http://webprojects.eecs.qmul.ac.uk/ma334/puzzle/picrossSave.php?puzzleData=" + puzzleData + "&puzzleText=" + puzzleText;
         }
         else {
-            urlBase = "http://webprojects.eecs.qmul.ac.uk/ma334/puzzle/ballLoad.php?shareCode=";
+            urlBase = "http://webprojects.eecs.qmul.ac.uk/ma334/puzzle/ballSave.php?puzzleData=" + puzzleData + "&puzzleText=" + puzzleText;
         }
         try {
-            System.out.println(urlBase + Integer.parseInt(puzzleCode.substring(1)));
-            URL url = new URL(urlBase + Integer.parseInt(puzzleCode.substring(1)));
+            URL url = new URL(urlBase);
             InputStream urlStream = url.openConnection().getInputStream();
             BufferedReader bf = new BufferedReader(new InputStreamReader(urlStream, "UTF-8"));
             StringBuilder responseBuilder = new StringBuilder();
@@ -58,6 +61,7 @@ public class DownloadPuzzleJSON implements Runnable {
                 input = bf.readLine();
             }
             jsonFile = new JSONObject(responseBuilder.toString());
+            System.out.println("Hello");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {

@@ -1,8 +1,4 @@
-package com.group.msci.puzzlegenerator.json;
-
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+package com.group.msci.puzzlegenerator.utils.json;
 
 import org.json.JSONException;
 import org.json.JSONObject;

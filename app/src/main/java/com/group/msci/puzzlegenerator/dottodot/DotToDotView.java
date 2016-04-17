@@ -88,17 +88,21 @@ public class DotToDotView extends Activity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            readImage = retImg.getrImg();
+            readImage = Bitmap.createScaledBitmap(retImg.getrImg(), dv.getLayoutParams().width, dv.getLayoutParams().height, true);
 
-            //InputStream in = getResources().openRawResource(R.raw.network);
-            //ForegroundDetection fd = new ForegroundDetection(in);
+            InputStream in = getResources().openRawResource(R.raw.network);
+            System.out.println("START FOREGROUND");
+            ForegroundDetection fd = new ForegroundDetection(in);
+            fd.setBackground(Color.BLACK);
+            fd.setOutline(true);
             Bitmap mutableImg = readImage.copy(Bitmap.Config.ARGB_8888, true);
-            //try {
-                //mutableImg = fd.getForeground(mutableImg);
-            //} catch(IOException e) {
-                //e.printStackTrace();
-            //}
+            try {
+                mutableImg = fd.getForeground(mutableImg);
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
 
+            System.out.println("START EDGE DETECTION");
             AndroidCannyEdgeDetector det = new AndroidCannyEdgeDetector();
             det.setSourceImage(mutableImg);
             det.process();
