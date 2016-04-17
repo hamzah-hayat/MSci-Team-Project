@@ -15,6 +15,7 @@ import com.group.msci.puzzlegenerator.MainActivity;
 import com.group.msci.puzzlegenerator.R;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -105,6 +106,7 @@ public class UserManager extends Activity {
         alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
+                unameField.setText(new char[0], 0, 0);
             }
         });
 
@@ -122,9 +124,23 @@ public class UserManager extends Activity {
 
         }
         JSONArray userList = retriever.getUserList();
-        return uname.matches(ALNUM_PATTERN) && !userList.toString().contains(uname);
+        try {
+            return uname.matches(ALNUM_PATTERN) && !jsonArrayContains(userList, uname);
+        } catch (JSONException e) {
+            return false;
+        }
     }
 
+    public boolean jsonArrayContains(JSONArray array, String uname) throws JSONException{
+
+        for (int i = 0; i < array.length(); ++i) {
+            if (array.get(i).equals(uname)) {
+               return true ;
+            }
+        }
+
+        return false;
+    }
 
     //Convenicence for testing
     public static void deleteStorageFile(Context ctx) {
