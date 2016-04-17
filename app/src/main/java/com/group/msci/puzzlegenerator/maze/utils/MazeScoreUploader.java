@@ -1,6 +1,7 @@
 package com.group.msci.puzzlegenerator.maze.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.group.msci.puzzlegenerator.utils.UrlBuilder;
 import com.group.msci.puzzlegenerator.utils.user.UserManager;
@@ -14,9 +15,13 @@ import java.net.URL;
 public class MazeScoreUploader implements Runnable{
 
     private UrlBuilder builder;
+    private int score;
+    private String username;
 
     public MazeScoreUploader(int score, Context ctx) {
+        this.score = score;
         String username = UserManager.getCurrentUsername(ctx);
+        this.username = username;
         builder = new UrlBuilder("mazeSave.php");
         builder.setPrefix("score/");
         builder.addParam("username", username);
@@ -26,8 +31,10 @@ public class MazeScoreUploader implements Runnable{
     @Override
     public void run() {
         try {
+            Log.i("MazeScoreUploader", "Score: " + Integer.toString(score) + " username: " + username);
             URL url = builder.toURL();
             url.openConnection().getInputStream();
+            Log.i("MazeScoreUploader", "upload worked");
         } catch (IOException e) {
 
         }

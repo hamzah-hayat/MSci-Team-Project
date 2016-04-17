@@ -18,8 +18,10 @@ import android.widget.ImageButton;
 import com.facebook.FacebookSdk;
 import com.google.gson.Gson;
 import com.group.msci.puzzlegenerator.BallSwitch.BallSwitchPuzzleGame;
+import com.group.msci.puzzlegenerator.BallSwitch.User;
 import com.group.msci.puzzlegenerator.dottodot.DotToDotMainScreen;
 import com.group.msci.puzzlegenerator.dottodot.DotToDotView;
+import com.group.msci.puzzlegenerator.utils.PuzzleCode;
 import com.group.msci.puzzlegenerator.utils.json.DownloadPuzzleJSON;
 import com.group.msci.puzzlegenerator.maze.MazeMainMenuController;
 import com.group.msci.puzzlegenerator.maze.subviews.GameInstanceController;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Initialize facebook SDK
         FacebookSdk.sdkInitialize(getApplicationContext());
+        PuzzleCode.init();
 
         setContentView(R.layout.puzzld_main);
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -135,8 +138,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //do nothing
                 }
                 JSONObject jsonFile = downJson.getJSON();
-                char puzzleCode = input.getText().toString().charAt(0);
-                if (puzzleCode == 'p') {
+                PuzzleCode pc = PuzzleCode.getInstance();
+                pc.setCode(input.getText().toString());
+                char puzzleType = pc.getTypeCode();
+                if (puzzleType == 'p') {
                     try {
                         String puzzleData = jsonFile.getString("puzzleData");
                         if (puzzleData.equals("")) {
@@ -150,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                } else if (puzzleCode == 'd') {
+                } else if (puzzleType == 'd') {
                     try {
                         String puzD = jsonFile.getString("puzzleData");
                         if (puzD.equals("")) {
@@ -164,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                } else if (puzzleCode == 'm') {
+                } else if (puzzleType == 'm') {
                     try {
                         String encodedMaze = jsonFile.getString("puzzleData");
 
@@ -175,7 +180,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                              * Start the particular maze immediately,
                              * without going through the creation menus
                              */
-                            Intent intent = new Intent(MainActivity.this, GameInstanceController.class);
+                            Intent intent = new Intent(MainActivity.this,
+                                                       GameInstanceController.class);
                             intent.putExtra("maze_params", params);
                             startActivity(intent);
                         }
