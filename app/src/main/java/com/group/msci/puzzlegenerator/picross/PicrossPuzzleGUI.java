@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,6 +45,7 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
     long timeInMS = 0L;
     long timeSwapBuff = 0L;
     long updatedTime = 0L;
+    private final MediaPlayer buttonPress = MediaPlayer.create(this, R.raw.buttonclick);;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +116,7 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
         shade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                buttonPress.start();
                 shading = true;
             }
         });
@@ -121,6 +124,7 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
         cross.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                buttonPress.start();
                 shading = false;
             }
         });

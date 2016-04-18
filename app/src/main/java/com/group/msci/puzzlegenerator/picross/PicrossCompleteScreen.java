@@ -3,6 +3,7 @@ package com.group.msci.puzzlegenerator.picross;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -28,6 +29,8 @@ public class PicrossCompleteScreen extends AppCompatActivity implements View.OnC
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        MediaPlayer winSound = MediaPlayer.create(this, R.raw.win);
+        winSound.start();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picross_complete_screen);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

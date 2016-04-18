@@ -10,7 +10,8 @@
         android:src="@drawable/main_header"
         android:layout_above="@+id/maze"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="86dp" />
 
     <ImageButton
         android:layout_width="wrap_content"

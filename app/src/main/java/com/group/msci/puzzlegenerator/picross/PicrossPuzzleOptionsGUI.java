@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -140,6 +141,8 @@ public class PicrossPuzzleOptionsGUI extends AppCompatActivity implements View.O
 
     @Override
     public void onClick(View v) {
+        MediaPlayer buttonPress = MediaPlayer.create(this, R.raw.buttonclick);
+        buttonPress.start();
         ImageButton button = (ImageButton) v;
         if (button.getId() == R.id.picross_preview) {
             puzzleGen.setForegroundImage(original);
