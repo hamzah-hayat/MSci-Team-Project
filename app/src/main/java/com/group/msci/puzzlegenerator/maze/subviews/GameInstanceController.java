@@ -129,7 +129,8 @@ public class GameInstanceController extends Activity {
     }
 
     public void stopTimer() {
-       timer.cancel();
+        if (timer != null)
+           timer.cancel();
     }
 
     public void uploadScoreIfShared() {

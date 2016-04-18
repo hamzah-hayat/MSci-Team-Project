@@ -16,12 +16,14 @@ import android.widget.TextView;
 
 import com.group.msci.puzzlegenerator.MainActivity;
 import com.group.msci.puzzlegenerator.R;
+import com.group.msci.puzzlegenerator.foreground.ForegroundDetection;
 import com.group.msci.puzzlegenerator.utils.json.UploadPuzzleJSON;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 

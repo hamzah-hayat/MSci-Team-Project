@@ -29,7 +29,7 @@ public class UploadScoreJSON implements Runnable{
             builder.setPrefix("score/");
             builder.addParam("username", username);
             builder.addParam("score", Integer.toString(score));
-            builder.addParam("shareCode ", Integer.toString(puzzleID));
+            builder.addParam("shareCode", Integer.toString(puzzleID));
         }
 
         public String findScript(char puzzleType) {

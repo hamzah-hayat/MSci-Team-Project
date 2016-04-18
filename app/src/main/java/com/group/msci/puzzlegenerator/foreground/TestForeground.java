@@ -72,6 +72,7 @@ public class TestForeground extends AppCompatActivity {
         }
         System.out.println("END");
 
+       // b = ImageProcessing.blur(b);
         iv.setImageBitmap(b);//set bitmap here
     }
     private File createFileFromInputStream(InputStream inputStream) {
