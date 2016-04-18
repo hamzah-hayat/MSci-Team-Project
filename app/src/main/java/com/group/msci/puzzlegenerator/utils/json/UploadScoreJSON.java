@@ -46,7 +46,7 @@ public class UploadScoreJSON implements Runnable{
                 return "ballSave.php";
             }
             else {
-                throw new IllegalArgumentException("Wrong maze argument");
+                throw new IllegalArgumentException("Wrong puzzle argument");
             }
         }
 

@@ -48,7 +48,6 @@ public class ScoreboardJSON implements Runnable {
     @Override
     public void run() {
         try {
-            Log.i("Scoreboard", "Hellow");
             InputStream urlStream = builder.toURL().openConnection().getInputStream();
             BufferedReader bf = new BufferedReader(new InputStreamReader(urlStream, "UTF-8"));
             StringBuilder responseBuilder = new StringBuilder();
