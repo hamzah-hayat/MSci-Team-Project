@@ -18,7 +18,7 @@ public class PicrossScoreboard extends AppCompatActivity {
         setContentView(R.layout.activity_picross_scoreboard);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ScoreboardJSON jsonGetter = new ScoreboardJSON("Picross");
+        ScoreboardJSON jsonGetter = new ScoreboardJSON('p');
         JSONObject jsonFile = jsonGetter.getJSON();
         //score format in json will be an entry called "scores"
             //they SHOULD be parallel, so it SHOULD work if I have an array of scores and an array of names

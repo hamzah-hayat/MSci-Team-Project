@@ -3,7 +3,7 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="#ffffffff">
 
-    <com.group.msci.puzzlegenerator.maze.subviews.MazeBoard
+    <com.group.msci.puzzlegenerator.maze.controllers.MazeBoard
         android:layout_width="340dp"
         android:layout_height="340dp"
         android:id="@+id/mazeSurfaceView"

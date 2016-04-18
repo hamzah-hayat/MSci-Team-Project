@@ -1,5 +1,7 @@
 package com.group.msci.puzzlegenerator.utils.json;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -61,6 +63,7 @@ public class UploadPuzzleJSON implements Runnable { //DON'T KNOW HOW TO IMPLEMEN
                 input = bf.readLine();
             }
             jsonFile = new JSONObject(responseBuilder.toString());
+            Log.i("UploadPuzzle", jsonFile.toString());
             System.out.println("Hello");
         } catch (IOException e) {
             e.printStackTrace();

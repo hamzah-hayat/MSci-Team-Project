@@ -1,10 +1,11 @@
-package com.group.msci.puzzlegenerator.maze;
+package com.group.msci.puzzlegenerator.maze.utils;
 
 import android.os.CountDownTimer;
 import android.widget.TextView;
 
-import com.group.msci.puzzlegenerator.maze.subviews.GameInstanceController;
-import com.group.msci.puzzlegenerator.maze.subviews.MazeBoard;
+import com.group.msci.puzzlegenerator.maze.models.Maze;
+import com.group.msci.puzzlegenerator.maze.controllers.GameInstanceController;
+import com.group.msci.puzzlegenerator.maze.controllers.MazeBoard;
 
 /**
  * Created by Filipt on 29/01/2016.

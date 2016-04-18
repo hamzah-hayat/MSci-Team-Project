@@ -1,4 +1,4 @@
-package com.group.msci.puzzlegenerator.maze.model;
+package com.group.msci.puzzlegenerator.maze.models;
 
 /**
  * Created by Filipt on 19/01/2016.

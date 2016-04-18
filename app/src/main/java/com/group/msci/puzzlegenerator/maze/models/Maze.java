@@ -1,6 +1,6 @@
-package com.group.msci.puzzlegenerator.maze;
+package com.group.msci.puzzlegenerator.maze.models;
 
-import com.group.msci.puzzlegenerator.maze.model.Point;
+import com.group.msci.puzzlegenerator.maze.models.Point;
 import com.group.msci.puzzlegenerator.maze.utils.Seed;
 
 /**
