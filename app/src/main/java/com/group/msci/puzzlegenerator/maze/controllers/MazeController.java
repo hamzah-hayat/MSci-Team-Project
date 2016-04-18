@@ -1,4 +1,4 @@
-package com.group.msci.puzzlegenerator.maze;
+package com.group.msci.puzzlegenerator.maze.controllers;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,20 +6,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.group.msci.puzzlegenerator.R;
-import com.group.msci.puzzlegenerator.maze.subviews.GameInstanceController;
 import com.group.msci.puzzlegenerator.maze.utils.MazeParams;
 import com.group.msci.puzzlegenerator.maze.utils.Seed;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Random;
 

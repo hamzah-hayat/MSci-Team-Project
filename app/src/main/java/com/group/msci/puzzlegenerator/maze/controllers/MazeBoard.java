@@ -1,4 +1,4 @@
-package com.group.msci.puzzlegenerator.maze.subviews;
+package com.group.msci.puzzlegenerator.maze.controllers;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,8 +7,8 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 
-import com.group.msci.puzzlegenerator.maze.Maze;
-import com.group.msci.puzzlegenerator.maze.model.BaseMaze;
+import com.group.msci.puzzlegenerator.maze.models.Maze;
+import com.group.msci.puzzlegenerator.maze.models.BaseMaze;
 
 /**
  * Created by filipt on 12/02/2016.

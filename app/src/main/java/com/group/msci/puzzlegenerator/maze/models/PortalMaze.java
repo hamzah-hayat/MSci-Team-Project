@@ -1,8 +1,5 @@
-package com.group.msci.puzzlegenerator.maze.model;
+package com.group.msci.puzzlegenerator.maze.models;
 
-import android.util.Log;
-
-import com.group.msci.puzzlegenerator.maze.Maze;
 import com.group.msci.puzzlegenerator.maze.utils.Seed;
 
 import java.util.Random;

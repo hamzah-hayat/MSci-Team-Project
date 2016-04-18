@@ -1,4 +1,4 @@
-package com.group.msci.puzzlegenerator.maze.subviews;
+package com.group.msci.puzzlegenerator.maze.controllers;
 
 import android.app.Activity;
 import android.graphics.Canvas;
@@ -12,12 +12,11 @@ import com.google.gson.Gson;
 import com.group.msci.puzzlegenerator.R;
 import com.group.msci.puzzlegenerator.utils.PuzzleCode;
 import com.group.msci.puzzlegenerator.utils.json.UploadPuzzleJSON;
-import com.group.msci.puzzlegenerator.maze.Maze;
-import com.group.msci.puzzlegenerator.maze.MazeTimer;
-import com.group.msci.puzzlegenerator.maze.model.BaseMaze;
-import com.group.msci.puzzlegenerator.maze.model.PortalMaze;
+import com.group.msci.puzzlegenerator.maze.models.Maze;
+import com.group.msci.puzzlegenerator.maze.utils.MazeTimer;
+import com.group.msci.puzzlegenerator.maze.models.BaseMaze;
+import com.group.msci.puzzlegenerator.maze.models.PortalMaze;
 import com.group.msci.puzzlegenerator.maze.utils.MazeParams;
-import com.group.msci.puzzlegenerator.maze.utils.MazeScoreUploader;
 import com.group.msci.puzzlegenerator.maze.utils.SolvedDialog;
 import com.group.msci.puzzlegenerator.utils.json.UploadScoreJSON;
 
