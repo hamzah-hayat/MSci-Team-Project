@@ -1,6 +1,8 @@
-package com.group.msci.puzzlegenerator.maze.subviews;
+package com.group.msci.puzzlegenerator.maze.controllers;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.View;
@@ -12,14 +14,15 @@ import com.google.gson.Gson;
 import com.group.msci.puzzlegenerator.R;
 import com.group.msci.puzzlegenerator.utils.PuzzleCode;
 import com.group.msci.puzzlegenerator.utils.json.UploadPuzzleJSON;
-import com.group.msci.puzzlegenerator.maze.Maze;
-import com.group.msci.puzzlegenerator.maze.MazeTimer;
-import com.group.msci.puzzlegenerator.maze.model.BaseMaze;
-import com.group.msci.puzzlegenerator.maze.model.PortalMaze;
+import com.group.msci.puzzlegenerator.maze.models.Maze;
+import com.group.msci.puzzlegenerator.maze.utils.MazeTimer;
+import com.group.msci.puzzlegenerator.maze.models.BaseMaze;
+import com.group.msci.puzzlegenerator.maze.models.PortalMaze;
 import com.group.msci.puzzlegenerator.maze.utils.MazeParams;
-import com.group.msci.puzzlegenerator.maze.utils.MazeScoreUploader;
 import com.group.msci.puzzlegenerator.maze.utils.SolvedDialog;
 import com.group.msci.puzzlegenerator.utils.json.UploadScoreJSON;
+
+import org.json.JSONException;
 
 /**
  * Created by filipt on 11/02/2016.
@@ -119,8 +122,35 @@ public class GameInstanceController extends Activity {
                 UploadPuzzleJSON uploader = new UploadPuzzleJSON('m', gson.toJson(params), "maze");
                 Thread uploadThread = new Thread(uploader);
                 uploadThread.start();
+                String code = "";
+                try {
+                    uploadThread.join();
+                    code = uploader.getJSON().getString("shareCode");
+                    showSharedDialog(true, code);
+                    PuzzleCode.getInstance().setCode("m" + code);
+                } catch (InterruptedException|JSONException e) {
+                    showSharedDialog(false, code);
+                    e.printStackTrace();
+                }
+
             }
         });
+    }
+
+    public void showSharedDialog(boolean success, String code) {
+        String msg = (success) ? "Successfully shared the puzzle, the puzzle's code is " +
+                                 code : "Unfortunately failed to share the puzzle";
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Puzzle Sharing");
+        alertDialog.setMessage(msg);
+
+        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
     }
 
     public void setAndStartTimer(MazeTimer timer) {

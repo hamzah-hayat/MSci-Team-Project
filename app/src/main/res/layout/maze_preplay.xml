@@ -29,7 +29,8 @@
         android:checked="false"
         android:layout_above="@+id/minutes_field"
         android:layout_alignLeft="@+id/minutes_field"
-        android:layout_alignStart="@+id/minutes_field" />
+        android:layout_alignStart="@+id/minutes_field"
+        android:layout_marginBottom="15dp" />
 
     <EditText
         android:layout_width="100dp"
@@ -97,7 +98,8 @@
         android:spinnerMode="dropdown"
         android:layout_above="@+id/plane_no_field"
         android:layout_alignLeft="@+id/plane_no_field"
-        android:layout_alignStart="@+id/plane_no_field" />
+        android:layout_alignStart="@+id/plane_no_field"
+        android:layout_marginBottom="20dp" />
 
     <TextView
         android:layout_width="wrap_content"

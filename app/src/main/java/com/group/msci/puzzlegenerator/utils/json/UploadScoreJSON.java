@@ -46,9 +46,8 @@ public class UploadScoreJSON implements Runnable{
                 return "ballSave.php";
             }
             else {
-                throw new IllegalArgumentException("Wrong maze argument");
+                throw new IllegalArgumentException("Wrong puzzle argument");
             }
-
         }
 
         public JSONObject getJSON() {
@@ -70,7 +69,6 @@ public class UploadScoreJSON implements Runnable{
                     input = bf.readLine();
                 }
                 Log.i("Upload Score JSON", "Upload response: " + responseBuilder.toString());
-                Log.i("UploadScoreJSON", "url: " + url.toString());
                 jsonFile = new JSONObject(responseBuilder.toString());
 
             } catch (IOException|JSONException e) {

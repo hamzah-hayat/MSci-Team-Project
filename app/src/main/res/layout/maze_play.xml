@@ -3,7 +3,7 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="#ffffffff">
 
-    <com.group.msci.puzzlegenerator.maze.subviews.MazeBoard
+    <com.group.msci.puzzlegenerator.maze.controllers.MazeBoard
         android:layout_width="340dp"
         android:layout_height="340dp"
         android:id="@+id/mazeSurfaceView"
@@ -66,21 +66,21 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Share!"
         android:id="@+id/share_btn"
         android:layout_alignBottom="@+id/up"
         android:layout_alignLeft="@+id/mazeSurfaceView"
-        android:layout_alignStart="@+id/mazeSurfaceView" />
+        android:layout_alignStart="@+id/mazeSurfaceView"
+        android:background="@drawable/ic_maze_share" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Solve"
         android:id="@+id/solve_btn"
         android:layout_alignBottom="@+id/up"
         android:layout_alignRight="@+id/maze_done"
-        android:layout_alignEnd="@+id/maze_done" />
+        android:layout_alignEnd="@+id/maze_done"
+        android:background="@drawable/ic_maze_solve" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -89,6 +89,7 @@
         android:text="00:00"
         android:id="@+id/time_field"
         android:layout_above="@+id/down"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold" />
 
 </RelativeLayout>
