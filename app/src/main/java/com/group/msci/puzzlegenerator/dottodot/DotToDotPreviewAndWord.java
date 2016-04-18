@@ -87,7 +87,6 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
             e.printStackTrace();
         }
 
-
         System.out.println("START EDGE");
         AndroidCannyEdgeDetector det = new AndroidCannyEdgeDetector();
         det.setSourceImage(mutableImg);

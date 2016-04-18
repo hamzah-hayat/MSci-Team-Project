@@ -41,27 +41,30 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SHARE"
         android:id="@+id/share"
+        android:background="@drawable/ic_dots_share"
         android:layout_below="@+id/dots_answer"
-        android:layout_toLeftOf="@+id/discard"
-        android:layout_toStartOf="@+id/discard" />
+        android:layout_alignLeft="@+id/dots_answer"
+        android:layout_alignStart="@+id/dots_answer"
+        android:layout_marginTop="5dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="DISCARD"
         android:id="@+id/discard"
+        android:background="@drawable/ic_dots_discard"
         android:layout_below="@+id/dots_answer"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SHOW"
         android:id="@+id/show"
+        android:background="@drawable/ic_dots_show"
         android:layout_below="@+id/dots_answer"
-        android:layout_toRightOf="@+id/discard"
-        android:layout_toEndOf="@+id/discard" />
+        android:layout_alignRight="@+id/dots_text"
+        android:layout_alignEnd="@+id/dots_text"
+        android:layout_marginTop="5dp" />
 
 </RelativeLayout>

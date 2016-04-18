@@ -42,7 +42,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginRight="36dp"
         android:layout_marginEnd="36dp"
-        android:hint="Weight"
+        android:hint="Width"
         android:gravity="center" />
 
     <SeekBar
