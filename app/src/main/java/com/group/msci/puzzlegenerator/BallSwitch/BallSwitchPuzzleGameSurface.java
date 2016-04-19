@@ -123,7 +123,8 @@ public class BallSwitchPuzzleGameSurface extends SurfaceView implements SurfaceH
             if(animatingBall)
             {
                 //Time to animate the ball moving to the next position
-                if(ballXPosition>=ballXPositionToMoveTo && ballYPosition>=ballYPositionToMoveTo)
+                if((ballXPosition>=ballXPositionToMoveTo && ballYPosition>=ballYPositionToMoveTo && (ballMoveDirections.get(0)==2 || ballMoveDirections.get(0)==3)
+                        ||(ballXPosition<=ballXPositionToMoveTo && ballYPosition<=ballYPositionToMoveTo && (ballMoveDirections.get(0)==1 || ballMoveDirections.get(0)==4))))
                 {
                     //We've reached the end of movement
                     //Now reset ballX and Y position and remove move from arraylist
@@ -158,6 +159,8 @@ public class BallSwitchPuzzleGameSurface extends SurfaceView implements SurfaceH
                     {
                         animatingBall=false;
                     }
+                    //Draw the ball so it doesn't disappear!
+                    drawBall(gridWidthSpace,gridHeightSpace,canvas,(int)ballXPosition,(int)ballYPosition);
                 }
                 else
                 {
@@ -191,19 +194,8 @@ public class BallSwitchPuzzleGameSurface extends SurfaceView implements SurfaceH
 
                 }
             }
-        }
-        else
-        {
-            //Just draw the ball where it is
-            int objectXLeft = puzzle.getBall().getPosX() * gridWidthSpace;
-            int objectYTop = puzzle.getBall().getPosY() * gridHeightSpace;
-            int objectXRight = (puzzle.getBall().getPosX()+1) * gridWidthSpace;
-            int objectYBottom = (puzzle.getBall().getPosY()+1) * gridHeightSpace;
-            paint.setColor(Color.BLACK);    //Set the colour back to default
-            ColorFilter filter = new LightingColorFilter(Color.BLACK, 1);
-            paint.setColorFilter(filter);
-            RectF box = new RectF(objectXLeft,objectYTop,objectXRight,objectYBottom);
-            puzzle.getBall().draw(box,canvas,paint);
+        } else {
+            drawBall(gridWidthSpace,gridHeightSpace,canvas,puzzle.getBall().getPosX(),puzzle.getBall().getPosY());
         }
 
         //Now draw the menu buttons and bar
@@ -242,6 +234,21 @@ public class BallSwitchPuzzleGameSurface extends SurfaceView implements SurfaceH
         }
         animatingBall=true;
     }
+
+    private void drawBall(int gridWidthSpace,int gridHeightSpace,Canvas canvas,int posX,int posY)
+    {
+        //Just draw the ball where it is
+        int objectXLeft = posX * gridWidthSpace;
+        int objectYTop = posY * gridHeightSpace;
+        int objectXRight = (posX+1) * gridWidthSpace;
+        int objectYBottom = (posY+1) * gridHeightSpace;
+        paint.setColor(Color.BLACK);    //Set the colour back to default
+        ColorFilter filter = new LightingColorFilter(Color.BLACK, 1);
+        paint.setColorFilter(filter);
+        RectF box = new RectF(objectXLeft,objectYTop,objectXRight,objectYBottom);
+        puzzle.getBall().draw(box,canvas,paint);
+    }
+
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
