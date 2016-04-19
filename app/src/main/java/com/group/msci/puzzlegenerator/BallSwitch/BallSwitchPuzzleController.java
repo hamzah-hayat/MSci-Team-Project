@@ -83,6 +83,29 @@ public class BallSwitchPuzzleController {
             //First we move so that we dont hit anything we are currently on
             ball.setPosX(ball.getPosX() + directionX);
             ball.setPosY(ball.getPosY() + directionY);
+
+            //Animate movement
+            if(directionX==1)
+            {
+                //East
+                gameView.gameCanvas.addAnimationBall(2);
+            }
+            else if(directionX==-1)
+            {
+                //West
+                gameView.gameCanvas.addAnimationBall(4);
+            }
+            if(directionY==1)
+            {
+                //South
+                gameView.gameCanvas.addAnimationBall(3);
+            }
+            else if(directionY==-1)
+            {
+                //North
+                gameView.gameCanvas.addAnimationBall(1);
+            }
+
             for(BallSwitchObject object : objects)
             {
                 if(object.getPosY()==ball.getPosY() && object.getPosX()==ball.getPosX() && ball!=object)
