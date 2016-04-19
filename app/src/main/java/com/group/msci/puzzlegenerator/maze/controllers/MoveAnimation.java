@@ -55,7 +55,7 @@ public class MoveAnimation implements Runnable {
     }
 
     private int nextDirection(int direction, Point playerPos) {
-        SparseArray<Point> neighbours = BaseMaze.__all_neighbours(playerPos);
+        SparseArray<Point> neighbours = BaseMaze.all_neighbours(playerPos);
 
         for (int i = 0; i < neighbours.size(); ++i) {
             try {
@@ -91,11 +91,11 @@ public class MoveAnimation implements Runnable {
     }
 
     private void displaySolved() {
+        parentActivity.calculateScore();
         parentActivity.uploadScoreIfShared();
         parentActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
                 parentActivity.showSolvedDialog();
             }
         });
@@ -137,6 +137,8 @@ public class MoveAnimation implements Runnable {
                     try {
                         Thread.sleep(10);
                     } catch (InterruptedException e) {
+                        isRunning = false;
+                        return;
                     }
                 }
 
@@ -144,7 +146,8 @@ public class MoveAnimation implements Runnable {
                 direction = nextDirection(direction, current);
                 if (direction > -1) nextCell = BaseMaze.neighbour_at(direction, current);
 
-            } while (!currentMaze.isJunction(current) && (direction > -1) && !atOpening(current));
+            } while ((!currentMaze.isJunction(current) && (direction > -1) && !atOpening(current)) &&
+                     !Thread.currentThread().isInterrupted());
 
             if (current.equals(currentMaze.exit())) {
                 parentActivity.stopTimer();
