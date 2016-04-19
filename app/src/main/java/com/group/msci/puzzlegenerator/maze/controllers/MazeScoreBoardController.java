@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by filipt on 15/04/2016.
@@ -22,7 +23,7 @@ public class MazeScoreBoardController extends Activity {
 
     private ListView listView;
     private ArrayList<String> usernameScores;
-    private static final String USER_SCORE_FMT = "%s:\t%d";
+    private static final String USER_SCORE_FMT = "Username: %s\nScore: %d\nPuzzle ID: %d";
 
     @Override
     protected void onCreate(Bundle savedInstance) {
@@ -46,9 +47,11 @@ public class MazeScoreBoardController extends Activity {
         try {
             JSONArray ranks = scoreGetter.getJSON().getJSONArray("ranks");
             for (int i = 0; i < ranks.length(); ++i) {
-                String name = ranks.getJSONObject(i).getString("player");
-                int score = ranks.getJSONObject(i).getInt("score");
-                usernameScores.add(String.format(USER_SCORE_FMT, name, score));
+                JSONObject record = ranks.getJSONObject(i);
+                String name = record.getString("player");
+                int score = record.getInt("score");
+                int id = record.getInt("shareCode");
+                usernameScores.add(String.format(Locale.US, USER_SCORE_FMT, name, score, id));
             }
         } catch (JSONException e) {
             e.printStackTrace();
