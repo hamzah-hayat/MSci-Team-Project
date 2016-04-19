@@ -27,6 +27,8 @@ import android.widget.TextView;
 import com.group.msci.puzzlegenerator.MainActivity;
 import com.group.msci.puzzlegenerator.R;
 import com.group.msci.puzzlegenerator.foreground.ForegroundDetection;
+import com.group.msci.puzzlegenerator.utils.PuzzleCode;
+import com.group.msci.puzzlegenerator.utils.json.UploadScoreJSON;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -59,11 +61,14 @@ public class DotToDotView extends Activity {
     private Bitmap scaledImg;
     private DotsView dv;
     private int showCount = 0;
+    private String timeAsString;
+    private int score;
+    private Intent intent;
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
         setContentView(R.layout.dots_play);
-        Intent intent = getIntent();
+        intent = getIntent();
         dv = (DotsView) findViewById(R.id.dotsView2);
         if(intent.hasExtra("ANSWER_ARRAY")) {
             data = intent.getStringExtra("ANSWER_ARRAY");
@@ -194,20 +199,25 @@ public class DotToDotView extends Activity {
             public void onClick(View view) {
                 final EditText inputText = (EditText) findViewById(R.id.dots_answer);
                 String input = inputText.getText().toString();
-                CharSequence timeSeq = time.getText();
-                String strTime = timeSeq.toString();
+                timeAsString = time.getText().toString();
+                score = calculateScore(timeAsString);
                 if(input.equals(puzzleWord)) {
+                    if(intent.hasExtra("ANSWER_ARRAY")) {
+                        uploadScore();
+                    }
                     new AlertDialog.Builder(DotToDotView.this)
                             .setTitle("Correct!")
-                            .setMessage("You have guessed the image correctly. You completed the puzzle in " + strTime)
+                            .setMessage("You have guessed the image correctly. Your score for the puzzle is " + score)
                                     .setPositiveButton("Play Again", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
+                                            finish();
                                             Intent intent = new Intent(DotToDotView.this, DotToDotMainScreen.class);
                                             startActivity(intent);
                                         }
                                     })
                             .setNeutralButton("Return to Main Menu", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
+                                    finish();
                                     Intent intent = new Intent(DotToDotView.this, MainActivity.class);
                                     startActivity(intent);
                                 }
@@ -251,9 +261,7 @@ public class DotToDotView extends Activity {
             }
         });
 
-            time=(TextView)
-
-            findViewById(R.id.time);
+            time=(TextView) findViewById(R.id.time);
 
             startTime=SystemClock.uptimeMillis();
             timeHandler.postDelayed(updateTimerThread,0);
@@ -276,6 +284,36 @@ public class DotToDotView extends Activity {
             timeHandler.postDelayed(this, 0);
         }
     };
+
+    public int calculateScore(String sTime) {
+        String[] hms = sTime.split(":");
+        int hours = 0;
+        int minutes = 0;
+        int secs = 0;
+
+        if(hms.length == 3) {
+            hours = Integer.parseInt(hms[0]);
+            minutes = Integer.parseInt(hms[1]);
+            secs = Integer.parseInt(hms[2]);
+        }
+        else if(hms.length == 2) {
+            minutes = Integer.parseInt(hms[0]);
+            secs = Integer.parseInt(hms[1]);
+        }
+
+        int duration = (3600 * hours) + (60 * minutes) + secs;
+        return duration * 10;
+
+    }
+
+    public void uploadScore() {
+        PuzzleCode pc = PuzzleCode.getInstance();
+        if (pc.isSet()) {
+            (new Thread(new UploadScoreJSON(pc.getTypeCode(), pc.numericCode(),
+                    score, getApplicationContext())))
+                    .start();
+        }
+    }
 
 
     public void drawGUI() {}
