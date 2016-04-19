@@ -34,6 +34,7 @@ public class GameInstanceController extends Activity {
     private Maze maze;
     private MazeBoard board;
     private MoveAnimation animation;
+    private Thread animationThread;
 
     private ImageButton left;
     private ImageButton right;
@@ -45,6 +46,7 @@ public class GameInstanceController extends Activity {
     private int width;
     private int height;
     private int score;
+    private boolean autoSolved;
 
     private TextView timeField;
 
@@ -66,7 +68,6 @@ public class GameInstanceController extends Activity {
             maze = new PortalMaze(params.getWidth(), params.getHeight(), params.getNplanes(), params.getSeed());
         }
         else if (mazeType.equals("Simple")) {
-
             maze = new BaseMaze(params.getWidth(), params.getHeight(), true, params.getSeed());
         }
         else {
@@ -92,6 +93,7 @@ public class GameInstanceController extends Activity {
             public void onClick(View v) {
                 maze.solve();
                 GameInstanceController.this.reDrawMaze();
+                autoSolved = true;
             }
         });
 
@@ -123,6 +125,7 @@ public class GameInstanceController extends Activity {
                 Thread uploadThread = new Thread(uploader);
                 uploadThread.start();
                 String code = "";
+
                 try {
                     uploadThread.join();
                     code = uploader.getJSON().getString("shareCode");
@@ -135,6 +138,15 @@ public class GameInstanceController extends Activity {
 
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (animation.isRunning()) {
+            animationThread.interrupt();
+        }
+
+        super.onBackPressed();
     }
 
     public void showSharedDialog(boolean success, String code) {
@@ -166,7 +178,6 @@ public class GameInstanceController extends Activity {
     public void uploadScoreIfShared() {
         PuzzleCode pc = PuzzleCode.getInstance();
         if (pc.isSet()) {
-            score = calculateScore();
             (new Thread(new UploadScoreJSON(pc.getTypeCode(), pc.numericCode(),
                                             score, getApplicationContext())))
                     .start();
@@ -205,30 +216,32 @@ public class GameInstanceController extends Activity {
             public void onClick(View v) {
                 if ((animation != null) && (!animation.isRunning())) {
                     animation.setDirection(direction);
-                    (new Thread(animation)).start();
+                    animationThread = new Thread(animation);
+                    animationThread.start();
                 }
             }
         });
     }
 
-    private int calculateScore() {
-        //10 for solving maze
-        int score = 10;
-
-        //add width and height
-        score += width + height - 2;
-
-        //10 points for every extra maze plane
-        score += ((maze.getNumberOfPlanes() - 1) * 10);
-
-        if (timer != null) {
-            //percent of time remaining
-            score += (int) ((double) remainingTime / (double) timer.getTimeSeconds()) * 100;
-
-            //give score for short times
-            score += (60 * 10) - timer.getTimeSeconds();
+    public void calculateScore() {
+        if (autoSolved) {
+            score = 0;
         }
-        return score;
+        else {
+            /*10 for solving maze
+             *add width and height
+             *10 points for every extra plane
+             */
+            score = 10 + width + height - 2 + ((maze.getNumberOfPlanes() - 1) * 10);
+
+            if (timer != null) {
+                //percent of time remaining
+                score += (int) ((double) remainingTime / (double) timer.getTimeSeconds()) * 100;
+
+                //give score for short times
+                score += (60 * 10) - timer.getTimeSeconds();
+            }
+        }
     }
 
     public void updateRemainingTime(long millisUntilFinished) {

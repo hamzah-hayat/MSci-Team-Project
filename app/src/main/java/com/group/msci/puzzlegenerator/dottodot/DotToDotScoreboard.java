@@ -1,4 +1,4 @@
-package com.group.msci.puzzlegenerator.maze.controllers;
+package com.group.msci.puzzlegenerator.dottodot;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -17,10 +17,9 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 /**
- * Created by filipt on 15/04/2016.
+ * Created by Mustafa on 19/04/2016.
  */
-public class MazeScoreBoardController extends Activity {
-
+public class DotToDotScoreboard extends Activity {
     private ListView listView;
     private ArrayList<String> usernameScores;
     private static final String USER_SCORE_FMT = "Username: %s\nScore: %d\nPuzzle ID: %d";
@@ -29,19 +28,19 @@ public class MazeScoreBoardController extends Activity {
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
 
-        ScoreboardJSON scoreGetter = new ScoreboardJSON('m');
+        ScoreboardJSON scoreGetter = new ScoreboardJSON('d');
         Thread uploadThread = new Thread(scoreGetter);
         uploadThread.start();
 
         usernameScores = new ArrayList<>();
-        setContentView(R.layout.maze_scoreboard);
-        listView = (ListView) findViewById(R.id.leaderboard_list_view);
+        setContentView(R.layout.dot_scoreboard);
+        listView = (ListView) findViewById(R.id.dotListView);
 
         try {
             //Show a loading wheel in the activity
             uploadThread.join();
         } catch (InterruptedException e) {
-            Log.i("MazeScoreBoard", "Score download thread failed to finish");
+            Log.i("DotScoreBoard", "Score download thread failed to finish");
         }
 
         try {

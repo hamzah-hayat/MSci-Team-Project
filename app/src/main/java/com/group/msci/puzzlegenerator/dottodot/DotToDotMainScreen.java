@@ -105,8 +105,8 @@ public class DotToDotMainScreen extends Activity {
         score.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(DotToDotMainScreen.this, DotToDotImageSelectType.class);
-                //startActivity(intent);
+                Intent intent = new Intent(DotToDotMainScreen.this, DotToDotScoreboard.class);
+                startActivity(intent);
             }
         });
     }

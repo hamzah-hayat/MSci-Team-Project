@@ -7,6 +7,8 @@ import com.google.gson.Gson;
 
 /**
  * Created by filipt on 11/03/2016.
+ * Represents the parameters needed to fully describe a maze. Used to send
+ * mazes between activities and get shared mazes from the server.
  */
 public class MazeParams implements Parcelable {
 

@@ -7,7 +7,6 @@ import java.util.Random;
 /*
  * Composition of BaseMazes.
  */
-
 public class PortalMaze implements Maze {
 
     private BaseMaze[] planes;
@@ -84,6 +83,7 @@ public class PortalMaze implements Maze {
 
     @Override
     public boolean solved() {
+
         for (BaseMaze plane : planes) {
             if (!plane.solved()) return false;
         }
@@ -92,6 +92,7 @@ public class PortalMaze implements Maze {
 
     @Override
     public void log() {
+
         for (int i = 0; i < nplanes; ++i) {
             System.out.println("Plane " + i);
             planes[i].log();
@@ -105,7 +106,9 @@ public class PortalMaze implements Maze {
      */
     @Override
     public void regenerate() {
+
         for (int i = 0; i < nplanes; ++i) {
+
             if (i == currentPlane) {
                 planes[i].regenerate(true);
             }
@@ -125,6 +128,7 @@ public class PortalMaze implements Maze {
     public boolean movePlayer(int direction) {
         BaseMaze current = planes[currentPlane];
         Point next = BaseMaze.neighbour_at(direction, current.playerPos());
+
         if (current.withinBounds(next)) {
             planes[currentPlane].movePlayer(direction);
             if (next.equals(current.exit())) {
@@ -132,7 +136,6 @@ public class PortalMaze implements Maze {
             }
             return true;
         }
-
         return false;
     }
 
@@ -151,24 +154,18 @@ public class PortalMaze implements Maze {
         return planes[currentPlane].width();
     }
 
+    @Override
     public Point entryGate() {
         return planes[currentPlane].entryGate();
     }
 
+    @Override
     public Point exitGate() {
         return planes[currentPlane].exitGate();
     }
 
     @Override public int height() {
         return planes[currentPlane].height();
-    }
-
-    public void logMat() {
-        for (int i = 0; i < planes.length; ++i) {
-            System.out.println("Plane " + i);
-            planes[i].logMat();
-            System.out.println();
-        }
     }
 
     @Override
@@ -204,7 +201,16 @@ public class PortalMaze implements Maze {
 
     @Override
     public boolean isWall(Point point) {
-        //Anything outside the existing planes is considered a wall.
+        //Anything outside the existing planes is considered a wall as well.
         return (currentPlane >= nplanes) || planes[getCurrentPlane()].isWall(point);
+    }
+
+    //Prints the values of the numbers stored by the matrix, used for testing/debugging
+    public void logMat() {
+        for (int i = 0; i < planes.length; ++i) {
+            System.out.println("Plane " + i);
+            planes[i].logMat();
+            System.out.println();
+        }
     }
 }

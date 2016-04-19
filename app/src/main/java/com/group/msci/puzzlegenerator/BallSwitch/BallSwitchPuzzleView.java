@@ -1,10 +1,7 @@
 package com.group.msci.puzzlegenerator.BallSwitch;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.group.msci.puzzlegenerator.R;
 
@@ -18,7 +15,7 @@ public class BallSwitchPuzzleView{
     BallSwitchPuzzleController controller;
     BallSwitchPuzzleGame gameActivity;
 
-    BallSwitchPuzzleGameCanvas gameCanvas;
+    BallSwitchPuzzleGameSurface gameCanvas;
 
     public BallSwitchPuzzleView(BallSwitchPuzzleGame gameActivityIn)
     {
@@ -46,7 +43,7 @@ public class BallSwitchPuzzleView{
         //Make sure the gameCanvas isnt null, create it if it is
         if(gameCanvas==null)
         {
-            gameCanvas = new BallSwitchPuzzleGameCanvas(gameActivity,gameActivity.getPuzzle());
+            gameCanvas = new BallSwitchPuzzleGameSurface(gameActivity,gameActivity.getPuzzle());
         }
         gameActivity.setContentView(gameCanvas);
     }
@@ -92,4 +89,6 @@ public class BallSwitchPuzzleView{
     {
         gameCanvas.invalidate();
     }
+
+    public boolean getAnimatingBall() { return gameCanvas.animatingBall; }
 }

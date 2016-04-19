@@ -1,6 +1,5 @@
 package com.group.msci.puzzlegenerator.maze.models;
 
-import com.group.msci.puzzlegenerator.maze.models.Point;
 import com.group.msci.puzzlegenerator.maze.utils.Seed;
 
 /**
@@ -8,13 +7,13 @@ import com.group.msci.puzzlegenerator.maze.utils.Seed;
  */
 public interface Maze {
 
-    //Maze methods
+    //Maze commands
     void solve();
     void log();
     void regenerate();
     boolean movePlayer(int direction);
 
-    //Accessors
+    //Accessors mostly self-explanatory
     byte at(Point coords);
     byte at(int x, int y);
     Point playerPos();
@@ -23,14 +22,18 @@ public interface Maze {
     int width();
     Point entry();
     Point exit();
+
+    /*The entry/exit points for the current plane,
+     *for instances of BaseMaze this is always the
+     *same as entry/exit respectively
+     */
     Point entryGate();
     Point exitGate();
+
     boolean isJunction(Point point);
     boolean isWall(Point point);
     boolean atGate(Point point);
     Seed getSeed();
-
     int getCurrentPlane();
     int getNumberOfPlanes();
-
 }

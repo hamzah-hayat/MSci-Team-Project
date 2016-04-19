@@ -72,7 +72,6 @@ public class BaseMaze implements Maze {
         this.height = height;
         this.width = width;
         solved = false;
-
         grid = new byte[height][width];
         int carveStart = 1;
         carve(carveStart, 1);
@@ -92,13 +91,14 @@ public class BaseMaze implements Maze {
         int xExit = width - 2;
         setOpenings(new Point(xEnter, 0), new Point(xExit, height - 1));
     }
-    //Interface methods
 
+    //Interface methods
     @Override
     public void log() {
 
         for (byte[] row : grid) {
             for (byte cell : row) {
+
                 if (cell <= WALL) {
                     System.out.print("[]");
                 } else if (cell == PATH) {
@@ -115,15 +115,6 @@ public class BaseMaze implements Maze {
         }
     }
 
-    public void logMat() {
-        for (byte[] row : grid) {
-            System.out.println();
-            for (byte cell : row) {
-                System.out.print(cell + " ");
-            }
-        }
-    }
-
     @Override
     public Point playerPos() {
         return playerPos;
@@ -136,7 +127,10 @@ public class BaseMaze implements Maze {
 
     @Override
     public void solve() {
-        if (entry == null || exit == null) setDefaultOpenings();
+
+        if (entry == null || exit == null) {
+            setDefaultOpenings();
+        }
         fill(entry, exit, SPACE);
         writeAt(exit, PATH);
         solved = true;
@@ -150,11 +144,22 @@ public class BaseMaze implements Maze {
     @Override
     public boolean movePlayer(int direction) {
         playerPos = neighbour_at(direction, playerPos);
-        if (withinBounds(playerPos)) {
-            return true;
-        }
+        return withinBounds(playerPos);
+    }
 
-        return false;
+    @Override
+    public int height() {
+        return height;
+    }
+
+    @Override
+    public int width() {
+        return width;
+    }
+
+    @Override
+    public byte at(int x, int y) {
+        return grid[y][x];
     }
 
     @Override
@@ -162,10 +167,12 @@ public class BaseMaze implements Maze {
         return entry;
     }
 
+    @Override
     public Point entryGate() {
         return entry();
     }
 
+    @Override
     public Point exitGate() {
         return exit();
     }
@@ -175,10 +182,12 @@ public class BaseMaze implements Maze {
         return exit;
     }
 
+    @Override
     public int getNumberOfPlanes() {
         return 1;
     }
 
+    @Override
     public int getCurrentPlane() {
         return 0;
     }
@@ -198,44 +207,60 @@ public class BaseMaze implements Maze {
         return seed;
     }
 
+    @Override
+    public boolean isJunction(Point p) {
+        SparseArray<Point> all = all_neighbours(p);
+        int nwalls = 0;
+
+        for (int i = 0; i < all.size(); ++i) {
+
+            if ((!withinBounds(all.get(i))) ||  isWall(all.get(i))) {
+                ++nwalls;
+            }
+        }
+
+        return nwalls < 2;
+    }
+
+    @Override
+    public boolean isWall(Point p) {
+        return grid[p.y][p.x] <= WALL;
+    }
+
     //Convenience methods
+    public void logMat() {
+
+        for (byte[] row : grid) {
+            System.out.println();
+
+            for (byte cell : row) {
+                System.out.print(cell + " ");
+            }
+        }
+    }
+
     protected void regenerate(boolean playerInPlane) {
+
         for (int i = 0; i < width; ++i) {
             Arrays.fill(grid[i], (byte)0);
         }
-
         int carveStart = 1;
         carve(carveStart, 1);
         writeAt(entry, SPACE);
         writeAt(exit, SPACE);
         specifyWalls();
+
         //In case the player happens to be on a wall of the new maze.
-        if (playerInPlane)
+        if (playerInPlane) {
             shiftPlayerToSpace();
+        }
     }
 
-
-    public int height() {
-        return height;
-    }
-
-    public int width() {
-        return width;
-    }
-
-    public byte at(int x, int y) {
-        return grid[y][x];
-    }
-
-    public void writeAt(Point p, byte value) {
+    private void writeAt(Point p, byte value) {
         grid[p.y][p.x] = value;
     }
 
-    public boolean isWall(Point p) {
-        return grid[p.y][p.x] <= WALL;
-    }
-
-    public boolean withinBounds(int x, int y) {
+    private boolean withinBounds(int x, int y) {
         return x < width && x > 0 && y > 0 && y < height;
     }
 
@@ -244,7 +269,9 @@ public class BaseMaze implements Maze {
 
         if (isWall(cur)) {
             SparseArray<Point> neighbours = all_neighbours(cur);
+
             for (int i = 0; i < neighbours.size(); ++i) {
+
                 if (!isWall(neighbours.get(i))) {
                     playerPos = neighbours.get(i);
                     break;
@@ -261,17 +288,18 @@ public class BaseMaze implements Maze {
         return x < width && x > -1 && y > -1 && y < height;
     }
 
-    public void inc(Point p) {
+    private void inc(Point p) {
         grid[p.y][p.x] += 1;
     }
 
-    public List<Integer> randomizedDirections() {
+    private List<Integer> randomizedDirections() {
         List<Integer> directions = new ArrayList<Integer>(DIRECTIONS);
         Collections.shuffle(directions, randomizer);
         return directions;
     }
 
     public static Point neighbour_at(int direction, int x, int y) {
+
         switch (direction) {
             case EAST:
                 return new Point(x + 1, y);
@@ -282,28 +310,26 @@ public class BaseMaze implements Maze {
             case NORTH:
                 return new Point(x, y - 1);
         }
-
         return null;
     }
 
-    public static SparseArray<Point> all_neighbours(Point p) {
-        SparseArray<Point> all = new SparseArray<Point>(4);
-        all.put(NORTH, new Point(p.x, p.y - 1));
-        all.put(EAST, new Point(p.x + 1, p.y));
-        all.put(SOUTH, new Point(p.x, p.y + 1));
-        all.put(WEST, new Point(p.x - 1, p.y));
+    public static Point neighbour_at(int direction, Point p) {
+        Point res = neighbour_at(direction, p.x, p.y);
 
-        return all;
+        if (p instanceof Point3D) {
+            return new Point3D(res, ((Point3D) p).z);
+        }
+        else {
+            return res;
+        }
     }
-
 
     /*
      * This method will be used during the onDraw method
      * of a surface view. For performance reasons no objects
-     * will be initialised by this method
+     * will be allocated by this method
      */
-    public static SparseArray<Point> __all_neighbours(Point p) {
-
+    public static SparseArray<Point> all_neighbours(Point p) {
         Point north = neighbours.get(NORTH);
         north.x = p.x;
         north.y = p.y - 1;
@@ -316,37 +342,12 @@ public class BaseMaze implements Maze {
         Point east = neighbours.get(EAST);
         east.x = p.x + 1;
         east.y = p.y;
-
         return neighbours;
-    }
-
-    public static Point neighbour_at(int direction, Point p) {
-        Point res = neighbour_at(direction, p.x, p.y);
-        if (p instanceof Point3D) {
-            return new Point3D(res, ((Point3D) p).z);
-        }
-        else {
-            return res;
-        }
-    }
-
-    public boolean isJunction(Point p) {
-       SparseArray<Point> all = all_neighbours(p);
-        int nwalls = 0;
-
-        for (int i = 0; i < all.size(); ++i) {
-            if ((!withinBounds(all.get(i))) ||  isWall(all.get(i))) {
-                ++nwalls;
-            }
-        }
-
-        return nwalls < 2;
     }
 
     private boolean carvable(Point wall, Point neighbour) {
         return withinBounds(neighbour.x, neighbour.y) &&
                 isWall(wall) && isWall(neighbour);
-
     }
 
     //Algorithms
@@ -357,8 +358,6 @@ public class BaseMaze implements Maze {
      * if it reaches a dead-end. The parts that are only visited once, are
      * the solution since a dead-end was never encountered there.
      */
-
-
     private int fill(Point curPos, Point exitPoint, int minVisit) {
 
         while (!curPos.equals(exitPoint)) {
@@ -375,12 +374,12 @@ public class BaseMaze implements Maze {
                     int rc = fill(cell, exitPoint, minVisit);
 
                     if (rc == DEAD_END) {
-                        inc(curPos);
                         /*
                          Redo the process to fill up the dead end, so it can
                          be ignored later. Increment junction for the moment
                          so that filling up doesn't go in the wrong direction.
                          */
+                        inc(curPos);
                         fill(cell, exitPoint, minVisit + 1);
                         grid[curPos.y][curPos.x] -= 1;
                     }
@@ -435,7 +434,10 @@ public class BaseMaze implements Maze {
             if (allNeighboursCarved) {
                 curPos = stack.pop();
             }
-            if (curPos.x != (width - 1))writeAt(curPos, SPACE);
+
+            if (curPos.x != (width - 1)) {
+                writeAt(curPos, SPACE);
+            }
             allNeighboursCarved = true;
             List<Integer> directions = randomizedDirections();
 
@@ -444,10 +446,12 @@ public class BaseMaze implements Maze {
                 Point neighbour = neighbour_at(directions.get(i), wall);
 
                 if (carvable(wall, neighbour)) {
-                    if (curPos.x != (width - 1))writeAt(curPos, SPACE);
+
+                    if (curPos.x != (width - 1)) {
+                        writeAt(curPos, SPACE);
+                    }
                     writeAt(wall, SPACE);
                     writeAt(neighbour, SPACE);
-
                     stack.push(curPos);
                     curPos = neighbour;
                     allNeighboursCarved = false;
@@ -455,7 +459,6 @@ public class BaseMaze implements Maze {
             }
         } while (!stack.isEmpty());
     }
-
 
     /**Give different values to walls depending on their kind, e.g
      * walls that are connected to more than two others should have a
@@ -465,7 +468,6 @@ public class BaseMaze implements Maze {
 
         for (int y = 0; y < height; ++y) {
             for (int x = 0; x < width; ++x) {
-
                 int nextWalls = 0;
                 Point current = new Point(x, y);
                 SparseArray<Point> neighbours = all_neighbours(current);

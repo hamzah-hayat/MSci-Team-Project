@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,9 +41,8 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
     protected ArrayList<Dot> dots;
     private String puzzleDataD = "";
     private int shareCode;
-    private ArrayList<Dot> passDot;
+    private DotMap passDot;
     private String puzData;
-    private int height, width;
     private int butCounter = 0;
 
 
@@ -95,8 +96,6 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
 
         final DotsView dotV = (DotsView) findViewById(R.id.dotsView);
         final Bitmap scaledImg = Bitmap.createScaledBitmap(edgImg, dotV.getLayoutParams().width, dotV.getLayoutParams().height, true);
-        height = dotV.getLayoutParams().height;
-        width = dotV.getLayoutParams().width;
 
         dots = new ArrayList<>();
         ArrayList<Dot> fDots = new ArrayList<>();
@@ -120,7 +119,7 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
         dotV.removeOverlappingDots();
 
 
-        passDot = dotV.getDots();
+        passDot = new DotMap(dotV.getDots(), dotV.getLayoutParams().width, dotV.getLayoutParams().height);
 
         final Button show = (Button) findViewById(R.id.show);
         show.setOnClickListener(new View.OnClickListener() {
@@ -179,12 +178,12 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
                         .setNeutralButton("Close", null).show();
             }
             else {
-                for(int i = 0; i < passDot.size(); i++) {
-                    Dot temp = passDot.get(i);
+                for(int i = 0; i < passDot.getDotList().size(); i++) {
+                    Dot temp = passDot.getDotList().get(i);
                     puzzleDataD += temp.getxPos() + "," + temp.getyPos() +";";
                 }
                 puzzleDataD += word.getText().toString() + ";";
-                puzzleDataD += width + ";" + height;
+                puzzleDataD += passDot.getWidth() + ";" + passDot.getLength();
 
                 System.out.println(puzzleDataD);
                 UploadPuzzleJSON jsonGetter = new UploadPuzzleJSON('d', puzzleDataD, "hello, world!");
@@ -209,28 +208,11 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
                     e.printStackTrace();
                 }
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-                builder.setTitle("Please Enter Code Here");
+                builder.setTitle("Your puzzle share code:");
                 TextView input = new TextView(this);
-                String prefix = "";
-                if (shareCode < 10) {
-                    prefix = "00000";
-                }
-                else if (shareCode < 100) {
-                    prefix = "0000";
-                }
-                else if (shareCode < 1000) {
-                    prefix = "000";
-                }
-                else if (shareCode < 10000) {
-                    prefix = "00";
-                }
-                else if (shareCode < 100000) {
-                    prefix = "0";
-                }
-                else if (shareCode < 1000000) {
-                    prefix = "";
-                }
-                input.setText("Puzzle Code: d" + prefix + shareCode);
+                input.setText("d" + shareCode);
+                input.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+                input.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
                 builder.setView(input);
                 builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                 @Override
