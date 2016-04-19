@@ -50,7 +50,6 @@ public class DotToDotView extends Activity {
     private long timeSwapBuff = 0L;
     private long updatedTime = 0L;
     private String[] dataSplit;
-    ArrayList<Dot> pDots;
     private Bitmap readImage;
     private String urlLink;
     //private Bitmap readImage;
@@ -64,6 +63,7 @@ public class DotToDotView extends Activity {
     private String timeAsString;
     private int score;
     private Intent intent;
+    private DotMap mappedDots;
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
@@ -76,11 +76,12 @@ public class DotToDotView extends Activity {
             subWidth = Double.parseDouble(dataSplit[dataSplit.length - 2]);
             subHeight = Double.parseDouble(dataSplit[dataSplit.length - 1]);
             puzzleWord = dataSplit[dataSplit.length-3].toLowerCase();
-            pDots = new ArrayList<>();
+            ArrayList<Dot> pDots = new ArrayList<>();
             for(int i = 0; i < dataSplit.length-4; i++) {
                 String[] xyPair = dataSplit[i].split(",");
                 pDots.add(new Dot(Integer.parseInt(xyPair[0]), Integer.parseInt(xyPair[1])));
             }
+            mappedDots = new DotMap(pDots, (int)subWidth, (int)subHeight);
         }
         else if(intent.hasExtra("URL_STRING_RAND")) {
             puzzleWord = intent.getStringExtra("ANSWER").toLowerCase();
@@ -125,11 +126,12 @@ public class DotToDotView extends Activity {
                     }
                 }
             }
-            pDots = new ArrayList<>();
+            ArrayList<Dot> pDots = new ArrayList<>();
             for (int i = 0; i < allDots.size(); i = i + 100) {
                 Dot cDot = allDots.get(i);
                 pDots.add(cDot);
             }
+            mappedDots = new DotMap(pDots, dv.getLayoutParams().width, dv.getLayoutParams().height);
         }
 
         if(intent.hasExtra("ANSWER_ARRAY")) { //SCALE IMAGE TO CORRECT DIMENSIONS
@@ -140,15 +142,18 @@ public class DotToDotView extends Activity {
             scaleH = subHeight / newHeight;
             scaleW = subWidth / newWidth;
 
-            for (Dot d : pDots) {
+            ArrayList<Dot> readDots = mappedDots.getDotList();
+
+            for (Dot d : readDots) {
                 double newX = d.getxPos() / scaleW;
                 double newY = d.getyPos() / scaleH;
                 d.setxPos((int) (newX + 0.5d));
                 d.setyPos((int) (newY + 0.5d));
             }
+            mappedDots.setDotList(readDots);
         }
 
-        dv.setDots(pDots);
+        dv.setDots(mappedDots.getDotList());
         if(intent.hasExtra("URL_STRING_RAND")) {
             dv.removeEdgeDots();
             dv.removeOverlappingDots();
@@ -163,21 +168,7 @@ public class DotToDotView extends Activity {
             show.setClickable(false);
         }
         else if(intent.hasExtra("URL_STRING_RAND")) {
-            show.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(showCount == 0) {
-                        showCount++;
-                        dv.setBackgroundBitmap(scaledImg);
-                        dv.invalidate();
-                    }
-                    else {
-                        showCount = 0;
-                        dv.setBackgroundBitmap(null);
-                        dv.invalidate();
-                    }
-                }
-            });
+            showSolution(show);
         }
 
         ImageButton exit = (ImageButton) findViewById(R.id.dots_exit);
@@ -217,9 +208,7 @@ public class DotToDotView extends Activity {
                                     })
                             .setNeutralButton("Return to Main Menu", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    finish();
-                                    Intent intent = new Intent(DotToDotView.this, MainActivity.class);
-                                    startActivity(intent);
+                                    switchToMain();
                                 }
                             })
                             .show();
@@ -235,8 +224,7 @@ public class DotToDotView extends Activity {
                             })
                             .setPositiveButton("Return to Main Menu", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(DotToDotView.this, MainActivity.class);
-                                    startActivity(intent);
+                                    switchToMain();
                                 }
                             })
                             .show();
@@ -316,14 +304,29 @@ public class DotToDotView extends Activity {
     }
 
 
-    public void drawGUI() {}
+    public void switchToMain() {
+        finish();
+        Intent intent = new Intent(DotToDotView.this, MainActivity.class);
+        startActivity(intent);
+    }
 
-    public void switchToMain() {}
+    public void showSolution(Button sh) {
+        sh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(showCount == 0) {
+                    showCount++;
+                    dv.setBackgroundBitmap(scaledImg);
+                    dv.invalidate();
+                }
+                else {
+                    showCount = 0;
+                    dv.setBackgroundBitmap(null);
+                    dv.invalidate();
+                }
+            }
+        });
 
-    public void switchToCurrentPuzzle() {}
-
-    public void showLeaderboard() {}
-
-    public void showSolution() {}
+    }
 
 }

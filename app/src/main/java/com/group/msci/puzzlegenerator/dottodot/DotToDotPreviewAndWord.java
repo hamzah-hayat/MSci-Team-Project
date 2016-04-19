@@ -41,9 +41,8 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
     protected ArrayList<Dot> dots;
     private String puzzleDataD = "";
     private int shareCode;
-    private ArrayList<Dot> passDot;
+    private DotMap passDot;
     private String puzData;
-    private int height, width;
     private int butCounter = 0;
 
 
@@ -97,8 +96,6 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
 
         final DotsView dotV = (DotsView) findViewById(R.id.dotsView);
         final Bitmap scaledImg = Bitmap.createScaledBitmap(edgImg, dotV.getLayoutParams().width, dotV.getLayoutParams().height, true);
-        height = dotV.getLayoutParams().height;
-        width = dotV.getLayoutParams().width;
 
         dots = new ArrayList<>();
         ArrayList<Dot> fDots = new ArrayList<>();
@@ -122,7 +119,7 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
         dotV.removeOverlappingDots();
 
 
-        passDot = dotV.getDots();
+        passDot = new DotMap(dotV.getDots(), dotV.getLayoutParams().width, dotV.getLayoutParams().height);
 
         final Button show = (Button) findViewById(R.id.show);
         show.setOnClickListener(new View.OnClickListener() {
@@ -181,12 +178,12 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
                         .setNeutralButton("Close", null).show();
             }
             else {
-                for(int i = 0; i < passDot.size(); i++) {
-                    Dot temp = passDot.get(i);
+                for(int i = 0; i < passDot.getDotList().size(); i++) {
+                    Dot temp = passDot.getDotList().get(i);
                     puzzleDataD += temp.getxPos() + "," + temp.getyPos() +";";
                 }
                 puzzleDataD += word.getText().toString() + ";";
-                puzzleDataD += width + ";" + height;
+                puzzleDataD += passDot.getWidth() + ";" + passDot.getLength();
 
                 System.out.println(puzzleDataD);
                 UploadPuzzleJSON jsonGetter = new UploadPuzzleJSON('d', puzzleDataD, "hello, world!");
