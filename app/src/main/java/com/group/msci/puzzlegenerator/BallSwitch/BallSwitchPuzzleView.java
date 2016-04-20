@@ -48,6 +48,11 @@ public class BallSwitchPuzzleView{
         gameActivity.setContentView(gameCanvas);
     }
 
+    public void showHelpScreen()
+    {
+        gameActivity.setContentView(R.layout.ballswitch_help);
+    }
+
     public void showUser(User user)
     {
 
@@ -55,11 +60,6 @@ public class BallSwitchPuzzleView{
 
 
     public void showSolution(String moveList)
-    {
-
-    }
-
-    public void showLeaderBoard(LeaderBoard leaderBoard)
     {
 
     }

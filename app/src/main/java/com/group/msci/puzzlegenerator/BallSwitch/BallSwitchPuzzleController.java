@@ -44,6 +44,25 @@ public class BallSwitchPuzzleController {
             }
         });
 
+        ImageButton ballSwitchHelpButton = gameActivity.findButtonById(R.id.helpButton);
+        ballSwitchHelpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gameView.showHelpScreen();
+            }
+        });
+
+        ImageButton ballSwitchLeaderBoardButton = gameActivity.findButtonById(R.id.scoreboardButton);
+        ballSwitchLeaderBoardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(gameActivity,
+                        BallSwitchPuzzleScoreboard.class);
+                gameActivity.startActivity(intent);
+            }
+        });
+
+
     }
 
     public void moveball(int direction)
