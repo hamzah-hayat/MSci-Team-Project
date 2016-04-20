@@ -140,12 +140,15 @@ public class GameInstanceController extends Activity {
         });
     }
 
-    @Override
-    public void onBackPressed() {
+    public void interruptAnimationIfRunning() {
         if (animation.isRunning()) {
             animationThread.interrupt();
         }
+    }
 
+    @Override
+    public void onBackPressed() {
+        interruptAnimationIfRunning();
         super.onBackPressed();
     }
 
@@ -197,6 +200,9 @@ public class GameInstanceController extends Activity {
                 try {
                     canvas = board.getHolder().lockCanvas();
                     synchronized (board.getHolder()) {
+                        while (canvas == null) {
+                            canvas = board.getHolder().lockCanvas();
+                        }
                         board.draw(canvas);
                         board.postInvalidate();
                     }

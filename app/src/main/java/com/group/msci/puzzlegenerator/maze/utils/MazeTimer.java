@@ -51,6 +51,7 @@ public class MazeTimer extends CountDownTimer {
 
     @Override
     public void onFinish() {
+        parentActivity.interruptAnimationIfRunning();
         maze.regenerate();
         board.setMaze(maze);
         parentActivity.reDrawMaze();
