@@ -31,12 +31,13 @@ import com.group.msci.puzzlegenerator.dottodot.URLBitmap;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Timer;
 
 public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickListener {
 
     protected PicrossPuzzle puzzle;
-    protected ArrayList<ArrayList<ImageButton>> buttonList = new ArrayList<ArrayList<ImageButton>>();
+    protected ArrayList<ArrayList<PicrossSquare>> buttonList = new ArrayList<ArrayList<PicrossSquare>>();
     protected GridLayout buttonGrid;
     protected boolean shading = true;
     protected TextView timer;
@@ -129,6 +130,13 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
                 shading = false;
             }
         });
+        ImageButton hint = (ImageButton) findViewById(R.id.hint);
+        hint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hint();
+            }
+        });
         timer = (TextView) findViewById(R.id.timerView);
         startTime = SystemClock.uptimeMillis();
         timeHandler.postDelayed(updateTimerThread, 0);
@@ -150,6 +158,22 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
             timeHandler.postDelayed(this, 0);
         }
     };
+
+    public void hint() {
+        boolean flag = true;
+        while (flag) {
+            int randHeight = new Random().nextInt(puzzle.getHeight());
+            int randWidth = new Random().nextInt(puzzle.getHeight());
+            if (!puzzle.currentAnswers[randHeight][randWidth]) {
+                if (puzzle.checkIfCorrect(randHeight, randWidth)) {
+                    buttonList.get(randHeight).get(randWidth).shade();
+                }
+                else {
+                    buttonList.get(randHeight).get(randWidth).cross();
+                }
+            }
+        }
+    }
 
     public void setPuzzle(PicrossPuzzle puzzleT) {
         puzzle = puzzleT;
@@ -198,12 +222,15 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
             TextView rowClue = new TextView(this);
             rowClue.setText(rowBuilder);
             buttonGrid.addView(rowClue);
+            ArrayList<PicrossSquare> pic = new ArrayList<>();
             for (int j = 0; j < puzzle.getWidth(); j++) {
                 PicrossSquare sq = new PicrossSquare(this, i, j);
                 sq.setOnClickListener(this);
                 sq.setBackgroundResource(R.drawable.unshaded);
                 buttonGrid.addView(sq);
+                pic.add(sq);
             }
+            buttonList.add(pic);
         }
         for (int i = 0; i < puzzle.getPuzzleCluesRows().size(); i++) {
             for (int j = 0; j < puzzle.getPuzzleCluesRows().get(i).size(); j++) {

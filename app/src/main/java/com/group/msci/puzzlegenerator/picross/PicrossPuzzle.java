@@ -131,4 +131,8 @@ public class PicrossPuzzle {
     public ArrayList<ArrayList<Integer>> getPuzzleCluesColumns() {
         return puzzleCluesColumns;
     }
+
+    public boolean checkIfShaded(int i, int j) {
+        return currentAnswers[i][j];
+    }
 }

@@ -39,6 +39,16 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/hint"
+            android:layout_gravity="bottom"
+            android:src="@drawable/ic_dots_hint"
+            android:background="#ffffffff"
+            android:layout_weight="1"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/cross"
             android:src="@drawable/ic_cross"
             android:background="#ffffffff"

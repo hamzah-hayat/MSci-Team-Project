@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -27,8 +28,10 @@ import android.widget.Toast;
 import com.group.msci.puzzlegenerator.MainActivity;
 import com.group.msci.puzzlegenerator.R;
 import com.group.msci.puzzlegenerator.dottodot.URLBitmap;
+import com.group.msci.puzzlegenerator.foreground.ForegroundDetection;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
@@ -101,6 +104,17 @@ public class PicrossPuzzleOptionsGUI extends AppCompatActivity implements View.O
                 e.printStackTrace();
             }
             yourSelectedImage = BitmapFactory.decodeStream(imageStream);
+        }
+
+        InputStream in = getResources().openRawResource(R.raw.network);
+        System.out.println("START FOREGROUND");
+        ForegroundDetection fd = new ForegroundDetection(in);
+        fd.setBackground(Color.BLACK);
+        fd.setOutline(true);
+        try {
+            yourSelectedImage = fd.getForeground(yourSelectedImage);
+        } catch(IOException e) {
+            e.printStackTrace();
         }
 
         original = Bitmap.createBitmap(yourSelectedImage);

@@ -32,13 +32,13 @@ public class PicrossMainMenu extends Activity {
                 startActivity(intent);
             }
         });
-        /*ImageButton scoreboardButton = (ImageButton) findViewById(R.id.score);
+        ImageButton scoreboardButton = (ImageButton) findViewById(R.id.score);
         scoreboardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PicrossMainMenu.this, PicrossScoreboard.class);
                 startActivity(intent);
             }
-        });*/
+        });
     }
 }
