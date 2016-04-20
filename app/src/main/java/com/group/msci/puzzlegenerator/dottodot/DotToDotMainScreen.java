@@ -86,7 +86,6 @@ public class DotToDotMainScreen extends Activity {
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
                 Intent intent = new Intent(DotToDotMainScreen.this, DotToDotImageSelectType.class);
                 startActivity(intent);
             }
@@ -96,8 +95,8 @@ public class DotToDotMainScreen extends Activity {
         help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(DotToDotMainScreen.this, DotToDotImageSelectType.class);
-                //startActivity(intent);
+                Intent intent = new Intent(DotToDotMainScreen.this, DotToDotHelp.class);
+                startActivity(intent);
             }
         });
 

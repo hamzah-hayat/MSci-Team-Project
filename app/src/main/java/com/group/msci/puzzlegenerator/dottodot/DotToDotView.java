@@ -163,100 +163,127 @@ public class DotToDotView extends Activity {
         }
 
         Button show = (Button) findViewById(R.id.show);
-        if(intent.hasExtra("ARRAY_NAME")) {
-            show.setAlpha(.5f);
-            show.setClickable(false);
-        }
-        else if(intent.hasExtra("URL_STRING_RAND")) {
-            showSolution(show);
-        }
-
-        ImageButton exit = (ImageButton) findViewById(R.id.dots_exit);
-        exit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                readImage = null;
-                allDots = null;
-                System.gc();
-                finish();
-                Intent intent = new Intent(DotToDotView.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        ImageButton guess = (ImageButton) findViewById(R.id.dots_guess);
-        guess.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final EditText inputText = (EditText) findViewById(R.id.dots_answer);
-                String input = inputText.getText().toString();
-                timeAsString = time.getText().toString();
-                score = calculateScore(timeAsString);
-                if(input.equals(puzzleWord)) {
-                    if(intent.hasExtra("ANSWER_ARRAY")) {
-                        uploadScore();
-                    }
-                    new AlertDialog.Builder(DotToDotView.this)
-                            .setTitle("Correct!")
-                            .setMessage("You have guessed the image correctly. Your score for the puzzle is " + score)
-                                    .setPositiveButton("Play Again", new DialogInterface.OnClickListener() {
+                if(intent.hasExtra("ANSWER_ARRAY")) {
+                    show.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            new AlertDialog.Builder(DotToDotView.this)
+                                    .setTitle("Not available")
+                                    .setMessage("Displaying the original image underneath the dots is not available for shared puzzles")
+                                    .setNeutralButton("Okay", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
-                                            finish();
-                                            Intent intent = new Intent(DotToDotView.this, DotToDotMainScreen.class);
-                                            startActivity(intent);
+                                            dialog.dismiss();
                                         }
                                     })
-                            .setNeutralButton("Return to Main Menu", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    switchToMain();
-                                }
-                            })
-                            .show();
+                                    .show();
+                        }
+                    });
                 }
-                else {
-                    new AlertDialog.Builder(DotToDotView.this)
-                            .setTitle("Incorrect!")
-                            .setMessage("The answer you have given is incorrect")
-                            .setNegativeButton("Try Again", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    inputText.setText("");
-                                }
-                            })
-                            .setPositiveButton("Return to Main Menu", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    switchToMain();
-                                }
-                            })
-                            .show();
+
+                else if(intent.hasExtra("URL_STRING_RAND"))
+
+                {
+                    showSolution(show);
                 }
-            }
-        });
+
+                ImageButton exit = (ImageButton) findViewById(R.id.dots_exit);
+                exit.setOnClickListener(new View.OnClickListener()
+
+                {
+                    @Override
+                    public void onClick (View view){
+                    readImage = null;
+                    allDots = null;
+                    System.gc();
+                    finish();
+                    Intent intent = new Intent(DotToDotView.this, MainActivity.class);
+                    startActivity(intent);
+                }
+                }
+
+                );
+
+                ImageButton guess = (ImageButton) findViewById(R.id.dots_guess);
+                guess.setOnClickListener(new View.OnClickListener()
+
+                {
+                    @Override
+                    public void onClick (View view){
+                    final EditText inputText = (EditText) findViewById(R.id.dots_answer);
+                    String input = inputText.getText().toString();
+                    timeAsString = time.getText().toString();
+                    score = calculateScore(timeAsString);
+                    if (input.equals(puzzleWord)) {
+                        if (intent.hasExtra("ANSWER_ARRAY")) {
+                            uploadScore();
+                        }
+                        new AlertDialog.Builder(DotToDotView.this)
+                                .setTitle("Correct!")
+                                .setMessage("You have guessed the image correctly. Your score for the puzzle is " + score)
+                                .setPositiveButton("Play Again", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                        Intent intent = new Intent(DotToDotView.this, DotToDotMainScreen.class);
+                                        startActivity(intent);
+                                    }
+                                })
+                                .setNeutralButton("Return to Main Menu", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        switchToMain();
+                                    }
+                                })
+                                .show();
+                    } else {
+                        new AlertDialog.Builder(DotToDotView.this)
+                                .setTitle("Incorrect!")
+                                .setMessage("The answer you have given is incorrect")
+                                .setNegativeButton("Try Again", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        inputText.setText("");
+                                    }
+                                })
+                                .setPositiveButton("Return to Main Menu", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        switchToMain();
+                                    }
+                                })
+                                .show();
+                    }
+                }
+                }
+
+                );
 
         Button hint = (Button) findViewById(R.id.hint);
-        hint.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                puzzleWord.length();
-                new AlertDialog.Builder(DotToDotView.this)
-                        .setTitle("Hint")
-                        .setMessage("The word has " + puzzleWord.length() + " characters. The word starts with " + puzzleWord.charAt(0) + " and ends with " + puzzleWord.charAt(puzzleWord.length()-1))
-                        .setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .show();
+        hint.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick (View view){
+                    puzzleWord.length();
+                    new AlertDialog.Builder(DotToDotView.this)
+                            .setTitle("Hint")
+                            .setMessage("The word has " + puzzleWord.length() + " characters. The word starts with " + puzzleWord.charAt(0) + " and ends with " + puzzleWord.charAt(puzzleWord.length() - 1))
+                            .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .show();
+                }
+                }
+
+                );
+
+                time=(TextView)
+
+                findViewById(R.id.time);
+
+                startTime=SystemClock.uptimeMillis();
+                timeHandler.postDelayed(updateTimerThread,0);
+
             }
-        });
 
-            time=(TextView) findViewById(R.id.time);
-
-            startTime=SystemClock.uptimeMillis();
-            timeHandler.postDelayed(updateTimerThread,0);
-
-        }
-
-        private Runnable updateTimerThread = new Runnable() {
+            private Runnable updateTimerThread = new Runnable() {
         @Override
         public void run() {
             timeInMS = SystemClock.uptimeMillis() - startTime;
