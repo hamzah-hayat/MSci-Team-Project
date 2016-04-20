@@ -104,6 +104,14 @@ public class PicrossImageSelectType extends Activity {
                 try {
                     int totalHits = jsonFile.getInt("totalHits");
                     System.out.println(totalHits);
+                    if (totalHits == 0) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(PicrossImageSelectType.this);
+                        builder.setTitle("No Image Found");
+                        builder.setMessage("No image found for chosen word, please try again!");
+                        builder.setPositiveButton("Okay", null);
+                        AlertDialog al = builder.create();
+                        al.show();
+                    }
                     JSONArray allLinks = jsonFile.getJSONArray("hits");
                     int randCap = 0;
                     if (totalHits >= 20) {

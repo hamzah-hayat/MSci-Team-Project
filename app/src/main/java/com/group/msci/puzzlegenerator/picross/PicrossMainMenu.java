@@ -1,5 +1,6 @@
 package com.group.msci.puzzlegenerator.picross;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +10,7 @@ import android.widget.ImageButton;
 
 import com.group.msci.puzzlegenerator.R;
 
-public class PicrossMainMenu extends AppCompatActivity {
+public class PicrossMainMenu extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
