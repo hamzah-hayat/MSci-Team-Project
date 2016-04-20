@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.codeButton);
+        ImageButton fab = (ImageButton) findViewById(R.id.codeButton);
         fab.setOnClickListener(this);
 
         ImageButton mazeBtn = (ImageButton) findViewById(R.id.maze);

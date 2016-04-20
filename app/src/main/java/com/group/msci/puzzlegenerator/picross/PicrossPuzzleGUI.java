@@ -45,7 +45,6 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
     long timeInMS = 0L;
     long timeSwapBuff = 0L;
     long updatedTime = 0L;
-    private final MediaPlayer buttonPress = MediaPlayer.create(this, R.raw.buttonclick);;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +112,7 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
         /*ImageView view = (ImageView) findViewById(R.id.testingImage);
         view.setImageBitmap(puzzle.foregroundImage);*/
         ImageButton shade = (ImageButton) findViewById(R.id.shade);
+        final MediaPlayer buttonPress = MediaPlayer.create(this, R.raw.buttonclick);
         shade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
