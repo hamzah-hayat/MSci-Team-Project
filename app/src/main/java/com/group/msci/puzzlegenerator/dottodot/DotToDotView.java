@@ -161,6 +161,7 @@ public class DotToDotView extends Activity {
         else if(intent.hasExtra("ANSWER_ARRAY")) {
             dv.removeEdgeDots();
         }
+        System.out.println(puzzleWord);
 
         Button show = (Button) findViewById(R.id.show);
                 if(intent.hasExtra("ANSWER_ARRAY")) {

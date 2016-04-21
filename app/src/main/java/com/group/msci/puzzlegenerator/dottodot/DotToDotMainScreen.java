@@ -32,8 +32,9 @@ public class DotToDotMainScreen extends Activity {
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                InputStream in = getResources().openRawResource(R.raw.noundata);
+                InputStream in = getResources().openRawResource(R.raw.animalwords);
                 PixabayScraperJSON scraper = new PixabayScraperJSON(in);
+                scraper.setLines(227);
                 Thread x = new Thread(scraper);
                 x.start();
                 try {

@@ -20,6 +20,11 @@ public class PixabayScraperJSON implements Runnable {
     private volatile JSONObject jsonFile;
     private InputStream nounDataStream;
     private String urlBase;
+    private int lines = 146603;
+
+    public void setLines(int l) {
+        lines = l;
+    }
 
     public String getNoun() {
         return noun;
@@ -45,7 +50,7 @@ public class PixabayScraperJSON implements Runnable {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(nounDataStream));
             Random rand = new Random();
-            int lineNumber = rand.nextInt(146603);
+            int lineNumber = rand.nextInt(lines);
             noun = "";
             for (int i = 0; i < lineNumber; i++) {
                 noun = reader.readLine();
