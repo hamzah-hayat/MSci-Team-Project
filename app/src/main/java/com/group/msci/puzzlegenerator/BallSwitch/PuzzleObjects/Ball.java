@@ -19,9 +19,13 @@ import com.group.msci.puzzlegenerator.R;
  */
 public class Ball extends BallSwitchObject {
 
+    int startX,startY;
+
     public Ball(int startX,int startY,Resources c)
     {
         super(startX, startY,c,R.drawable.ball);
+        this.startX = startX;
+        this.startY = startY;
     }
 
     public void setPosX(int PosX)
@@ -39,5 +43,11 @@ public class Ball extends BallSwitchObject {
         //Just a ball bitmap
         System.out.print("stop");
         canvas.drawBitmap(image,null,box,paint);
+    }
+
+    public void reset()
+    {
+        setPosX(startX);
+        setPosY(startY);
     }
 }

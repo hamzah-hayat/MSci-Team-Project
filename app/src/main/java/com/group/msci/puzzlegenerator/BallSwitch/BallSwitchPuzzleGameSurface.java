@@ -275,4 +275,8 @@ public class BallSwitchPuzzleGameSurface extends SurfaceView implements SurfaceH
         }
     }
 
+    public void setPuzzle(BallSwitchPuzzle puzzleIn)
+    {
+        puzzle = puzzleIn;
+    }
 }

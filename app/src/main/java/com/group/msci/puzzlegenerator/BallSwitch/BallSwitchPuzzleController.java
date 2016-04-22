@@ -19,7 +19,6 @@ public class BallSwitchPuzzleController {
 
     BallSwitchPuzzleGame gameActivity;
     BallSwitchPuzzleView gameView;
-    BallSwitchPuzzleModel gameModel;
 
     public BallSwitchPuzzleController(BallSwitchPuzzleGame gameActivityIn)
     {
@@ -28,7 +27,6 @@ public class BallSwitchPuzzleController {
 
     public void setView(BallSwitchPuzzleView viewIn){gameView=viewIn;}
 
-    public void setModel(BallSwitchPuzzleModel modelIn){gameModel=modelIn;}
 
     public void setUpMainMenuButtons()
     {
@@ -41,6 +39,7 @@ public class BallSwitchPuzzleController {
                 //Need to change view and start gameloop
                 gameActivity.startGame();
                 gameView.showGameScreen();
+                setUpGameButtons();
             }
         });
 
@@ -63,6 +62,22 @@ public class BallSwitchPuzzleController {
         });
 
 
+    }
+
+    public void setUpGameButtons()
+    {
+        //Setup gameButtons so they reset the board
+        ImageButton ballSwitchResetButton = gameActivity.findButtonById(R.id.ballSwitchResetButton);
+        ballSwitchResetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Reset all the items on the screen
+                for(BallSwitchObject object : gameActivity.getPuzzle().getObjects())
+                {
+                    object.reset();
+                }
+            }
+        });
     }
 
     public void moveball(int direction)

@@ -23,7 +23,6 @@ import java.util.Scanner;
  */
 public class BallSwitchPuzzleGame extends AppCompatActivity {
 
-    BallSwitchPuzzleModel model;
     BallSwitchPuzzleController controller;
     BallSwitchPuzzleView view;
     BallSwitchPuzzle puzzle;
@@ -33,13 +32,10 @@ public class BallSwitchPuzzleGame extends AppCompatActivity {
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
 
-        model = new BallSwitchPuzzleModel();
         controller = new BallSwitchPuzzleController(this);
         view = new BallSwitchPuzzleView(this);
         //Now link them together
 
-        model.setController(controller);
-        controller.setModel(model);
         controller.setView(view);
         view.setController(controller);
         gameStarted=false;
@@ -60,10 +56,6 @@ public class BallSwitchPuzzleGame extends AppCompatActivity {
     {
         BallSwitchPuzzleCreator creator = new BallSwitchPuzzleCreator(0,new boolean[]{true,true},getResources());
         puzzle = creator.generatePuzzle();
-        for(BallSwitchObject object : puzzle.getObjects())
-        {
-            System.out.println(object);
-        }
         gameStarted = true;
     }
 

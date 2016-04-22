@@ -56,4 +56,8 @@ public class Fan extends BallSwitchObject {
         gameActivity.getController().moveball(direction);
     }
 
+    public void reset()
+    {
+        //Dont need to do anything
+    }
 }

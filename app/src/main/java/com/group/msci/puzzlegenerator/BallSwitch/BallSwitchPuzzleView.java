@@ -2,6 +2,8 @@ package com.group.msci.puzzlegenerator.BallSwitch;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.view.SurfaceView;
+import android.widget.LinearLayout;
 
 import com.group.msci.puzzlegenerator.R;
 
@@ -39,13 +41,19 @@ public class BallSwitchPuzzleView{
     //Show the gameScreen here
     public void showGameScreen()
     {
+        gameActivity.setContentView(R.layout.balls_play);
         //gameActivity.setContentView(R.layout.ballswitch_game);
         //Make sure the gameCanvas isnt null, create it if it is
         if(gameCanvas==null)
         {
             gameCanvas = new BallSwitchPuzzleGameSurface(gameActivity,gameActivity.getPuzzle());
+            LinearLayout surface = (LinearLayout)gameActivity.findViewById(R.id.surfaceView);
+            surface.addView(gameCanvas);
         }
-        gameActivity.setContentView(gameCanvas);
+        else
+        {
+            gameCanvas.setPuzzle(gameActivity.getPuzzle());
+        }
     }
 
     public void showHelpScreen()
