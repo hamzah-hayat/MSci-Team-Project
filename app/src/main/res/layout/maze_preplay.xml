@@ -4,22 +4,22 @@
     android:id="@+id/timed">
 
     <Spinner
-        android:layout_width="400dp"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:id="@+id/maze_types_dd"
         android:background="#D4ADDC"
         android:gravity="center"
         android:spinnerMode="dropdown"
         android:layout_above="@+id/maze_difficulty_dd"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:layout_marginBottom="52dp"
         android:layout_alignLeft="@+id/maze_difficulty_dd"
-        android:layout_alignStart="@+id/maze_difficulty_dd" />
+        android:layout_alignStart="@+id/maze_difficulty_dd"
+        android:layout_alignRight="@+id/seconds_field"
+        android:layout_alignEnd="@+id/seconds_field" />
 
     <CheckBox
         android:layout_width="200dp"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:text="Timed"
         android:id="@+id/time_check_box"
         android:background="#50E3C2"
@@ -61,8 +61,8 @@
         android:hint="Seconds"
         android:gravity="center"
         android:layout_below="@+id/time_check_box"
-        android:layout_toRightOf="@+id/time_check_box"
-        android:layout_toEndOf="@+id/time_check_box" />
+        android:layout_toRightOf="@+id/start_button"
+        android:layout_toEndOf="@+id/start_button" />
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -71,7 +71,8 @@
         android:src="@drawable/picross_play_button"
         android:background="#ffffffff"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp" />
 
     <EditText
         android:layout_width="250dp"
@@ -99,7 +100,9 @@
         android:layout_above="@+id/plane_no_field"
         android:layout_alignLeft="@+id/plane_no_field"
         android:layout_alignStart="@+id/plane_no_field"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="20dp"
+        android:layout_alignRight="@+id/seconds_field"
+        android:layout_alignEnd="@+id/seconds_field" />
 
     <TextView
         android:layout_width="wrap_content"
