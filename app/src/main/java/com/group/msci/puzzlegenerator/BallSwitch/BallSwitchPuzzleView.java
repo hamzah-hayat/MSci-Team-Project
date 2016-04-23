@@ -99,4 +99,9 @@ public class BallSwitchPuzzleView{
     }
 
     public boolean getAnimatingBall() { return gameCanvas.animatingBall; }
+
+    public void resetSurface()
+    {
+        gameCanvas.resetBallPosition();
+    }
 }

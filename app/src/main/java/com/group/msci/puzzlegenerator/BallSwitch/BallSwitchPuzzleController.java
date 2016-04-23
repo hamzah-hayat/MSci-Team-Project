@@ -72,10 +72,8 @@ public class BallSwitchPuzzleController {
             @Override
             public void onClick(View view) {
                 //Reset all the items on the screen
-                for(BallSwitchObject object : gameActivity.getPuzzle().getObjects())
-                {
-                    object.reset();
-                }
+                gameActivity.getPuzzle().resetPuzzle();
+                gameActivity.getView().resetSurface();
             }
         });
     }

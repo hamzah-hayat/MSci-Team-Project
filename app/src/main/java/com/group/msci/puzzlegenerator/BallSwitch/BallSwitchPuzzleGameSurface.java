@@ -9,16 +9,11 @@ import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 import android.view.WindowManager;
 
-import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Ball;
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.BallSwitchObject;
-import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.BallSwitchPuzzleViewThread;
-import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Switch;
 
 import java.util.ArrayList;
 
@@ -278,5 +273,11 @@ public class BallSwitchPuzzleGameSurface extends SurfaceView implements SurfaceH
     public void setPuzzle(BallSwitchPuzzle puzzleIn)
     {
         puzzle = puzzleIn;
+    }
+
+    public void resetBallPosition()
+    {
+        ballXPosition = puzzle.getBall().getPosX();
+        ballYPosition = puzzle.getBall().getPosY();
     }
 }
