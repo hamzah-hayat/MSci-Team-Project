@@ -65,6 +65,9 @@
             android:name=".dottodot.DotToDotScoreboard"
             android:label="@string/app_name" />
         <activity
+            android:name=".dottodot.DotToDotHelp"
+            android:label="@string/app_name" />
+        <activity
             android:name=".dottodot.DotToDotImageSelectType"
             android:label="@string/app_name" />
         <activity

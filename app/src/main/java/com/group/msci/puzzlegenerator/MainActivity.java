@@ -117,9 +117,38 @@ public class MainActivity extends Activity implements View.OnClickListener {
         return super.onOptionsItemSelected(item);
     }
 
+    private void displayInvalidCodeDialog() {
+
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Invalid Sharing Code");
+        alertDialog.setMessage("Please use a code that begins with the first letter of a puzzle name," +
+                               "and the number of the puzzle e.g. p1");
+
+        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
+    }
+
+    private boolean validateInputCode(String inputCode) {
+        String  pc = inputCode.substring(0, 1);
+        String puzzleNo = inputCode.substring(1, inputCode.length());
+
+        try {
+            int n = Integer.parseInt(puzzleNo);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
+        return "bdmp".contains(pc);
+    }
+
     @Override
     public void onClick(View v) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Please Enter Code Here");
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -127,6 +156,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
         builder.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                String inputCode = input.getText().toString();
+
+                if (!validateInputCode(inputCode)) {
+                    displayInvalidCodeDialog();
+                    return;
+                }
                 DownloadPuzzleJSON downJson = new DownloadPuzzleJSON(input.getText().toString());
                 Thread x = new Thread(downJson);
                 x.start();

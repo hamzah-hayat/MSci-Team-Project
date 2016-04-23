@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Puzzls Dot to Dot Help"
+        android:id="@+id/textView21"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="- You can play, create and share dot to dot puzzles"
+        android:id="@+id/textView22"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/textView21"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="- Play will generate a dot to dot puzzle from a random animal image"
+        android:id="@+id/textView23"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/textView22"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="- Create will allow you to either enter a URL for an image or select one from your gallery"
+        android:id="@+id/textView24"
+        android:layout_below="@+id/textView23"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="- Sharing will give you a code which can be shared with friends"
+        android:id="@+id/textView26"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/textView24"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="- Scores will show under the scoreboard for all shared puzzles"
+        android:id="@+id/textView27"
+        android:layout_below="@+id/textView26"
+        android:layout_alignRight="@+id/textView24"
+        android:layout_alignEnd="@+id/textView24"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="10dp" />
+
+</RelativeLayout>

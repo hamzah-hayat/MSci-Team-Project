@@ -2,7 +2,6 @@ package com.group.msci.puzzlegenerator.maze.controllers;
 
 import android.graphics.Canvas;
 import android.util.SparseArray;
-
 import com.group.msci.puzzlegenerator.maze.models.Maze;
 import com.group.msci.puzzlegenerator.maze.models.BaseMaze;
 import com.group.msci.puzzlegenerator.maze.models.Point;

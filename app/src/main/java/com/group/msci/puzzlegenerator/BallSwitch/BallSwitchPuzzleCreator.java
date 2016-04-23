@@ -8,6 +8,8 @@ import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.BallSwitchObject;
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Fan;
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Switch;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -71,19 +73,37 @@ public class BallSwitchPuzzleCreator {
     }
 
     //Use the vars we have to create a puzzle
-    public BallSwitchPuzzle createPuzzleWithVars(int sizeX,int sizeY,int difficulty,boolean[] obstaclesUsable)
-    {
-        BallSwitchPuzzle createdPuzzle = new BallSwitchPuzzle(sizeX,sizeY);
+    public BallSwitchPuzzle createPuzzleWithVars(int sizeX,int sizeY,int difficulty,boolean[] obstaclesUsable) {
+        BallSwitchPuzzle createdPuzzle = new BallSwitchPuzzle(sizeX, sizeY);
+        ArrayList<Integer> moveList = new ArrayList<>();
         //By using our obstacles, we create a puzzle and make a movelist for how it works.
-        int obstaclesNum = ((sizeX*sizeY)*(difficulty+2)) / 5;
+        int obstaclesNum = ((sizeX * sizeY) * (difficulty + 2)) / 5;
 
         //Randomly make our starting position
         Random rand = new Random();
         int startX = rand.nextInt(sizeX);
         int startY = rand.nextInt(sizeY);
-        createdPuzzle.createBall(startX, startY,c);
+        createdPuzzle.createBall(startX, startY, c);
         //Now our ball is set up
 
+        //Now using our ball we need to "simulate" moving it around the grid creating objects as we go
+        for(int i=0;i<obstaclesNum;i++)
+        {
+            ArrayList<Integer> directions = new ArrayList<>(Arrays.asList(1,2,3,4));
+            boolean positionOK = false;
+            //Move the ball around the grid and create objects that interact with it
+            //In order we need
+            /*
+                1.Choose a direction and make sure theres at least one space
+             */
+
+
+            int ballDirection = rand.nextInt(directions.size()) + 1;    //Random value using our directions
+
+        }
+
+
+        /*
         for(int i=0;i<obstaclesNum;i++)
         {
             //Create each obstacle and add it to map
@@ -127,8 +147,8 @@ public class BallSwitchPuzzleCreator {
                     break;
                 }
         }
+        */
         return createdPuzzle;
     }
-
 
 }

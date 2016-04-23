@@ -71,4 +71,10 @@ public class BallSwitchObject {
         //This method does whatever the object wants to do, can use the ball if necessary
         //Default does nothing
     }
+
+    public void reset()
+    {
+        //Reset this object somehow
+    }
+
 }

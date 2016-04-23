@@ -36,7 +36,7 @@ public class ForegroundDetection {
     BasicNetwork network;
     Bitmap image;
     int numberOfRegions;
-    double threshold = 0.8;
+    double threshold = 0.7;
     
     public ForegroundDetection(InputStream f){
         network = (BasicNetwork)EncogDirectoryPersistence.loadObject(f);
@@ -44,6 +44,7 @@ public class ForegroundDetection {
     public void setImage(Bitmap b) throws IOException{
         
         image = Bitmap.createBitmap(b);
+        image = ImageProcessing.blur(image);
         foreground = new int[image.getWidth()][image.getHeight()];
     }
     public void setBackground(int b){
@@ -84,8 +85,18 @@ public class ForegroundDetection {
                 final int red = (clr & 0x00ff0000) >> 16;
                 final int green = (clr & 0x0000ff00) >> 8;
                 final int blue = clr & 0x000000ff;
-                
-                inputs[x] = new double[]{1,red, green, blue, red*red, green*green, blue*blue, red*green, red*blue, green*blue};
+
+                double r = red;
+                double g = green;
+                double bl = blue;
+
+                double total = r+g+bl;
+
+                r = r/total;
+                g = g/total;
+                bl = bl/total;
+
+                inputs[x] = new double[]{1,r, g, bl};
                     
                     //System.out.println("Hello");
                     
@@ -138,6 +149,23 @@ public class ForegroundDetection {
                 regionHist[regions[x][y]][0]++;
             }
         }
+        int index = 0;
+        {
+            double x = 0.5;
+            double y = 0.05;
+
+            x =  x*image.getWidth();
+            y =  y*image.getHeight();
+
+            int xPos = (int) x;
+            int yPos = (int) y;
+            index = regions[xPos][yPos];
+
+           // System.out.println("hello"+xPos +", "+ yPos);
+           // System.out.println("debug "+regions[xPos][yPos]);
+            regionHist[regions[xPos][yPos]][1] = 0;
+            //image.setRGB(xPos, yPos, Color.RED.getRGB());
+        }
         for(int[] i: regionHist){
             //System.out.println(Arrays.toString(i));
         }
@@ -146,16 +174,19 @@ public class ForegroundDetection {
                 
                 double perc = regionHist[regions[x][y]][1];
                 perc = perc/regionHist[regions[x][y]][0];
-                
 
 
-                if(perc<0.2){
-                    image.setPixel(x, y, background);
-                    //System.out.println(perc);
+                if(regions[x][y]==index) {
+
                 }
-                else{
-                    if(outline){
-                        image.setPixel(x,y, Color.WHITE);
+                else {
+                    if (perc < 0.9) {
+                        image.setPixel(x, y, background);
+                        //System.out.println(perc);
+                    } else {
+                        if (outline) {
+                            image.setPixel(x, y, Color.WHITE);
+                        }
                     }
                 }
 

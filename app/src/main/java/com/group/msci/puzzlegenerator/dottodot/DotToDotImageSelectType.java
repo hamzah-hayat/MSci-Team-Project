@@ -62,6 +62,7 @@ public class DotToDotImageSelectType extends Activity {
                     public void onClick(DialogInterface dialog, int which) {
                         if(isNetConn()) {
                             if (URLUtil.isValidUrl(link.getText().toString())) {
+                                finish();
                                 Intent intent = new Intent(DotToDotImageSelectType.this, DotToDotPreviewAndWord.class);
                                 intent.putExtra("URL_STRING", link.getText().toString());
                                 startActivity(intent);
@@ -99,6 +100,7 @@ public class DotToDotImageSelectType extends Activity {
         switch(requestCode) {
             case SELECT_PHOTO:
                 if (resultCode == RESULT_OK) {
+                    finish();
                     Uri selectedImage = imageReturnedIntent.getData();
                     Intent intent = new Intent(DotToDotImageSelectType.this, DotToDotPreviewAndWord.class);
                     intent.putExtra("SELECTED_IMAGE_URI", selectedImage);

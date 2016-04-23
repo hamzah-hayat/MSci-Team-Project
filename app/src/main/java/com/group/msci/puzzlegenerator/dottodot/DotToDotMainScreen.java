@@ -32,8 +32,9 @@ public class DotToDotMainScreen extends Activity {
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                InputStream in = getResources().openRawResource(R.raw.noundata);
+                InputStream in = getResources().openRawResource(R.raw.animalwords);
                 PixabayScraperJSON scraper = new PixabayScraperJSON(in);
+                scraper.setLines(227);
                 Thread x = new Thread(scraper);
                 x.start();
                 try {
@@ -86,7 +87,6 @@ public class DotToDotMainScreen extends Activity {
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
                 Intent intent = new Intent(DotToDotMainScreen.this, DotToDotImageSelectType.class);
                 startActivity(intent);
             }
@@ -96,8 +96,8 @@ public class DotToDotMainScreen extends Activity {
         help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(DotToDotMainScreen.this, DotToDotImageSelectType.class);
-                //startActivity(intent);
+                Intent intent = new Intent(DotToDotMainScreen.this, DotToDotHelp.class);
+                startActivity(intent);
             }
         });
 

@@ -8,8 +8,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/maze_header"
-        android:src="@drawable/maze_header"
-        android:background="#ffffffff" />
+        android:background="#ffffffff"
+        android:src="@drawable/maze_header" />
 
     <ImageButton
         android:layout_width="wrap_content"

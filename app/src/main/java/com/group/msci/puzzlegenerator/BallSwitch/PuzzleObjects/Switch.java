@@ -70,4 +70,9 @@ public class Switch extends BallSwitchObject {
         //"Uses" this switch
         switched=!switched;
     }
+
+    public void reset()
+    {
+        switched=false;
+    }
 }

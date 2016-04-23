@@ -217,6 +217,7 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
                 builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                 @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        finish();
                         Intent intent = new Intent(DotToDotPreviewAndWord.this, MainActivity.class);
                         startActivity(intent);
                     }

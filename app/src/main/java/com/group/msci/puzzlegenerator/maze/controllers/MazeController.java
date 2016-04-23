@@ -131,9 +131,10 @@ public class MazeController extends Activity {
                  */
                 int wallLength = difficulties.get(currentMazeDifficulty);
                 boolean useTimer = useTimerCheckBox.isChecked();
+                String minutesText = minutesField.getText().toString();
+                int minutes = (minutesText.matches("\\s+") || (minutesText.length() == 0)) ? 0 : Integer.parseInt(minutesText);
 
-
-                int time = (useTimer) ? Integer.parseInt(minutesField.getText().toString()) * 60 +
+                int time = (useTimer) ? minutes * 60 +
                         Integer.parseInt(secondsField.getText().toString()) : 0;
                 String kind = currentMazeChoice;
                 nplanes = (planeNoField.isEnabled()) ? Integer.parseInt(planeNoField.getText().toString()) : nplanes;
