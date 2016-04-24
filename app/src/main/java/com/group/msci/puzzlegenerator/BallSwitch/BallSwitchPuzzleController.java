@@ -5,10 +5,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.google.gson.Gson;
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Ball;
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.BallSwitchObject;
+import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Fan;
+import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Switch;
 import com.group.msci.puzzlegenerator.MainActivity;
 import com.group.msci.puzzlegenerator.R;
+import com.group.msci.puzzlegenerator.utils.PuzzleCode;
+import com.group.msci.puzzlegenerator.utils.json.UploadPuzzleJSON;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -76,6 +84,69 @@ public class BallSwitchPuzzleController {
                 gameActivity.getView().resetSurface();
             }
         });
+
+        ImageButton ballSwitchShareButton = gameActivity.findButtonById(R.id.ballSwitchShareButton);
+        ballSwitchShareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BallSwitchPuzzle puzzle = gameActivity.getPuzzle();
+                puzzle.resetPuzzle();
+                Gson gson = new Gson();
+                String[] puzzleData = new String[4+gameActivity.getPuzzle().getObjects().size()];
+                //Need the following
+                //1.Size X
+                //2.Size Y
+                //3.The Ball
+                //4.Winning moves
+                //5.All other objects
+                puzzleData[0] = Integer.toString(puzzle.getSizeX());
+                puzzleData[1] = Integer.toString(puzzle.getSizeY());
+                puzzleData[2] = Integer.toString(puzzle.getBall().getPosX()) + "," + Integer.toString(puzzle.getBall().getPosY());
+                for(Integer move : puzzle.winningMoves)
+                {
+                    puzzleData[3] += Integer.toString(move) + ",";
+                }
+                puzzleData[3] = puzzleData[3].substring(4,puzzleData[3].length()-1);    //Get rid of last comma
+
+                int counter = 4;
+                for(BallSwitchObject object : puzzle.getObjects())
+                {
+                    if(!(object instanceof Ball))
+                    {
+                        if(object instanceof Fan)
+                        {
+                            puzzleData[counter] = object.getClass().getName() + "," + Integer.toString(object.getPosX()) + "," + Integer.toString(object.getPosY()) +","+Integer.toString(((Fan) object).getDirection());
+                        }
+                        else if(object instanceof Switch)
+                        {
+                            puzzleData[counter] = object.getClass().getName() + "," + Integer.toString(object.getPosX()) + "," + Integer.toString(object.getPosY()) ;
+                        }
+                        counter++;
+                    }
+                }
+                System.out.println(puzzleData);
+                //Need to turn puzzle into gson
+
+
+
+
+                UploadPuzzleJSON uploader = new UploadPuzzleJSON('b', gson.toJson(puzzleData), "ballswitch");
+                Thread uploadThread = new Thread(uploader);
+                uploadThread.start();
+                String code = "";
+
+                try {
+                    uploadThread.join();
+                    code = uploader.getJSON().getString("shareCode");
+                    PuzzleCode.getInstance().setCode("b" + code);
+                } catch (InterruptedException|JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+
     }
 
     public void moveball(int direction)

@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 
 import com.facebook.FacebookSdk;
 import com.google.gson.Gson;
+import com.group.msci.puzzlegenerator.BallSwitch.BallSwitchPuzzle;
 import com.group.msci.puzzlegenerator.BallSwitch.BallSwitchPuzzleGame;
 import com.group.msci.puzzlegenerator.dottodot.DotToDotMainScreen;
 import com.group.msci.puzzlegenerator.dottodot.DotToDotView;
@@ -217,6 +218,25 @@ public class MainActivity extends Activity implements View.OnClickListener {
                             Intent intent = new Intent(MainActivity.this,
                                                        GameInstanceController.class);
                             intent.putExtra("maze_params", params);
+                            startActivity(intent);
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }else if (puzzleType == 'b') {
+                    try {
+                        String encodedBallSwitch = jsonFile.getString("puzzleData");
+
+                        if (!encodedBallSwitch.equals("")) {
+                            Gson gson = new Gson();
+                            String puzD = jsonFile.getString("puzzleData");
+                            /**
+                             * Start the ballSwitch puzzle
+                             */
+                            Intent intent = new Intent(MainActivity.this,
+                                    BallSwitchPuzzleGame.class);
+                            intent.putExtra("ANSWER_ARRAY", puzD);
                             startActivity(intent);
                         }
 

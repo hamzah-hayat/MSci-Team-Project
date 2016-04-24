@@ -16,28 +16,16 @@ public class BallSwitchPuzzle {
     int sizeX, sizeY;
     ArrayList<BallSwitchObject> gameObjects = new ArrayList<>();
     Ball ball;
-    int puzzleID;
-    String puzzleCreator;
-    Date dateMade;
-    ArrayList<Integer> winningMoves;
+    ArrayList<Integer> winningMoves = new ArrayList<>();
 
 
     public BallSwitchPuzzle(int sizeXIn,int sizeYIn) { sizeX = sizeXIn;sizeY = sizeYIn; }
 
-    public BallSwitchPuzzle(int puzzleIDIn)
-    {
-        puzzleID = puzzleIDIn;
-        //Load puzzle from database
-    }
-
-    public BallSwitchPuzzle(int sizeXIn,int sizeYIn,ArrayList<BallSwitchObject> list,int puzzleIDIn,String puzzleCreatorIn,Date dateMadeIn,ArrayList<Integer> winningMovesIn)
+    public BallSwitchPuzzle(int sizeXIn,int sizeYIn,ArrayList<BallSwitchObject> list,String puzzleCreatorIn,Date dateMadeIn,ArrayList<Integer> winningMovesIn)
     {
         sizeX = sizeXIn;
         sizeY = sizeYIn;
         gameObjects = list;
-        puzzleID = puzzleIDIn;
-        puzzleCreator = puzzleCreatorIn;
-        dateMade = dateMadeIn;
         winningMoves = winningMovesIn;
     }
 

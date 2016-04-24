@@ -117,6 +117,7 @@ public class BallSwitchPuzzleCreator {
                 spacesUsable = moveball(ballDirection, createdPuzzle);
             }while (spacesUsable==0);
             int randomSpace = rand.nextInt(spacesUsable)+1;
+            moveList.add(ballDirection);
             switch(ballDirection)
             {
                 case 1:
@@ -141,7 +142,7 @@ public class BallSwitchPuzzleCreator {
                     break;
             }
         }
-
+        createdPuzzle.winningMoves = moveList;
         createdPuzzle.resetPuzzle();
         /*
         for(int i=0;i<obstaclesNum;i++)

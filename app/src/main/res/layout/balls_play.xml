@@ -14,11 +14,29 @@
             android:layout_height="450dp"
             android:id="@+id/surfaceView"></LinearLayout>
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/ballSwitchResetButton"
-            android:src="@android:drawable/ic_menu_revert" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ballSwitchResetButton"
+                android:src="@android:drawable/ic_menu_revert"
+                android:layout_gravity="bottom" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ballSwitchShareButton"
+                android:src="@drawable/ic_maze_share"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="bottom" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
