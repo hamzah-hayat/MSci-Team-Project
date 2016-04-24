@@ -27,6 +27,7 @@ public class BallSwitchPuzzleController {
 
     BallSwitchPuzzleGame gameActivity;
     BallSwitchPuzzleView gameView;
+    public BallSwitchPuzzleMoveBall ballMover;
 
     public BallSwitchPuzzleController(BallSwitchPuzzleGame gameActivityIn)
     {
@@ -48,6 +49,8 @@ public class BallSwitchPuzzleController {
                 gameActivity.startGame();
                 gameView.showGameScreen();
                 setUpGameButtons();
+                ballMover = new BallSwitchPuzzleMoveBall(gameActivity);
+                ballMover.resetBallPosition();
             }
         });
 
@@ -81,7 +84,7 @@ public class BallSwitchPuzzleController {
             public void onClick(View view) {
                 //Reset all the items on the screen
                 gameActivity.getPuzzle().resetPuzzle();
-                gameActivity.getView().resetSurface();
+                ballMover.resetBallPosition();
             }
         });
 
@@ -151,24 +154,37 @@ public class BallSwitchPuzzleController {
 
     public void moveball(int direction)
     {
+        Ball ball = gameActivity.getPuzzle().getBall();
         //direction 1-north, 2-east,3-south, 4-west
         switch (direction)
         {
             case 1:
                 //gameActivity.puzzle.setBall(gameActivity.puzzle.getBall().getPosX(),0);
-                moveballCheckCollision(0,-1);
+                //moveballCheckCollision(0,-1);
+                if (ball.getPosY() != 0) {
+                    ballMover.addMovementBall(1);
+                }
                 break;
             case 2:
                 //gameActivity.puzzle.setBall(gameActivity.puzzle.getSizeX(),gameActivity.puzzle.getBall().getPosY());
-                moveballCheckCollision(1, 0);
+                //moveballCheckCollision(1, 0);
+                if (ball.getPosX() != gameActivity.puzzle.getSizeX()-1) {
+                    ballMover.addMovementBall(2);
+                }
                 break;
             case 3:
                 //gameActivity.puzzle.setBall(gameActivity.puzzle.getBall().getPosX(),gameActivity.puzzle.getSizeY());
-                moveballCheckCollision(0, 1);
+                //moveballCheckCollision(0, 1);
+                if (ball.getPosY() != gameActivity.puzzle.getSizeY()-1) {
+                    ballMover.addMovementBall(3);
+                }
                 break;
             case 4:
                 //gameActivity.puzzle.setBall(0,gameActivity.puzzle.getBall().getPosY());
-                moveballCheckCollision(-1, 0);
+                //moveballCheckCollision(-1, 0);
+                if (ball.getPosX() != 0) {
+                    ballMover.addMovementBall(4);
+                }
                 break;
             default:
                 break;

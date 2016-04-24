@@ -24,6 +24,7 @@ public class BallSwitchPuzzleGameSurface extends SurfaceView implements SurfaceH
     Paint paint = new Paint();
     BallSwitchPuzzle puzzle;
     BallSwitchPuzzleViewThread thread;
+    BallSwitchPuzzleGame activity;
 
     //Frame speed
     public long timeNow;
@@ -60,6 +61,7 @@ public class BallSwitchPuzzleGameSurface extends SurfaceView implements SurfaceH
         ballXPosition = puzzle.getBall().getPosX();
         ballYPosition = puzzle.getBall().getPosY();
 
+        activity = (BallSwitchPuzzleGame)context;
         //Set thread
         getHolder().addCallback(this);
     }
@@ -111,6 +113,7 @@ public class BallSwitchPuzzleGameSurface extends SurfaceView implements SurfaceH
         }
 
 
+        /*
         //Draw the ball
         //If our ball needs to move, animate its movement first
         if(!ballMoveDirections.isEmpty())
@@ -193,6 +196,18 @@ public class BallSwitchPuzzleGameSurface extends SurfaceView implements SurfaceH
             drawBall(gridWidthSpace,gridHeightSpace,canvas,puzzle.getBall().getPosX(),puzzle.getBall().getPosY());
         }
 
+        */
+
+        //Draw the ball
+        float objectXLeft = activity.getController().ballMover.ballXPosition * gridWidthSpace;
+        float objectYTop = activity.getController().ballMover.ballYPosition * gridHeightSpace;
+        float objectXRight = (activity.getController().ballMover.ballXPosition+1) * gridWidthSpace;
+        float objectYBottom = (activity.getController().ballMover.ballYPosition+1) * gridHeightSpace;
+        paint.setColor(Color.BLACK);    //Set the colour back to default
+        ColorFilter filter = new LightingColorFilter(Color.BLACK, 1);
+        paint.setColorFilter(filter);
+        RectF box = new RectF(objectXLeft,objectYTop,objectXRight,objectYBottom);
+        puzzle.getBall().draw(box,canvas,paint);
         //Now draw the menu buttons and bar
 
     }
