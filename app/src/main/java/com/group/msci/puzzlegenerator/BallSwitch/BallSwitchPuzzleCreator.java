@@ -110,7 +110,8 @@ public class BallSwitchPuzzleCreator {
                     directions = new ArrayList<>(Arrays.asList(1,2,3,4));
                     int a = rand.nextInt(directions.size());
                     ballDirection = directions.get(a);    //Random value using our directions
-                    moveball(ballDirection,createdPuzzle);
+                    moveballRandom(ballDirection, createdPuzzle);
+                    moveList.add(ballDirection);
                 }
                 int a = rand.nextInt(directions.size());
                 ballDirection = directions.get(a);    //Random value using our directions
@@ -327,7 +328,69 @@ public class BallSwitchPuzzleCreator {
     }
 
 
+    public int moveballRandom(int direction,BallSwitchPuzzle puzzle)
+    {
+        //direction 1-north, 2-east,3-south, 4-west
+        switch (direction)
+        {
+            case 1:
+                //gameActivity.puzzle.setBall(gameActivity.puzzle.getBall().getPosX(),0);
+                return moveballCheckCollision(0,-1,puzzle);
+            case 2:
+                //gameActivity.puzzle.setBall(gameActivity.puzzle.getSizeX(),gameActivity.puzzle.getBall().getPosY());
+                return moveballCheckCollision(1, 0,puzzle);
+            case 3:
+                //gameActivity.puzzle.setBall(gameActivity.puzzle.getBall().getPosX(),gameActivity.puzzle.getSizeY());
+                return moveballCheckCollision(0, 1,puzzle);
+            case 4:
+                //gameActivity.puzzle.setBall(0,gameActivity.puzzle.getBall().getPosY());
+                return moveballCheckCollision(-1, 0,puzzle);
+            default:
+                break;
+        }
+        return 0;
+    }
 
+    public int moveballCheckCollisionRandom(int directionX,int directionY,BallSwitchPuzzle puzzle)
+    {
+        ArrayList<BallSwitchObject> objects = puzzle.getObjects();
+        Ball ball = puzzle.getBall();
+        int startX = ball.getPosX();
+        int startY = ball.getPosY();
+
+        int spaces=0;
+        boolean hitObject = false; // need to stop moving ball and break;
+        while(ball.getPosY()+directionY<puzzle.getSizeY() && ball.getPosX() + directionX < puzzle.getSizeX() && ball.getPosY()+directionY>-1 && ball.getPosX()+directionX>-1)
+        {
+            //First we move so that we dont hit anything we are currently on
+            ball.setPosX(ball.getPosX() + directionX);
+            ball.setPosY(ball.getPosY() + directionY);
+            for(BallSwitchObject object : objects)
+            {
+                if(object.getPosY()==ball.getPosY() && object.getPosX()==ball.getPosX() && ball!=object)
+                {
+                    //Use the object
+                    if(object instanceof Switch)
+                    {
+                        ((Switch) object).changeSwitch();
+                    }
+                    else if (object instanceof Fan)
+                    {
+                        moveball(((Fan) object).getDirection(),puzzle);
+                    }
+                    hitObject=true;
+                    break;  //No point checking anything else
+                }
+            }
+            if(hitObject)
+            {
+                //If we hit the object we need to break out asap (so the ball stops moving)
+                break;
+            }
+            spaces++;
+        }
+        return spaces;
+    }
 
 
 }
