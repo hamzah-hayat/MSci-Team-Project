@@ -13,6 +13,7 @@ import android.graphics.Paint;
  */
 public class PicrossPuzzleGenerator {
     protected Bitmap foregroundImage;
+    protected boolean foregroundExtracted;
 
     public int getPuzzleWidth() {
         return puzzleWidth;
@@ -28,6 +29,10 @@ public class PicrossPuzzleGenerator {
 
     public void setPuzzleHeight(int puzzleHeight) {
         this.puzzleHeight = puzzleHeight;
+    }
+
+    public void setForegroundExtracted(boolean bool) {
+        foregroundExtracted = bool;
     }
 
     protected int puzzleWidth;

@@ -36,6 +36,7 @@ public class BallSwitchPuzzleCreator {
 
     public BallSwitchPuzzle generatePuzzle()
     {
+        System.out.println("Generating Puzzle");
         BallSwitchPuzzle puzzle;
         //Need to create a puzzle and movelist for solving that puzzle
 

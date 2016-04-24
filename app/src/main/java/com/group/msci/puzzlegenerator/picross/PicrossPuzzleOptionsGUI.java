@@ -43,11 +43,9 @@ public class PicrossPuzzleOptionsGUI extends AppCompatActivity implements View.O
     int thresholdInt;
     Uri image_uri;
     Bitmap pixelated;
-    int puzzleWidth;
-    int puzzleHeight;
+    int puzzleWidth = 15;
+    int puzzleHeight = 15;
     String urlLink;
-    EditText horizontalSize;
-    EditText verticalSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,14 +103,14 @@ public class PicrossPuzzleOptionsGUI extends AppCompatActivity implements View.O
             }
             yourSelectedImage = BitmapFactory.decodeStream(imageStream);
         }
-
+        Bitmap ySI = yourSelectedImage.copy(Bitmap.Config.ARGB_8888, true);
         InputStream in = getResources().openRawResource(R.raw.network);
         System.out.println("START FOREGROUND");
         ForegroundDetection fd = new ForegroundDetection(in);
-        fd.setBackground(Color.BLACK);
+        fd.setBackground(Color.WHITE);
         fd.setOutline(true);
         try {
-            yourSelectedImage = fd.getForeground(yourSelectedImage);
+            yourSelectedImage = fd.getForeground(ySI);
         } catch(IOException e) {
             e.printStackTrace();
         }
@@ -123,8 +121,12 @@ public class PicrossPuzzleOptionsGUI extends AppCompatActivity implements View.O
         image.setScaleType(ImageView.ScaleType.FIT_XY);
         image.setImageBitmap(yourSelectedImage);
         SeekBar thresholdSeek = (SeekBar) findViewById(R.id.threshold);
-        verticalSize = (EditText) findViewById(R.id.picross_height);
-        horizontalSize = (EditText) findViewById(R.id.picross_width);
+        Button small = (Button) findViewById(R.id.picross_small);
+        Button medium = (Button) findViewById(R.id.picross_medium);
+        Button large = (Button) findViewById(R.id.picross_large);
+        small.setOnClickListener(this);
+        medium.setOnClickListener(this);
+        large.setOnClickListener(this);
         ImageButton previewButton = (ImageButton) findViewById(R.id.picross_preview);
         previewButton.setOnClickListener(this);
         ImageButton generateButton = (ImageButton) findViewById(R.id.picross_play);
@@ -157,14 +159,11 @@ public class PicrossPuzzleOptionsGUI extends AppCompatActivity implements View.O
     public void onClick(View v) {
         MediaPlayer buttonPress = MediaPlayer.create(this, R.raw.buttonclick);
         buttonPress.start();
-        ImageButton button = (ImageButton) v;
-        if (button.getId() == R.id.picross_preview) {
+        if (v.getId() == R.id.picross_preview) {
             puzzleGen.setForegroundImage(original);
             original = Bitmap.createBitmap(original);
             puzzleGen.setThreshold(thresholdInt);
             try {
-                puzzleHeight = Integer.parseInt(verticalSize.getText().toString());
-                puzzleWidth = Integer.parseInt(horizontalSize.getText().toString());
                 pixelated = puzzleGen.pixelateImage(original, puzzleWidth, puzzleHeight);
                 image.setImageBitmap(puzzleGen.binariseImage(pixelated));
             }
@@ -174,6 +173,19 @@ public class PicrossPuzzleOptionsGUI extends AppCompatActivity implements View.O
                 pixelated = puzzleGen.pixelateImage(original, puzzleWidth, puzzleHeight);
                 image.setImageBitmap(puzzleGen.binariseImage(pixelated));
             }
+        }
+        else if (v.getId() == R.id.picross_small) {
+            puzzleHeight = 5;
+            puzzleWidth = 5;
+        }
+        else if (v.getId() == R.id.picross_medium) {
+            puzzleHeight = 10;
+            puzzleWidth = 10;
+        }
+        else if (v.getId() == R.id.picross_large) {
+            puzzleHeight = 15;
+            puzzleWidth = 15;
+            System.out.println("Large!");
         }
         else {
             Intent intent = new Intent(PicrossPuzzleOptionsGUI.this, PicrossPuzzleGUI.class);
@@ -191,7 +203,8 @@ public class PicrossPuzzleOptionsGUI extends AppCompatActivity implements View.O
     }
 
     public boolean isNetConn() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE); //http://stackoverflow.com/questions/4238921/detect-whether-there-is-an-internet-connection-available-on-android
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        //http://stackoverflow.com/questions/4238921/detect-whether-there-is-an-internet-connection-available-on-android
         NetworkInfo activeNetInfo = cm.getActiveNetworkInfo();
         return activeNetInfo != null && activeNetInfo.isConnected();
     }

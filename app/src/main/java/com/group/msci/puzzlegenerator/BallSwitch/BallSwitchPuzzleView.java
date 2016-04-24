@@ -2,6 +2,7 @@ package com.group.msci.puzzlegenerator.BallSwitch;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.SurfaceView;
 import android.widget.LinearLayout;
 
@@ -12,7 +13,7 @@ import com.group.msci.puzzlegenerator.R;
  * needed for the module
  * Created by Hamzah on 30/11/2015.
  */
-public class BallSwitchPuzzleView{
+public class BallSwitchPuzzleView {
 
     BallSwitchPuzzleController controller;
     BallSwitchPuzzleGame gameActivity;
@@ -42,6 +43,7 @@ public class BallSwitchPuzzleView{
     public void showGameScreen()
     {
         gameActivity.setContentView(R.layout.balls_play);
+        System.out.println("View set");
         //gameActivity.setContentView(R.layout.ballswitch_game);
         //Make sure the gameCanvas isnt null, create it if it is
         if(gameCanvas==null)
@@ -76,7 +78,7 @@ public class BallSwitchPuzzleView{
     {
         //Game is won
         AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(gameActivity);
-        dlgAlert.setMessage("Puzle is complete!");
+        dlgAlert.setMessage("Puzzle is complete!");
         dlgAlert.setTitle("BallSwitch Puzzle Game");
         dlgAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {

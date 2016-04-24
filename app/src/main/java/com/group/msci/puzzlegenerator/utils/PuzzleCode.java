@@ -26,7 +26,12 @@ public class PuzzleCode {
 
     public void setCode(String code) {
         this.code = code;
-        this.numericCode = Integer.parseInt(code.substring(1, code.length()));
+        try {
+            this.numericCode = Integer.parseInt(code.substring(1, code.length()));
+        }
+        catch (NumberFormatException ex) {
+            ex.printStackTrace();
+        }
         this.puzzleTypeCode = code.charAt(0);
         this.isSet = true;
     }

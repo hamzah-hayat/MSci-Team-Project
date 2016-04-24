@@ -1,38 +1,30 @@
 package com.group.msci.puzzlegenerator.picross;
 
-import android.content.DialogInterface;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatImageButton;
-import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.group.msci.puzzlegenerator.R;
 import com.group.msci.puzzlegenerator.dottodot.URLBitmap;
-
+import com.group.msci.puzzlegenerator.foreground.ForegroundDetection;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Timer;
 
 public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickListener {
 
@@ -47,13 +39,16 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
     long timeSwapBuff = 0L;
     long updatedTime = 0L;
     private MediaPlayer buttonPress;
+    private boolean dbLoaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.picross_play);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        setContentView(R.layout.activity_picross_puzzle_gui);
+        startGame();
+    }
+
+    public void startGame() {
         Intent intent = getIntent();
         String answerArrayStr = intent.getStringExtra("ANSWER_ARRAY");
         if (answerArrayStr == null) {
@@ -68,8 +63,20 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
                 Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);
                 PicrossPuzzleGenerator puzzleGen = new PicrossPuzzleGenerator(yourSelectedImage, 5, 5);
                 puzzleGen.setThreshold(intent.getIntExtra("THRESHOLD", 125));
-                puzzleGen.setPuzzleWidth(intent.getIntExtra("PUZZLE_WIDTH", 25));
-                puzzleGen.setPuzzleHeight(intent.getIntExtra("PUZZLE_HEIGHT", 25));
+                puzzleGen.setPuzzleWidth(intent.getIntExtra("PUZZLE_WIDTH", 10));
+                puzzleGen.setPuzzleHeight(intent.getIntExtra("PUZZLE_HEIGHT", 10));
+                InputStream in = getResources().openRawResource(R.raw.network);
+                System.out.println("START FOREGROUND");
+                ForegroundDetection fd = new ForegroundDetection(in);
+                fd.setBackground(Color.WHITE);
+                fd.setOutline(true);
+                Bitmap ySI = yourSelectedImage.copy(Bitmap.Config.ARGB_8888, true);
+                try {
+                    yourSelectedImage = fd.getForeground(ySI);
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
+                puzzleGen.setForegroundImage(yourSelectedImage);
                 puzzle = puzzleGen.createPuzzle();
                 System.out.println("PUZZLE NOT LOADED FROM DB, USED GALLERY");
             }
@@ -89,8 +96,33 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
                 if (yourSelectedImage == null) {
                     System.out.println("WHY IS THIS THING NULL?!");
                 }
-                PicrossPuzzleGenerator puzzleGen = new PicrossPuzzleGenerator(yourSelectedImage, 5, 5);
+                final PicrossPuzzleGenerator puzzleGen = new PicrossPuzzleGenerator(yourSelectedImage, 5, 5);
                 puzzleGen.setThreshold(intent.getIntExtra("THRESHOLD", 125));
+                puzzleGen.setPuzzleWidth(intent.getIntExtra("PUZZLE_WIDTH", 10));
+                puzzleGen.setPuzzleHeight(intent.getIntExtra("PUZZLE_HEIGHT", 10));
+                System.out.println("START FOREGROUND");
+                InputStream in = getResources().openRawResource(R.raw.network);
+                final ForegroundDetection fd = new ForegroundDetection(in);
+                fd.setBackground(Color.WHITE);
+                fd.setOutline(true);
+                final Bitmap ySI = yourSelectedImage.copy(Bitmap.Config.ARGB_8888, true);
+                Thread y = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            puzzleGen.setForegroundImage(fd.getForeground(ySI));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                y.start();
+                try {
+                    y.join();
+                }
+                catch (InterruptedException ex) {
+
+                }
                 puzzle = puzzleGen.createPuzzle();
                 System.out.println("PUZZLE NOT LOADED FROM DB, USED INTERNET");
             }
@@ -109,6 +141,7 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
                 }
             }
             puzzle = new PicrossPuzzle(loadedAnswerArray);
+            dbLoaded = true;
         }
         setButtons();
         /*ImageView view = (ImageView) findViewById(R.id.testingImage);
@@ -167,12 +200,15 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
             if (!puzzle.currentAnswers[randHeight][randWidth]) {
                 if (puzzle.checkIfCorrect(randHeight, randWidth)) {
                     buttonList.get(randHeight).get(randWidth).shade();
+                    flag = false;
                 }
                 else {
                     buttonList.get(randHeight).get(randWidth).cross();
+                    flag = false;
                 }
             }
         }
+        checkAllAnswers();
     }
 
     public void setPuzzle(PicrossPuzzle puzzleT) {
@@ -301,6 +337,7 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
             puzzleData += ";";
         }
         intent.putExtra("PUZZLE_DATA", puzzleData);
+        intent.putExtra("PUZZLE_DOWNLOADED", dbLoaded);
         startActivity(intent);
     }
 }

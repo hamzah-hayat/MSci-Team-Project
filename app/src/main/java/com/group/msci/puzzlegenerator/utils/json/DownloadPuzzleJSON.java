@@ -62,6 +62,9 @@ public class DownloadPuzzleJSON implements Runnable {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
+
     }
 }

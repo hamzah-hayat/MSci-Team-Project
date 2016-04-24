@@ -10,39 +10,39 @@
         android:layout_above="@+id/threshold_text"
         android:layout_centerHorizontal="true" />
 
-    <EditText
+    <Button
         android:layout_width="80dp"
         android:layout_height="60dp"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/picross_height"
+        android:id="@+id/picross_small"
         android:layout_marginLeft="48dp"
         android:layout_marginStart="48dp"
         android:background="@drawable/picross_height"
         android:textColor="#ffffffff"
         android:textColorHint="#ffffffff"
-        android:hint="Height"
+        android:text="Small"
         android:gravity="center"
         android:layout_below="@+id/threshold_text"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="72dp" />
 
-    <EditText
+    <Button
         android:layout_width="80dp"
         android:layout_height="60dp"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/picross_width"
+        android:id="@+id/picross_large"
         android:background="@drawable/picross_height"
         android:textColor="#ffffffff"
         android:textColorHint="#ffffffff"
-        android:layout_alignTop="@+id/picross_height"
+        android:layout_alignTop="@+id/picross_small"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="36dp"
         android:layout_marginEnd="36dp"
-        android:hint="Width"
+        android:text="Large"
         android:gravity="center" />
 
     <SeekBar
@@ -50,8 +50,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/threshold"
         android:layout_below="@+id/threshold_text"
-        android:layout_alignLeft="@+id/picross_height"
-        android:layout_alignStart="@+id/picross_height"
+        android:layout_alignLeft="@+id/picross_small"
+        android:layout_alignStart="@+id/picross_small"
         android:layout_marginTop="20dp"
         android:max="255"/>
 
@@ -69,9 +69,9 @@
         android:id="@+id/picross_preview"
         android:src="@drawable/picross_preview_button"
         android:background="#ffffffff"
-        android:layout_below="@+id/picross_width"
-        android:layout_alignLeft="@+id/picross_height"
-        android:layout_alignStart="@+id/picross_height"
+        android:layout_below="@+id/picross_large"
+        android:layout_alignLeft="@+id/picross_small"
+        android:layout_alignStart="@+id/picross_small"
         android:layout_marginTop="32dp" />
 
     <ImageButton
@@ -81,6 +81,21 @@
         android:src="@drawable/picross_play_button"
         android:background="#ffffffff"
         android:layout_alignTop="@+id/picross_preview"
-        android:layout_alignLeft="@+id/picross_width"
-        android:layout_alignStart="@+id/picross_width" />
+        android:layout_alignLeft="@+id/picross_large"
+        android:layout_alignStart="@+id/picross_large" />
+
+    <Button
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/picross_medium"
+        android:background="@drawable/picross_height"
+        android:textColor="#ffffffff"
+        android:textColorHint="#ffffffff"
+        android:text="Medium"
+        android:gravity="center"
+        android:layout_above="@+id/picross_preview"
+        android:layout_toRightOf="@+id/threshold_text"
+        android:layout_toEndOf="@+id/threshold_text" />
 </RelativeLayout>
