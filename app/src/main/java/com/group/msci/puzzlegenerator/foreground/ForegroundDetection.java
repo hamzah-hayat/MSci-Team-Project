@@ -36,7 +36,7 @@ public class ForegroundDetection {
     BasicNetwork network;
     Bitmap image;
     int numberOfRegions;
-    double threshold = 0.7;
+    double threshold = 0.9;
     
     public ForegroundDetection(InputStream f){
         network = (BasicNetwork)EncogDirectoryPersistence.loadObject(f);
@@ -44,7 +44,7 @@ public class ForegroundDetection {
     public void setImage(Bitmap b) throws IOException{
         
         image = Bitmap.createBitmap(b);
-        image = ImageProcessing.blur(image);
+        //image = ImageProcessing.blur(image);
         foreground = new int[image.getWidth()][image.getHeight()];
     }
     public void setBackground(int b){
@@ -177,17 +177,13 @@ public class ForegroundDetection {
 
 
                 if(regions[x][y]==index) {
-
+                    image.setPixel(x, y, background);
                 }
-                else {
-                    if (perc < 0.9) {
+                else if(regions[x][y]==0) {
+                    image.setPixel(x, y, background);
+                }
+                else if (perc > 0.7) {
                         image.setPixel(x, y, background);
-                        //System.out.println(perc);
-                    } else {
-                        if (outline) {
-                            image.setPixel(x, y, Color.WHITE);
-                        }
-                    }
                 }
 
 
@@ -196,10 +192,10 @@ public class ForegroundDetection {
         }
     }
     public void generateRegions(){
-        image = ImageProcessing.blur(image);
+        //image = ImageProcessing.blur(image);
         ImageSegmentation ig = new ImageSegmentation(image);
-        ig.generateSeeds(500);
-        ig.setThreshold(50);
+        ig.generateSeeds(1000);
+        ig.setThreshold(42);
         ig.setMergeThreshold(20);
         
         numberOfRegions = ig.growRegion();
