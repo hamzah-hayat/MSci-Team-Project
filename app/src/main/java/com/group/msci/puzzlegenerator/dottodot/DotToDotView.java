@@ -94,7 +94,8 @@ public class DotToDotView extends Activity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            readImage = Bitmap.createScaledBitmap(retImg.getrImg(), dv.getLayoutParams().width, dv.getLayoutParams().height, true);
+            readImage = retImg.getrImg();
+            System.out.println("Height: " + readImage.getHeight() + " Width: " + readImage.getWidth());
 
             InputStream in = getResources().openRawResource(R.raw.network);
             System.out.println("START FOREGROUND");
@@ -306,6 +307,7 @@ public class DotToDotView extends Activity {
         int hours = 0;
         int minutes = 0;
         int secs = 0;
+        int score = 0;
 
         if(hms.length == 3) {
             hours = Integer.parseInt(hms[0]);
@@ -318,7 +320,16 @@ public class DotToDotView extends Activity {
         }
 
         int duration = (3600 * hours) + (60 * minutes) + secs;
-        return duration * 10;
+        duration *= 10;
+
+
+        if(duration >= 10000) {
+            duration = 0;
+        }
+
+        score = 10000 - duration;
+
+        return score;
 
     }
 
