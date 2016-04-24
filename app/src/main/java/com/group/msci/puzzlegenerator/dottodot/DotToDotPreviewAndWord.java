@@ -127,13 +127,13 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
             public void onClick(View view) {
                 if(butCounter == 0) {
                     butCounter++;
-                    show.setText("DISMISS");
+                    show.setBackgroundResource(R.drawable.ic_dots_dismiss2);
                     dotV.setBackgroundBitmap(scaledImg);
                     dotV.invalidate();
                 }
                 else {
                     butCounter = 0;
-                    show.setText("SHOW");
+                    show.setBackgroundResource(R.drawable.ic_dots_show);
                     dotV.setBackgroundBitmap(null);
                     dotV.invalidate();
                 }

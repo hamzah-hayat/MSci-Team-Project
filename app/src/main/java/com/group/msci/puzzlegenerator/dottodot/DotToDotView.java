@@ -164,7 +164,7 @@ public class DotToDotView extends Activity {
         }
         System.out.println(puzzleWord);
 
-        Button show = (Button) findViewById(R.id.show);
+        final Button show = (Button) findViewById(R.id.show);
                 if(intent.hasExtra("ANSWER_ARRAY")) {
                     show.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -349,17 +349,19 @@ public class DotToDotView extends Activity {
         startActivity(intent);
     }
 
-    public void showSolution(Button sh) {
+    public void showSolution(final Button sh) {
         sh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(showCount == 0) {
                     showCount++;
+                    sh.setBackgroundResource(R.drawable.ic_dots_dismiss2);
                     dv.setBackgroundBitmap(scaledImg);
                     dv.invalidate();
                 }
                 else {
                     showCount = 0;
+                    sh.setBackgroundResource(R.drawable.ic_dots_show);
                     dv.setBackgroundBitmap(null);
                     dv.invalidate();
                 }
