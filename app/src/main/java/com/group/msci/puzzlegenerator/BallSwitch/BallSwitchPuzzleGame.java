@@ -126,6 +126,7 @@ public class BallSwitchPuzzleGame extends Activity {
     {
         BallSwitchPuzzleCreator creator = new BallSwitchPuzzleCreator(0,new boolean[]{true,true},getResources());
         puzzle = creator.generatePuzzle();
+        view.gameCanvas =null;
         gameStarted = true;
     }
 
