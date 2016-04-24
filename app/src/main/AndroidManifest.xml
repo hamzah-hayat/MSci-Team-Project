@@ -14,11 +14,13 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:largeHeap="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        >
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,22 +29,28 @@
         </activity>
         <activity
             android:name=".utils.user.UserManager"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".maze.controllers.MazeController"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".maze.controllers.MazeMainMenuController"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".maze.controllers.GameInstanceController"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".maze.controllers.MazeScoreBoardController"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".maze.controllers.MazeHelpController"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".picross.PicrossPuzzleOptionsGUI"
             android:label="@string/title_activity_picross_puzzle_options_gui"
@@ -60,39 +68,37 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".dottodot.DotToDotMainScreen"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".dottodot.DotToDotScoreboard"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".dottodot.DotToDotHelp"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".dottodot.DotToDotImageSelectType"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".dottodot.DotToDotPreviewAndWord"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".BallSwitch.BallSwitchPuzzleGame"
-            android:label="BallSwitch Puzzle Main Menu" />
+            android:label="BallSwitch Puzzle Main Menu"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".BallSwitch.BallSwitchPuzzleScoreboard"
-            android:label="BallSwitch Puzzle LeaderBoard" />
+            android:label="BallSwitch Puzzle LeaderBoard"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".dottodot.DotToDotView"
             android:label="@string/title_activity_dot_to_dot_view2"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".picross.PicrossCompleteScreen"
             android:label="@string/title_activity_picross_complete_screen"
@@ -105,7 +111,8 @@
             android:name=".picross.PicrossHelpPage"
             android:label="@string/title_activity_picross_help_page"
             android:parentActivityName=".picross.PicrossMainMenu"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.group.msci.puzzlegenerator.picross.PicrossMainMenu" />
@@ -113,11 +120,13 @@
         <activity
             android:name=".picross.PicrossScoreboard"
             android:label="@string/title_activity_picross_scoreboard"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".foreground.TestForeground"
             android:label="@string/title_activity_test_foreground"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
