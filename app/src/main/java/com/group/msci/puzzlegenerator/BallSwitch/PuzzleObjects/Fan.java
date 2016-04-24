@@ -42,6 +42,11 @@ public class Fan extends BallSwitchObject {
         }
     }
 
+    public int getDirection()
+    {
+        return direction;
+    }
+
     @Override
     public void draw(RectF box,Canvas canvas,Paint paint)
     {

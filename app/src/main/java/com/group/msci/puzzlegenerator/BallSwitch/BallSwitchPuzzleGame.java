@@ -134,4 +134,8 @@ public class BallSwitchPuzzleGame extends AppCompatActivity {
     {
         return controller;
     }
+    public BallSwitchPuzzleView getView()
+    {
+        return view;
+    }
 }

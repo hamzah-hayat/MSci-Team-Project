@@ -56,6 +56,18 @@ public class BallSwitchPuzzle {
         return ball;
     }
 
+    public boolean checkSpaceEmpty(int posX,int posY)
+    {
+        for(BallSwitchObject object : getObjects())
+        {
+            if(object.getPosX()==posX && object.getPosY()==posY)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void createBall(int posX,int posY,Resources c)
     {
         //Makes the ball
@@ -91,5 +103,13 @@ public class BallSwitchPuzzle {
     public int getSizeY()
     {
         return sizeY;
+    }
+
+    public void resetPuzzle()
+    {
+        for(BallSwitchObject object : getObjects())
+        {
+            object.reset();
+        }
     }
 }

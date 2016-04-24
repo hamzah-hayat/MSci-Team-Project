@@ -1,4 +1,4 @@
-package com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects;
+package com.group.msci.puzzlegenerator.BallSwitch;
 
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
@@ -54,7 +54,9 @@ public class BallSwitchPuzzleViewThread extends Thread {
             surface.timePrevFrame = System.currentTimeMillis();
 
             try {
-                c = surfaceHolder.lockCanvas(null);
+                while (c == null) {
+                    c = surfaceHolder.lockCanvas();
+                }
                 synchronized (surfaceHolder) {
                     //call methods to draw and process next fame
                     surface.onDraw(c);
