@@ -17,6 +17,7 @@ import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Switch;
 import com.group.msci.puzzlegenerator.R;
 import com.group.msci.puzzlegenerator.utils.PuzzleCode;
 import com.group.msci.puzzlegenerator.utils.json.UploadPuzzleJSON;
+import com.group.msci.puzzlegenerator.utils.json.UploadScoreJSON;
 
 import org.json.JSONException;
 
@@ -44,7 +45,7 @@ public class BallSwitchPuzzleController {
 
     public void setView(BallSwitchPuzzleView viewIn){gameView=viewIn;}
 
-    public void setUpGameWinButtons()
+    public void setUpGameWinButtons(int scoreIn)
     {
         ImageButton ballSwitchReturnButton = gameActivity.findButtonById(R.id.ballSwitchReturnToMainMenu);
         ballSwitchReturnButton.setOnClickListener(new View.OnClickListener() {
@@ -55,7 +56,32 @@ public class BallSwitchPuzzleController {
             }
         });
 
+        final int score = scoreIn;
+        ImageButton ballSwitchScoreButton = gameActivity.findButtonById(R.id.ballSwitchUploadScore);
+        ballSwitchScoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Upload score to database
+                    PuzzleCode pc = PuzzleCode.getInstance();
+                    if (pc.isSet()) {
+                        (new Thread(new UploadScoreJSON(pc.getTypeCode(), pc.numericCode(),
+                                score, gameActivity)))
+                                .start();
 
+                        String msg = "Successfully Uploaded Score of " + score + " to puzzle with code " + pc.numericCode();
+                        final AlertDialog alertDialog = new AlertDialog.Builder(gameActivity).create();
+                        alertDialog.setTitle("Score Uploading");
+                        alertDialog.setMessage(msg);
+
+                        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                alertDialog.dismiss();
+                            }
+                        });
+                        alertDialog.show();
+                    }
+                }
+        });
 
 
         //Setup buttons on win page

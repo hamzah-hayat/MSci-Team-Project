@@ -40,11 +40,11 @@ public class BallSwitchPuzzleViewThread extends Thread {
             //Limit frame rate to 60fps
             surface.timeNow = System.currentTimeMillis();
             surface.timeDelta = surface.timeNow - surface.timePrevFrame;
-            if(surface.timeDelta<16)
+            if(surface.timeDelta<10)
             {
                 try
                 {
-                    Thread.sleep(16-surface.timeDelta);
+                    Thread.sleep(10-surface.timeDelta);
                 }
                 catch(InterruptedException ex)
                 {

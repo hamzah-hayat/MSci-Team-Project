@@ -82,6 +82,9 @@ public class BallSwitchPuzzleGameSurface extends SurfaceView implements SurfaceH
         //System.out.println("gridWidthSpace " + gridWidthSpace);
         //System.out.println("gridHeightSpace " + gridHeightSpace);
         //Create Grid
+        paint.setColor(Color.BLACK);    //Set the colour back to default
+        ColorFilter filter = new LightingColorFilter(Color.BLACK, 1);
+        paint.setColorFilter(filter);
         for(int i =1;i<puzzle.getSizeX();i++)
         {
             canvas.drawLine(i * gridWidthSpace, 0, i * gridWidthSpace, screenHeight, paint);
@@ -104,7 +107,7 @@ public class BallSwitchPuzzleGameSurface extends SurfaceView implements SurfaceH
                 int objectXRight = (object.getPosX() + 1) * gridWidthSpace;
                 int objectYBottom = (object.getPosY() + 1) * gridHeightSpace;
                 paint.setColor(Color.BLACK);    //Set the colour back to default
-                ColorFilter filter = new LightingColorFilter(Color.BLACK, 1);
+                filter = new LightingColorFilter(Color.BLACK, 1);
                 paint.setColorFilter(filter);
 
                 //Need to create a rectangle filling the box this object is in
@@ -206,7 +209,7 @@ public class BallSwitchPuzzleGameSurface extends SurfaceView implements SurfaceH
         float objectXRight = (activity.getController().ballMover.ballXPosition+1) * gridWidthSpace;
         float objectYBottom = (activity.getController().ballMover.ballYPosition+1) * gridHeightSpace;
         paint.setColor(Color.WHITE);    //Set the colour back to default
-        ColorFilter filter = new LightingColorFilter(Color.WHITE, 1);
+        filter = new LightingColorFilter(Color.WHITE, 1);
         paint.setColorFilter(filter);
         RectF box = new RectF(objectXLeft,objectYTop,objectXRight,objectYBottom);
         puzzle.getBall().draw(box,canvas,paint);

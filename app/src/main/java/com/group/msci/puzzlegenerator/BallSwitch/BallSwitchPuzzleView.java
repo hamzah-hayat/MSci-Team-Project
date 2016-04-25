@@ -120,7 +120,7 @@ public class BallSwitchPuzzleView {
         dlgAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 showGameWinScreen(time);
-                controller.setUpGameWinButtons();
+                controller.setUpGameWinButtons(time);
             }
         });
         dlgAlert.setCancelable(true);

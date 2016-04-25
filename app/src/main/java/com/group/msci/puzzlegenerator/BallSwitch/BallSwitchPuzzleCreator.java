@@ -268,7 +268,7 @@ public class BallSwitchPuzzleCreator {
             case 4:
                 if (obstaclesUsable[1]!=false)
                 {
-                    puzzle.addObject(new Fan(XPos,YPos,c,ballDirection));
+                    puzzle.addObject(new Fan(XPos,YPos,c,ballDirection-1));
                 }
                 else
                 {
