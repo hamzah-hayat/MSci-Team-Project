@@ -26,7 +26,6 @@ import org.json.JSONException;
  */
 public class BallSwitchPuzzleWinPage extends Activity {
 
-    BallSwitchPuzzle puzzle;
     //This activity is used for the win page
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,16 +33,16 @@ public class BallSwitchPuzzleWinPage extends Activity {
         setContentView(R.layout.ballswitch_complete);
 
         int time = getIntent().getIntExtra("time", 0);
-        //puzzle = (BallSwitchPuzzle)getIntent().getBundleExtra("puzzle");
+        String[] puzzleData = getIntent().getStringArrayExtra("puzzleData");
 
-        //setUpGameWinButtons(time);
+        setUpGameWinButtons(time,puzzleData);
 
         TextView timeText = (TextView)findViewById(R.id.ballSwitchTime);
         timeText.setText(Integer.toString(time));
     }
 
 
-    public void setUpGameWinButtons(int scoreIn)
+    public void setUpGameWinButtons(int scoreIn,String[] puzzleDataIn)
     {
         ImageButton ballSwitchReturnButton = (ImageButton)findViewById(R.id.ballSwitchReturnToMainMenu);
         ballSwitchReturnButton.setOnClickListener(new View.OnClickListener() {
@@ -82,45 +81,14 @@ public class BallSwitchPuzzleWinPage extends Activity {
             }
         });
 
-
-        /*
+        final String[] puzzleData = puzzleDataIn;
         //Setup buttons on win page
         ImageButton ballSwitchShareButton = (ImageButton)findViewById(R.id.ballSwitchReturnButton);
         ballSwitchShareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BallSwitchPuzzle puzzle = getPuzzle();
-                puzzle.resetPuzzle();
+
                 Gson gson = new Gson();
-                String[] puzzleData = new String[4 + getPuzzle().getObjects().size()];
-                //Need the following
-                //1.Size X
-                //2.Size Y
-                //3.The Ball
-                //4.Winning moves
-                //5.All other objects
-                puzzleData[0] = Integer.toString(puzzle.getSizeX());
-                puzzleData[1] = Integer.toString(puzzle.getSizeY());
-                puzzleData[2] = Integer.toString(puzzle.getBall().getPosX()) + "," + Integer.toString(puzzle.getBall().getPosY());
-                for (Integer move : puzzle.winningMoves) {
-                    puzzleData[3] += Integer.toString(move) + ",";
-                }
-                puzzleData[3] = puzzleData[3].substring(4, puzzleData[3].length() - 1);    //Get rid of last comma
-
-                int counter = 4;
-                for (BallSwitchObject object : puzzle.getObjects()) {
-                    if (!(object instanceof Ball)) {
-                        if (object instanceof Fan) {
-                            puzzleData[counter] = object.getClass().getName() + "," + Integer.toString(object.getPosX()) + "," + Integer.toString(object.getPosY()) + "," + Integer.toString(((Fan) object).getDirection());
-                        } else if (object instanceof Switch) {
-                            puzzleData[counter] = object.getClass().getName() + "," + Integer.toString(object.getPosX()) + "," + Integer.toString(object.getPosY());
-                        }
-                        counter++;
-                    }
-                }
-                //Need to turn puzzle into gson
-
-
                 UploadPuzzleJSON uploader = new UploadPuzzleJSON('b', gson.toJson(puzzleData), "ballswitch");
                 Thread uploadThread = new Thread(uploader);
                 uploadThread.start();
@@ -154,7 +122,6 @@ public class BallSwitchPuzzleWinPage extends Activity {
         });
 
         alertDialog.show();
-        */
     }
 
 }

@@ -1,6 +1,7 @@
 package com.group.msci.puzzlegenerator.BallSwitch;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -197,6 +198,36 @@ public class BallSwitchPuzzleGame extends Activity {
             //Game is won
             view.showScoreBoard((int) (view.updatedTime / 1000));
             gameStarted = false;
+
+
+            //Start new activity
+            Intent intent = new Intent(BallSwitchPuzzleGame.this,
+                    BallSwitchPuzzleWinPage.class);
+            //Need to pass my puzzle into this
+            String[] puzzleData = new String[4 + getPuzzle().getObjects().size()];
+            puzzleData[0] = Integer.toString(puzzle.getSizeX());
+            puzzleData[1] = Integer.toString(puzzle.getSizeY());
+            puzzleData[2] = Integer.toString(puzzle.getBall().getPosX()) + "," + Integer.toString(puzzle.getBall().getPosY());
+            for (Integer move : puzzle.winningMoves) {
+                puzzleData[3] += Integer.toString(move) + ",";
+            }
+            puzzleData[3] = puzzleData[3].substring(4, puzzleData[3].length() - 1);    //Get rid of last comma
+
+            int counter = 4;
+            for (BallSwitchObject object : puzzle.getObjects()) {
+                if (!(object instanceof Ball)) {
+                    if (object instanceof Fan) {
+                        puzzleData[counter] = object.getClass().getName() + "," + Integer.toString(object.getPosX()) + "," + Integer.toString(object.getPosY()) + "," + Integer.toString(((Fan) object).getDirection());
+                    } else if (object instanceof Switch) {
+                        puzzleData[counter] = object.getClass().getName() + "," + Integer.toString(object.getPosX()) + "," + Integer.toString(object.getPosY());
+                    }
+                    counter++;
+                }
+            }
+
+            intent.putExtra("puzzleData",puzzleData);
+            startActivity(intent);
+
         }
     }
 
