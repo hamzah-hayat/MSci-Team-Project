@@ -91,7 +91,7 @@
             android:label="BallSwitch Puzzle Game"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="BallSwitch.BallSwitchPuzzleMainMenu"
+            android:name=".BallSwitch.BallSwitchPuzzleMainMenu"
             android:label="BallSwitch Puzzle Main Menu"
             android:screenOrientation="portrait"/>
         <activity

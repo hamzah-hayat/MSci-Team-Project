@@ -94,8 +94,10 @@ public class BallSwitchPuzzleGame extends Activity {
 
             controller.setView(view);
             view.setController(controller);
-            setCreator(new BallSwitchPuzzleCreator(difficulty,getResources()));
+            setCreator(new BallSwitchPuzzleCreator(difficulty, getResources()));
             startGame();
+            view.showGameScreen();
+            controller.setUpGameButtons();
         }
     }
 
