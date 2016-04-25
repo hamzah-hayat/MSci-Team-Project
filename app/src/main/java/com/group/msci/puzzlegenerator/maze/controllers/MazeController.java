@@ -1,6 +1,8 @@
 package com.group.msci.puzzlegenerator.maze.controllers;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -131,20 +133,38 @@ public class MazeController extends Activity {
                  */
                 int wallLength = difficulties.get(currentMazeDifficulty);
                 boolean useTimer = useTimerCheckBox.isChecked();
+
                 String minutesText = minutesField.getText().toString();
-                int minutes = (minutesText.matches("\\s+") || (minutesText.length() == 0)) ? 0 : Integer.parseInt(minutesText);
+                String secondsText = secondsField.getText().toString();
+                boolean minutesIsWhitespace = minutesText.matches("\\s+") ||
+                                              (minutesText.length() == 0);
+                boolean secondsIsWhitespace = secondsText.matches("\\s+") ||
+                                              (secondsText.length() == 0);
 
-                int time = (useTimer) ? minutes * 60 +
-                        Integer.parseInt(secondsField.getText().toString()) : 0;
+                if (useTimer && minutesIsWhitespace && secondsIsWhitespace) {
+                    showInvalidTimeDialog(false);
+                    return;
+                }
+                int minutes = (minutesIsWhitespace) ? 0 : Integer.parseInt(minutesText);
+                int seconds = (secondsIsWhitespace) ? 0 : Integer.parseInt(secondsText);
+                int time = (useTimer) ? minutes * 60 + seconds: 0;
+
+                if (useTimer && (time > 600 || time < 1)) {
+                    showInvalidTimeDialog(time > 600);
+                    minutesField.setText("");
+                    secondsField.setText("");
+                    return;
+                }
                 String kind = currentMazeChoice;
-                nplanes = (planeNoField.isEnabled()) ? Integer.parseInt(planeNoField.getText().toString()) : nplanes;
-
+                nplanes = (planeNoField.isEnabled()) ?
+                          Integer.parseInt(planeNoField.getText().toString()) : nplanes;
                 Intent intent = new Intent(MazeController.this, GameInstanceController.class);
                 Seed seed;
                 Random random = new Random();
 
                 if (kind.equals("Portal")) {
                     List<Long> seeds = new ArrayList<Long>(nplanes);
+
                     for (int i = 0; i < nplanes; ++i)
                         seeds.add(System.currentTimeMillis() + random.nextLong());
 
@@ -153,13 +173,28 @@ public class MazeController extends Activity {
                 else {
                    seed = new Seed(System.currentTimeMillis());
                 }
-
                 intent.putExtra("maze_params", new MazeParams(wallLength, wallLength, time,
                                                               nplanes, kind, seed));
-
                 MazeController.this.startActivity(intent);
             }
         });
     }
+
+    private void showInvalidTimeDialog(boolean overMax) {
+        String msg = (overMax) ? "The maximum time is 10 minutes" :
+                "Please enter a time greater than zero seconds and less than 10 minutes.";
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Timer Error");
+        alertDialog.setMessage(msg);
+
+        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
+    }
+
 }
 

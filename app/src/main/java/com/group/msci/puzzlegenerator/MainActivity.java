@@ -160,7 +160,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     displayInvalidCodeDialog();
                     return;
                 }
-                DownloadPuzzleJSON downJson = new DownloadPuzzleJSON(input.getText().toString());
+                DownloadPuzzleJSON downJson = new DownloadPuzzleJSON(inputCode);
                 Thread x = new Thread(downJson);
                 x.start();
                 try {

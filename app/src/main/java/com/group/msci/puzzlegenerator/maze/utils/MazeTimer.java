@@ -35,7 +35,7 @@ public class MazeTimer extends CountDownTimer {
     }
 
     public long getTimeSeconds() {
-        return time / (long) 10e6;
+        return time / (long) 1000;
     }
 
     //Copy constructor to be used when timer runs out to set a new one.

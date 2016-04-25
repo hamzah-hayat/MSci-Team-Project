@@ -46,6 +46,7 @@ public class GameInstanceController extends Activity {
     private int width;
     private int height;
     private int score;
+    private int genCount;
     private boolean autoSolved;
 
     private TextView timeField;
@@ -60,12 +61,13 @@ public class GameInstanceController extends Activity {
         super.onCreate(savedInstance);
         setContentView(R.layout.maze_play);
 
-
+        genCount = 1;
         final MazeParams params = getIntent().getParcelableExtra("maze_params");
         String mazeType = params.getType();
 
         if (mazeType.equals("Portal")) {
-            maze = new PortalMaze(params.getWidth(), params.getHeight(), params.getNplanes(), params.getSeed());
+            maze = new PortalMaze(params.getWidth(), params.getHeight(), params.getNplanes(),
+                                  params.getSeed());
         }
         else if (mazeType.equals("Simple")) {
             maze = new BaseMaze(params.getWidth(), params.getHeight(), true, params.getSeed());
@@ -146,6 +148,10 @@ public class GameInstanceController extends Activity {
         }
     }
 
+    public void incRegenCount() {
+        genCount++;
+    }
+
     @Override
     public void onBackPressed() {
         interruptAnimationIfRunning();
@@ -216,8 +222,8 @@ public class GameInstanceController extends Activity {
     }
 
     private void setMoveListener(final int direction, ImageButton button) {
-
         button.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 if ((animation != null) && (!animation.isRunning())) {
@@ -230,6 +236,7 @@ public class GameInstanceController extends Activity {
     }
 
     public void calculateScore() {
+
         if (autoSolved) {
             score = 0;
         }
@@ -241,11 +248,11 @@ public class GameInstanceController extends Activity {
             score = 10 + width + height - 2 + ((maze.getNumberOfPlanes() - 1) * 10);
 
             if (timer != null) {
-                //percent of time remaining
-                score += (int) ((double) remainingTime / (double) timer.getTimeSeconds()) * 100;
-
                 //give score for short times
-                score += (60 * 10) - timer.getTimeSeconds();
+                int timeBonus = (60 * 10) - (int) timer.getTimeSeconds();
+                timeBonus /= genCount;
+                timeBonus += (remainingTime / timer.getTimeSeconds()) * 100; //% of remaining time
+                score += timeBonus;
             }
         }
     }
