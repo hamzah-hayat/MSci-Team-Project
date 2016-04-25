@@ -224,18 +224,38 @@ public class BallSwitchPuzzleMoveBall {
                         {
                             //direction 1-north, 2-east,3-south, 4-west
                             case 1:
+                                if(ballYPosition-1<0)
+                                {
+                                    ballMoveDirections.remove(0);
+                                    break;
+                                }
                                 ballXPositionToMoveTo=ballXPosition;
                                 ballYPositionToMoveTo=ballYPosition-1;
                                 break;
                             case 2:
+                                if(ballXPosition+1>=puzzle.sizeX)
+                                {
+                                    ballMoveDirections.remove(0);
+                                    break;
+                                }
                                 ballXPositionToMoveTo=ballXPosition+1;
                                 ballYPositionToMoveTo=ballYPosition;
                                 break;
                             case 3:
+                                if(ballYPosition+1>=puzzle.getSizeY())
+                                {
+                                    ballMoveDirections.remove(0);
+                                    break;
+                                }
                                 ballXPositionToMoveTo=ballXPosition;
                                 ballYPositionToMoveTo=ballYPosition+1;
                                 break;
                             case 4:
+                                if(ballXPosition-1<0)
+                                {
+                                    ballMoveDirections.remove(0);
+                                    break;
+                                }
                                 ballXPositionToMoveTo=ballXPosition-1;
                                 ballYPositionToMoveTo=ballYPosition;
                                 break;

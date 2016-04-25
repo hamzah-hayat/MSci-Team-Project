@@ -65,10 +65,10 @@ public class BallSwitchPuzzleController {
                     PuzzleCode pc = PuzzleCode.getInstance();
                     if (pc.isSet()) {
                         (new Thread(new UploadScoreJSON(pc.getTypeCode(), pc.numericCode(),
-                                score, gameActivity)))
+                                100-score, gameActivity)))
                                 .start();
 
-                        String msg = "Successfully Uploaded Score of " + score + " to puzzle with code " + pc.numericCode();
+                        String msg = "Successfully Uploaded Score of " + (100-score) + " to puzzle with code " + pc.numericCode();
                         final AlertDialog alertDialog = new AlertDialog.Builder(gameActivity).create();
                         alertDialog.setTitle("Score Uploading");
                         alertDialog.setMessage(msg);
