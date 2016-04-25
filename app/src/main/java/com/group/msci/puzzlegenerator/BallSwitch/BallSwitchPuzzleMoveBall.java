@@ -273,5 +273,6 @@ public class BallSwitchPuzzleMoveBall {
     {
         ballXPosition = puzzle.getBall().getPosX();
         ballYPosition = puzzle.getBall().getPosY();
+        ballMoveDirections = new ArrayList<>();
     }
 }

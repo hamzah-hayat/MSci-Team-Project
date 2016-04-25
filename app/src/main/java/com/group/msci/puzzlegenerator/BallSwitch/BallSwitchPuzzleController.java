@@ -1,9 +1,14 @@
 package com.group.msci.puzzlegenerator.BallSwitch;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 
 import com.google.gson.Gson;
 import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Ball;
@@ -19,6 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by Hamzah on 30/11/2015.
@@ -28,6 +34,7 @@ public class BallSwitchPuzzleController {
     BallSwitchPuzzleGame gameActivity;
     BallSwitchPuzzleView gameView;
     public BallSwitchPuzzleMoveBall ballMover;
+    String currentMazeDifficulty;
 
     public BallSwitchPuzzleController(BallSwitchPuzzleGame gameActivityIn)
     {
@@ -36,6 +43,82 @@ public class BallSwitchPuzzleController {
 
     public void setView(BallSwitchPuzzleView viewIn){gameView=viewIn;}
 
+    public void setUpGeneratorMenuButtons()
+    {
+
+        Spinner ballDifficultyChoices = (Spinner) gameActivity.findViewById(R.id.ball_difficulty_dd);
+
+        ArrayAdapter<CharSequence> difficulty_adapter = ArrayAdapter.createFromResource(gameActivity,
+                R.array.ball_difficulties, android.R.layout.simple_spinner_item);
+
+        difficulty_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ballDifficultyChoices.setAdapter(difficulty_adapter);
+
+        ballDifficultyChoices.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                currentMazeDifficulty = (String) parent.getItemAtPosition(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                currentMazeDifficulty = "Medium";
+            }
+        });
+
+
+
+        //Setup buttons on the generator page so that you can create a puzzle of varying difficulty
+
+        ImageButton ballSwitchPlayButton = gameActivity.findButtonById(R.id.playButton);
+        ballSwitchPlayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Start the game
+                //Need to change view and start gameloop
+
+                switch (currentMazeDifficulty)
+                {
+                    case "Easy":
+                        gameActivity.setCreator(new BallSwitchPuzzleCreator(0, gameActivity.getResources()));
+                        break;
+                    case "Medium":
+                        gameActivity.setCreator(new BallSwitchPuzzleCreator(1, gameActivity.getResources()));
+                        break;
+                    case "Hard":
+                        gameActivity.setCreator(new BallSwitchPuzzleCreator(2, gameActivity.getResources()));
+                        break;
+                }
+
+                gameActivity.startGame();
+                gameView.showGameScreen();
+                setUpGameButtons();
+                ballMover = new BallSwitchPuzzleMoveBall(gameActivity);
+                ballMover.resetBallPosition();
+
+            }
+        });
+
+        ImageButton ballSwitchRandomButton = gameActivity.findButtonById(R.id.random);
+        ballSwitchRandomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Start the game
+                //Need to change view and start gameloop
+
+                gameActivity.setCreator(new BallSwitchPuzzleCreator(new Random().nextInt(3), gameActivity.getResources()));
+
+                gameActivity.startGame();
+                gameView.showGameScreen();
+                setUpGameButtons();
+                ballMover = new BallSwitchPuzzleMoveBall(gameActivity);
+                ballMover.resetBallPosition();
+
+            }
+        });
+
+
+    }
 
     public void setUpMainMenuButtons()
     {
@@ -46,11 +129,16 @@ public class BallSwitchPuzzleController {
             public void onClick(View view) {
                 //Start the game
                 //Need to change view and start gameloop
+                /*
                 gameActivity.startGame();
                 gameView.showGameScreen();
                 setUpGameButtons();
                 ballMover = new BallSwitchPuzzleMoveBall(gameActivity);
                 ballMover.resetBallPosition();
+                */
+
+                gameView.showGeneratorScreen();
+                setUpGeneratorMenuButtons();
             }
         });
 
@@ -127,7 +215,6 @@ public class BallSwitchPuzzleController {
                         counter++;
                     }
                 }
-                System.out.println(puzzleData);
                 //Need to turn puzzle into gson
 
 
@@ -140,9 +227,11 @@ public class BallSwitchPuzzleController {
 
                 try {
                     uploadThread.join();
-                    code = uploader.getJSON().getString("shareCode");
+                    code = uploader.getJSON().getString("shareCode");   //this is the code of the puzzle
+                    showSharedDialog(true, code);
                     PuzzleCode.getInstance().setCode("b" + code);
                 } catch (InterruptedException|JSONException e) {
+                    showSharedDialog(false, code);
                     e.printStackTrace();
                 }
             }
@@ -150,6 +239,23 @@ public class BallSwitchPuzzleController {
 
 
 
+    }
+
+    //Used from filips stuff
+    public void showSharedDialog(boolean success, String code) {
+        String msg = (success) ? "Successfully shared the puzzle, the puzzle's code is " +
+                code : "Unfortunately failed to share the puzzle";
+        final AlertDialog alertDialog = new AlertDialog.Builder(gameActivity).create();
+        alertDialog.setTitle("Puzzle Sharing");
+        alertDialog.setMessage(msg);
+
+        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
     }
 
     public void moveball(int direction)
@@ -188,58 +294,6 @@ public class BallSwitchPuzzleController {
                 break;
             default:
                 break;
-        }
-    }
-
-    public void moveballCheckCollision(int directionX,int directionY)
-    {
-        ArrayList<BallSwitchObject> objects = gameActivity.puzzle.getObjects();
-        Ball ball = gameActivity.getPuzzle().getBall();
-
-        boolean hitObject = false; // need to stop moving ball and break;
-        while(ball.getPosY()+directionY<gameActivity.puzzle.getSizeY() && ball.getPosX()+directionX<gameActivity.puzzle.getSizeX() && ball.getPosY()+directionY>-1 && ball.getPosX()+directionX>-1)
-        {
-            //First we move so that we dont hit anything we are currently on
-            ball.setPosX(ball.getPosX() + directionX);
-            ball.setPosY(ball.getPosY() + directionY);
-
-            //Animate movement
-            if(directionX==1)
-            {
-                //East
-                gameView.gameCanvas.addAnimationBall(2);
-            }
-            else if(directionX==-1)
-            {
-                //West
-                gameView.gameCanvas.addAnimationBall(4);
-            }
-            if(directionY==1)
-            {
-                //South
-                gameView.gameCanvas.addAnimationBall(3);
-            }
-            else if(directionY==-1)
-            {
-                //North
-                gameView.gameCanvas.addAnimationBall(1);
-            }
-
-            for(BallSwitchObject object : objects)
-            {
-                if(object.getPosY()==ball.getPosY() && object.getPosX()==ball.getPosX() && ball!=object)
-                {
-                    //Use the object
-                    object.use(ball,gameActivity);
-                    hitObject=true;
-                    break;  //No point checking anything else
-                }
-            }
-            if(hitObject)
-            {
-                //If we hit the object we need to break out asap (so the ball stops moving)
-                break;
-            }
         }
     }
 }

@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Picture;
 import android.graphics.Rect;
@@ -42,6 +43,7 @@ public class Ball extends BallSwitchObject {
     {
         //Just a ball bitmap
         System.out.print("stop");
+        paint.setColor(Color.WHITE);
         canvas.drawBitmap(image,null,box,paint);
     }
 

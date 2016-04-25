@@ -63,11 +63,11 @@ public class BallSwitchPuzzleView {
         gameActivity.setContentView(R.layout.ballswitch_help);
     }
 
-    public void showUser(User user)
+
+    public void showGeneratorScreen()
     {
-
+        gameActivity.setContentView(R.layout.balls_create);
     }
-
 
     public void showSolution(String moveList)
     {

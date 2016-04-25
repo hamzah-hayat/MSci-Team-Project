@@ -22,9 +22,10 @@ public class BallSwitchPuzzleCreator {
     Resources c;
     //Need the context to load images
 
-    public BallSwitchPuzzleCreator()
+    public BallSwitchPuzzleCreator(int difficultyIn,Resources cIn)
     {
-
+        difficulty = difficulty;
+        c = cIn;
     }
 
     public BallSwitchPuzzleCreator(int difficultyIn,boolean[] useableObstaclesIn,Resources cIn)
@@ -41,32 +42,36 @@ public class BallSwitchPuzzleCreator {
         //Need to create a puzzle and movelist for solving that puzzle
 
         //difficulty is how hard, currently 0,1,2 is easy,medium and hard
-        int sizeX,sizeY;
+        int sizeX,sizeY,obstaclesNum;
 
         switch(difficulty)
         {
             case 0:
+                sizeX = 4;
+                sizeY = 4;
+                useableObstacles = new boolean[]{true,false};
+                obstaclesNum=8;
+                break;
+            case 1:
                 sizeX = 5;
                 sizeY = 5;
                 useableObstacles = new boolean[]{true,false};
-                break;
-            case 1:
-                sizeX = 10;
-                sizeY = 10;
-                useableObstacles = new boolean[]{true,true};
+                obstaclesNum=12;
                 break;
             case 2:
-                sizeX = 15;
-                sizeY = 15;
+                sizeX = 6;
+                sizeY = 6;
                 useableObstacles = new boolean[]{true,true};
+                obstaclesNum=16;
                 break;
             default:
                 sizeX = 5;
                 sizeY = 5;
                 useableObstacles = new boolean[]{true,true};
+                obstaclesNum=12;
                 break;
         }
-        puzzle = createPuzzleWithVars(sizeX,sizeY,difficulty,useableObstacles);
+        puzzle = createPuzzleWithVars(sizeX,sizeY,difficulty,useableObstacles,obstaclesNum);
 
 
         //Create a puzzle
@@ -74,11 +79,11 @@ public class BallSwitchPuzzleCreator {
     }
 
     //Use the vars we have to create a puzzle
-    public BallSwitchPuzzle createPuzzleWithVars(int sizeX,int sizeY,int difficulty,boolean[] obstaclesUsable) {
+    public BallSwitchPuzzle createPuzzleWithVars(int sizeX,int sizeY,int difficulty,boolean[] obstaclesUsable,int obstaclesNum) {
         BallSwitchPuzzle createdPuzzle = new BallSwitchPuzzle(sizeX, sizeY);
         ArrayList<Integer> moveList = new ArrayList<>();
         //By using our obstacles, we create a puzzle and make a movelist for how it works.
-        int obstaclesNum = ((sizeX * sizeY) * (difficulty + 2)) / 5;
+        //int obstaclesNum = ((sizeX * sizeY) * (difficulty +1)) / 10;
 
         //Randomly make our starting position
         Random rand = new Random();

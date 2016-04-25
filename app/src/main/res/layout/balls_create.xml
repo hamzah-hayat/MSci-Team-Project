@@ -4,22 +4,22 @@
     android:id="@+id/choose_balls_puzzle"
     android:paddingTop="15dp">
 
-    <ImageButton
+    <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/weblink"
-        android:src="@drawable/ic_weblink"
-        android:background="#ffffffff"
-        android:layout_above="@+id/camera"
-        android:layout_alignLeft="@+id/camera"
-        android:layout_alignStart="@+id/camera"
-        android:layout_marginBottom="51dp" />
+        android:id="@+id/ball_difficulty_dd"
+        android:layout_above="@+id/playGame"
+        android:layout_marginBottom="51dp"
+        android:layout_alignRight="@+id/playGame"
+        android:layout_alignEnd="@+id/playGame"
+        android:layout_alignLeft="@+id/playGame"
+        android:layout_alignStart="@+id/playGame" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/camera"
-        android:src="@drawable/ic_camera"
+        android:id="@+id/playGame"
+        android:src="@drawable/ic_play"
         android:background="#ffffffff"
         android:layout_centerVertical="true"
         android:layout_alignLeft="@+id/random"
@@ -31,7 +31,7 @@
         android:id="@+id/random"
         android:src="@drawable/ic_random"
         android:background="#ffffffff"
-        android:layout_below="@+id/camera"
+        android:layout_below="@+id/playGame"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="51dp" />
 

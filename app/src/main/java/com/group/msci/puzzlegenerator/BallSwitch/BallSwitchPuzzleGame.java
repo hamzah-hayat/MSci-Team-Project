@@ -31,6 +31,7 @@ public class BallSwitchPuzzleGame extends Activity {
     BallSwitchPuzzleView view;
     BallSwitchPuzzle puzzle;
     boolean gameStarted;
+    BallSwitchPuzzleCreator creator;
 
     @Override
     protected void onCreate(Bundle savedInstance) {
@@ -121,10 +122,14 @@ public class BallSwitchPuzzleGame extends Activity {
         return  (ImageButton) findViewById(id);
     }
 
+    public void setCreator(BallSwitchPuzzleCreator creatorIn)
+    {
+        creator = creatorIn;
+    }
+
     //This method starts a game
     public void startGame()
     {
-        BallSwitchPuzzleCreator creator = new BallSwitchPuzzleCreator(0,new boolean[]{true,true},getResources());
         puzzle = creator.generatePuzzle();
         view.gameCanvas =null;
         gameStarted = true;
