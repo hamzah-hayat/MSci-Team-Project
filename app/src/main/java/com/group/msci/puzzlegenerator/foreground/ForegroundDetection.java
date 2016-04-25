@@ -138,10 +138,10 @@ public class ForegroundDetection {
         Encog.getInstance().shutdown();
     }
     public void thresholdRegions(){
-        
 
-        int[][] regionHist = new int[numberOfRegions][2];
-        
+
+        int[][] regionHist = new int[numberOfRegions+1][2];
+
         for(int x=0; x<regions.length; x++){
             for(int y=0; y<regions[0].length; y++){
                 if(foreground[x][y]!=0)
@@ -184,6 +184,7 @@ public class ForegroundDetection {
                 }
                 else if (perc > 0.7) {
                         image.setPixel(x, y, background);
+
                 }
 
 
