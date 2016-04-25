@@ -126,6 +126,7 @@ public class MoveAnimation implements Runnable {
                 currentMaze.movePlayer(direction);
 
                 if (currentMaze.getCurrentPlane() >= currentMaze.getNumberOfPlanes()) {
+                    parentActivity.stopTimerIfRunning();
                     displaySolved();
                     break;
                 }
@@ -149,7 +150,7 @@ public class MoveAnimation implements Runnable {
                      !Thread.currentThread().isInterrupted());
 
             if (current.equals(currentMaze.exit())) {
-                parentActivity.stopTimer();
+                parentActivity.stopTimerIfRunning();
                 displaySolved();
             }
         }
