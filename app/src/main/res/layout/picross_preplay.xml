@@ -16,17 +16,15 @@
         android:inputType="number"
         android:ems="10"
         android:id="@+id/picross_small"
-        android:layout_marginLeft="48dp"
-        android:layout_marginStart="48dp"
         android:background="@drawable/picross_height"
         android:textColor="#ffffffff"
         android:textColorHint="#ffffffff"
         android:text="Small"
         android:gravity="center"
-        android:layout_below="@+id/threshold_text"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="72dp" />
+        android:layout_marginTop="42dp"
+        android:layout_below="@+id/threshold"
+        android:layout_toLeftOf="@+id/previewImage"
+        android:layout_toStartOf="@+id/previewImage" />
 
     <Button
         android:layout_width="80dp"
@@ -37,23 +35,20 @@
         android:background="@drawable/picross_height"
         android:textColor="#ffffffff"
         android:textColorHint="#ffffffff"
-        android:layout_alignTop="@+id/picross_small"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="36dp"
-        android:layout_marginEnd="36dp"
         android:text="Large"
-        android:gravity="center" />
+        android:gravity="center"
+        android:layout_alignTop="@+id/picross_medium"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <SeekBar
         android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:id="@+id/threshold"
+        android:max="255"
         android:layout_below="@+id/threshold_text"
-        android:layout_alignLeft="@+id/picross_small"
-        android:layout_alignStart="@+id/picross_small"
-        android:layout_marginTop="20dp"
-        android:max="255"/>
+        android:layout_alignLeft="@+id/previewImage"
+        android:layout_alignStart="@+id/previewImage" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -69,10 +64,9 @@
         android:id="@+id/picross_preview"
         android:src="@drawable/picross_preview_button"
         android:background="#ffffffff"
-        android:layout_below="@+id/picross_large"
-        android:layout_alignLeft="@+id/picross_small"
-        android:layout_alignStart="@+id/picross_small"
-        android:layout_marginTop="32dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/picross_medium"
+        android:layout_toStartOf="@+id/picross_medium" />
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -95,7 +89,6 @@
         android:textColorHint="#ffffffff"
         android:text="Medium"
         android:gravity="center"
-        android:layout_above="@+id/picross_preview"
-        android:layout_toRightOf="@+id/threshold_text"
-        android:layout_toEndOf="@+id/threshold_text" />
+        android:layout_alignTop="@+id/picross_small"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
