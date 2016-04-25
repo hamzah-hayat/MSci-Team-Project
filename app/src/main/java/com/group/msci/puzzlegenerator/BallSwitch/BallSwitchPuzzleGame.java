@@ -133,6 +133,8 @@ public class BallSwitchPuzzleGame extends Activity {
         puzzle = creator.generatePuzzle();
         view.gameCanvas =null;
         gameStarted = true;
+        controller.ballMover = new BallSwitchPuzzleMoveBall(this);
+        controller.ballMover.resetBallPosition();
     }
 
     public BallSwitchPuzzle getPuzzle()
@@ -206,7 +208,7 @@ public class BallSwitchPuzzleGame extends Activity {
         if (puzzle.checkPuzzleComplete())
         {
             //Game is won
-            view.showScoreBoard();
+            view.showScoreBoard(10);
             gameStarted = false;
         }
     }

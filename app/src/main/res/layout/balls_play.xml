@@ -29,8 +29,8 @@
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/ballSwitchShareButton"
-                android:src="@drawable/ic_maze_share"
+                android:id="@+id/ballSwitchSolveButton"
+                android:src="@drawable/ic_maze_solve"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"

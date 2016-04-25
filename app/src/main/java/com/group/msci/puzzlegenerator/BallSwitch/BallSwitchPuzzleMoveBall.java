@@ -217,6 +217,7 @@ public class BallSwitchPuzzleMoveBall {
                     }
 
                     //Now set up the next positions we need to go
+                    //Fix movement bug here
                     if(!ballMoveDirections.isEmpty())
                     {
                         switch (ballMoveDirections.get(0))

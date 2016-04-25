@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.group.msci.puzzlegenerator.R;
 
@@ -63,6 +64,12 @@ public class BallSwitchPuzzleView {
         gameActivity.setContentView(R.layout.ballswitch_help);
     }
 
+    public void showGameWinScreen(int time)
+    {
+        gameActivity.setContentView(R.layout.ballswitch_complete);
+        TextView timeText = (TextView)gameActivity.findViewById(R.id.ballSwitchTime);
+        timeText.setText(Integer.toString(time));
+    }
 
     public void showGeneratorScreen()
     {
@@ -74,15 +81,17 @@ public class BallSwitchPuzzleView {
 
     }
 
-    public void showScoreBoard()
+    public void showScoreBoard(int timeIn)
     {
         //Game is won
+        final int time = timeIn;
         AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(gameActivity);
         dlgAlert.setMessage("Puzzle is complete!");
         dlgAlert.setTitle("BallSwitch Puzzle Game");
         dlgAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                showMainMenu();
+                showGameWinScreen(time);
+                controller.setUpGameWinButtons();
             }
         });
         dlgAlert.setCancelable(true);

@@ -24,7 +24,7 @@ public class BallSwitchPuzzleCreator {
 
     public BallSwitchPuzzleCreator(int difficultyIn,Resources cIn)
     {
-        difficulty = difficulty;
+        difficulty = difficultyIn;
         c = cIn;
     }
 
@@ -50,25 +50,25 @@ public class BallSwitchPuzzleCreator {
                 sizeX = 4;
                 sizeY = 4;
                 useableObstacles = new boolean[]{true,false};
-                obstaclesNum=8;
+                obstaclesNum=6;
                 break;
             case 1:
                 sizeX = 5;
                 sizeY = 5;
                 useableObstacles = new boolean[]{true,false};
-                obstaclesNum=12;
+                obstaclesNum=10;
                 break;
             case 2:
                 sizeX = 6;
                 sizeY = 6;
                 useableObstacles = new boolean[]{true,true};
-                obstaclesNum=16;
+                obstaclesNum=14;
                 break;
             default:
                 sizeX = 5;
                 sizeY = 5;
                 useableObstacles = new boolean[]{true,true};
-                obstaclesNum=12;
+                obstaclesNum=10;
                 break;
         }
         puzzle = createPuzzleWithVars(sizeX,sizeY,difficulty,useableObstacles,obstaclesNum);
@@ -128,22 +128,22 @@ public class BallSwitchPuzzleCreator {
             switch(ballDirection)
             {
                 case 1:
-                    createObject(ball.getPosX(), ball.getPosY() - randomSpace, createdPuzzle, obstaclesUsable);
+                    createObject(ball.getPosX(), ball.getPosY() - randomSpace, createdPuzzle, obstaclesUsable,ballDirection);
                     ball.setPosX(ball.getPosX());
                     ball.setPosY(ball.getPosY() - randomSpace);
                     break;
                 case 2:
-                    createObject(ball.getPosX()+randomSpace,ball.getPosY(),createdPuzzle,obstaclesUsable);
+                    createObject(ball.getPosX()+randomSpace,ball.getPosY(),createdPuzzle,obstaclesUsable,ballDirection);
                     ball.setPosX(ball.getPosX()+randomSpace);
                     ball.setPosY(ball.getPosY());
                     break;
                 case 3:
-                    createObject(ball.getPosX(),ball.getPosY()+randomSpace,createdPuzzle,obstaclesUsable);
+                    createObject(ball.getPosX(),ball.getPosY()+randomSpace,createdPuzzle,obstaclesUsable,ballDirection);
                     ball.setPosX(ball.getPosX());
                     ball.setPosY(ball.getPosY() + randomSpace);
                     break;
                 case 4:
-                    createObject(ball.getPosX()-randomSpace,ball.getPosY(),createdPuzzle,obstaclesUsable);
+                    createObject(ball.getPosX()-randomSpace,ball.getPosY(),createdPuzzle,obstaclesUsable,ballDirection);
                     ball.setPosX(ball.getPosX() - randomSpace);
                     ball.setPosY(ball.getPosY());
                     break;
@@ -199,7 +199,7 @@ public class BallSwitchPuzzleCreator {
         return createdPuzzle;
     }
 
-    private void createObject(int XPos,int YPos,BallSwitchPuzzle puzzle,boolean[] obstaclesUsable)
+    private void createObject(int XPos,int YPos,BallSwitchPuzzle puzzle,boolean[] obstaclesUsable,int ballDirection)
     {
         Random rand = new Random();
         switch (rand.nextInt(obstaclesUsable.length+3))
@@ -214,7 +214,14 @@ public class BallSwitchPuzzleCreator {
                 puzzle.addObject(new Switch(XPos,YPos,c));
                 break;
             case 4:
-                puzzle.addObject(new Fan(XPos,YPos,c,rand.nextInt(4)));
+                if (obstaclesUsable[1]!=false)
+                {
+                    puzzle.addObject(new Fan(XPos,YPos,c,ballDirection));
+                }
+                else
+                {
+                    puzzle.addObject(new Switch(XPos,YPos,c));
+                }
                 break;
             default:
                 puzzle.addObject(new Switch(XPos,YPos,c));
