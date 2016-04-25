@@ -156,8 +156,13 @@ public class MazeController extends Activity {
                     return;
                 }
                 String kind = currentMazeChoice;
-                nplanes = (planeNoField.isEnabled()) ?
-                          Integer.parseInt(planeNoField.getText().toString()) : nplanes;
+                try {
+                    nplanes = (planeNoField.isEnabled()) ?
+                            Integer.parseInt(planeNoField.getText().toString()) : nplanes;
+                } catch (NumberFormatException e) {
+                    showNoPlanesSelectedDialog();
+                    return;
+                }
                 Intent intent = new Intent(MazeController.this, GameInstanceController.class);
                 Seed seed;
                 Random random = new Random();
@@ -180,11 +185,9 @@ public class MazeController extends Activity {
         });
     }
 
-    private void showInvalidTimeDialog(boolean overMax) {
-        String msg = (overMax) ? "The maximum time is 10 minutes" :
-                "Please enter a time greater than zero seconds and less than 10 minutes.";
+    private void showDialog(String title, String msg) {
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        alertDialog.setTitle("Timer Error");
+        alertDialog.setTitle(title);
         alertDialog.setMessage(msg);
 
         alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
@@ -194,6 +197,17 @@ public class MazeController extends Activity {
         });
 
         alertDialog.show();
+    }
+
+    private void showNoPlanesSelectedDialog() {
+        showDialog("Menu Error", "You must select the number of planes for the portal maze.");
+    }
+
+    private void showInvalidTimeDialog(boolean overMax) {
+        String msg = (overMax) ? "The maximum time is 10 minutes" :
+                "Please enter a time greater than zero seconds and less than 10 minutes.";
+        showDialog("Time Error", msg);
+
     }
 
 }
