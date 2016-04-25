@@ -70,7 +70,7 @@ public class BallSwitchPuzzleController {
 
         //Setup buttons on the generator page so that you can create a puzzle of varying difficulty
 
-        ImageButton ballSwitchPlayButton = gameActivity.findButtonById(R.id.playButton);
+        ImageButton ballSwitchPlayButton = gameActivity.findButtonById(R.id.playGame);
         ballSwitchPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
