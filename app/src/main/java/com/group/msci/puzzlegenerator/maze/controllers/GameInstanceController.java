@@ -155,6 +155,7 @@ public class GameInstanceController extends Activity {
     @Override
     public void onBackPressed() {
         interruptAnimationIfRunning();
+        stopTimerIfRunning();
         super.onBackPressed();
     }
 
@@ -179,7 +180,7 @@ public class GameInstanceController extends Activity {
         this.timer.start();
     }
 
-    public void stopTimer() {
+    public void stopTimerIfRunning() {
         if (timer != null)
            timer.cancel();
     }
