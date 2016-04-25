@@ -76,10 +76,6 @@ public class BallSwitchPuzzleView {
         gameActivity.setContentView(R.layout.balls_create);
     }
 
-    public void showSolution(String moveList)
-    {
-
-    }
 
     public void showScoreBoard(int timeIn)
     {
@@ -96,11 +92,6 @@ public class BallSwitchPuzzleView {
         });
         dlgAlert.setCancelable(true);
         dlgAlert.create().show();
-
-    }
-
-    public void showPuzzleCreationMenu()
-    {
 
     }
 

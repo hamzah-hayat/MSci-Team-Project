@@ -29,8 +29,8 @@
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/ballSwitchSolveButton"
-                android:src="@drawable/ic_maze_solve"
+                android:id="@+id/ballSwitchReturnButton"
+                android:src="@drawable/dots_exit"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"

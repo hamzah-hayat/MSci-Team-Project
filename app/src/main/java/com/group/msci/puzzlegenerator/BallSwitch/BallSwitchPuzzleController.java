@@ -59,7 +59,7 @@ public class BallSwitchPuzzleController {
 
 
         //Setup buttons on win page
-        ImageButton ballSwitchShareButton = gameActivity.findButtonById(R.id.ballSwitchSolveButton);
+        ImageButton ballSwitchShareButton = gameActivity.findButtonById(R.id.ballSwitchReturnButton);
         ballSwitchShareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -254,8 +254,21 @@ public class BallSwitchPuzzleController {
             }
         });
 
-        ImageButton ballSwitchShareButton = gameActivity.findButtonById(R.id.ballSwitchSolveButton);
-        ballSwitchShareButton.setOnClickListener(new View.OnClickListener() {
+        //This doesnt work sadly
+        ImageButton ballSwitchReturnButton = gameActivity.findButtonById(R.id.ballSwitchReturnButton);
+        ballSwitchReturnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Go back to main menu
+                gameActivity.gameStarted = false;
+                gameView.showMainMenu();
+            }
+        });
+
+        /*
+        //This doesnt work sadly
+        ImageButton ballSwitchSolveButton = gameActivity.findButtonById(R.id.ballSwitchSolveButton);
+        ballSwitchSolveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 for(int move : gameActivity.getPuzzle().winningMoves)
@@ -264,7 +277,7 @@ public class BallSwitchPuzzleController {
                 }
             }
         });
-
+        */
 
 
     }

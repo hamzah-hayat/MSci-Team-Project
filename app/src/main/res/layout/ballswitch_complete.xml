@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Share Puzzle"
-        android:id="@+id/ballSwitchSolveButton"
+        android:id="@+id/ballSwitchReturnButton"
         android:src="@drawable/picross_upload_puzzle_2"
         android:layout_marginTop="48dp"
         android:background="#ffffffff"
@@ -50,8 +50,8 @@
         android:background="#ffffffff"
         android:src="@drawable/picross_upload_score_2"
         android:layout_alignTop="@+id/ballSwitchReturnToMainMenu"
-        android:layout_toRightOf="@+id/ballSwitchSolveButton"
-        android:layout_toEndOf="@+id/ballSwitchSolveButton" />
+        android:layout_toRightOf="@+id/ballSwitchReturnButton"
+        android:layout_toEndOf="@+id/ballSwitchReturnButton" />
 
     <ImageButton
         android:layout_width="wrap_content"

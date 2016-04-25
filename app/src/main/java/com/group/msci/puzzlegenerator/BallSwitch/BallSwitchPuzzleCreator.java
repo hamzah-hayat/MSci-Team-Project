@@ -20,6 +20,8 @@ public class BallSwitchPuzzleCreator {
     int difficulty;
     boolean[] useableObstacles;
     Resources c;
+
+    boolean usableSpaces[][];
     //Need the context to load images
 
     public BallSwitchPuzzleCreator(int difficultyIn,Resources cIn)
@@ -82,6 +84,14 @@ public class BallSwitchPuzzleCreator {
     public BallSwitchPuzzle createPuzzleWithVars(int sizeX,int sizeY,int difficulty,boolean[] obstaclesUsable,int obstaclesNum) {
         BallSwitchPuzzle createdPuzzle = new BallSwitchPuzzle(sizeX, sizeY);
         ArrayList<Integer> moveList = new ArrayList<>();
+        usableSpaces = new boolean[sizeX][sizeY];
+        for(int i=0;i<sizeX;i++)
+        {
+            for(int j=0;j<sizeY;j++)
+            {
+                usableSpaces[i][j]=true;
+            }
+        }
         //By using our obstacles, we create a puzzle and make a movelist for how it works.
         //int obstaclesNum = ((sizeX * sizeY) * (difficulty +1)) / 10;
 
@@ -112,17 +122,59 @@ public class BallSwitchPuzzleCreator {
                 if(directions.size()==0)
                 {
                     //Move the ball somewhere as we've run out of directions
+                    //We need to keep the puzzle solved so we will move either left right left right or up down up down
                     directions = new ArrayList<>(Arrays.asList(1,2,3,4));
                     int a = rand.nextInt(directions.size());
                     ballDirection = directions.get(a);    //Random value using our directions
-                    moveballRandom(ballDirection, createdPuzzle);
-                    moveList.add(ballDirection);
+                    switch (ballDirection)
+                    {
+                        case 1:
+                            moveballRandom(ballDirection, createdPuzzle);
+                            moveList.add(ballDirection);
+                            moveballRandom(3, createdPuzzle);
+                            moveList.add(3);
+                            moveballRandom(ballDirection, createdPuzzle);
+                            moveList.add(ballDirection);
+                            moveballRandom(3, createdPuzzle);
+                            moveList.add(3);
+                            break;
+                        case 2:
+                            moveballRandom(ballDirection, createdPuzzle);
+                            moveList.add(ballDirection);
+                            moveballRandom(4, createdPuzzle);
+                            moveList.add(4);
+                            moveballRandom(ballDirection, createdPuzzle);
+                            moveList.add(ballDirection);
+                            moveballRandom(4, createdPuzzle);
+                            moveList.add(4);
+                            break;
+                        case 3:
+                            moveballRandom(ballDirection, createdPuzzle);
+                            moveList.add(ballDirection);
+                            moveballRandom(1, createdPuzzle);
+                            moveList.add(1);
+                            moveballRandom(ballDirection, createdPuzzle);
+                            moveList.add(ballDirection);
+                            moveballRandom(1, createdPuzzle);
+                            moveList.add(1);
+                            break;
+                        case 4:
+                            moveballRandom(ballDirection, createdPuzzle);
+                            moveList.add(ballDirection);
+                            moveballRandom(2, createdPuzzle);
+                            moveList.add(2);
+                            moveballRandom(ballDirection, createdPuzzle);
+                            moveList.add(ballDirection);
+                            moveballRandom(2, createdPuzzle);
+                            moveList.add(2);
+                            break;
+                    }
                 }
                 int a = rand.nextInt(directions.size());
                 ballDirection = directions.get(a);    //Random value using our directions
                 directions.remove(new Integer(ballDirection));
                 spacesUsable = moveball(ballDirection, createdPuzzle);
-            }while (spacesUsable==0);
+            } while (spacesUsable==0);
             int randomSpace = rand.nextInt(spacesUsable)+1;
             moveList.add(ballDirection);
             switch(ballDirection)
@@ -244,6 +296,10 @@ public class BallSwitchPuzzleCreator {
                 for(int i=0;i<startY-1;i++)
                 {
                     spaces.add(puzzle.checkSpaceEmpty(startX, startY - i));
+                    if(usableSpaces[startX][startY-i]==false)
+                    {
+                        return new ArrayList<Boolean>();
+                    }
                 }
 				break;
 			case 2:
@@ -251,6 +307,10 @@ public class BallSwitchPuzzleCreator {
                 for(int i=0;i<puzzle.getSizeX()-startX;i++)
                 {
                     spaces.add(puzzle.checkSpaceEmpty(startX + i, startY));
+                    if(usableSpaces[startX+i][startY]==false)
+                    {
+                        return new ArrayList<Boolean>();
+                    }
                 }
 				break;
 			case 3:
@@ -258,6 +318,10 @@ public class BallSwitchPuzzleCreator {
                 for(int i=0;i<puzzle.getSizeY() - startY;i++)
                 {
                     spaces.add(puzzle.checkSpaceEmpty(startX, startY + i));
+                    if(usableSpaces[startX][startY+i]==false)
+                    {
+                        return new ArrayList<Boolean>();
+                    }
                 }
 				break;
 			case 4:
@@ -265,6 +329,10 @@ public class BallSwitchPuzzleCreator {
                 for(int i=0;i<startX-1;i++)
                 {
                     spaces.add(puzzle.checkSpaceEmpty(startX - i, startY));
+                    if(usableSpaces[startX-i][startY]==false)
+                    {
+                        return new ArrayList<Boolean>();
+                    }
                 }
 				break;
 			default:
@@ -308,6 +376,7 @@ public class BallSwitchPuzzleCreator {
         while(ball.getPosY()+directionY<puzzle.getSizeY() && ball.getPosX() + directionX < puzzle.getSizeX() && ball.getPosY()+directionY>-1 && ball.getPosX()+directionX>-1)
         {
             //First we move so that we dont hit anything we are currently on
+            usableSpaces[ball.getPosX() + directionX][ball.getPosY()+directionY]=false;   //Cant use this space
             ball.setPosX(ball.getPosX() + directionX);
             ball.setPosY(ball.getPosY() + directionY);
             for(BallSwitchObject object : objects)
@@ -347,16 +416,16 @@ public class BallSwitchPuzzleCreator {
         {
             case 1:
                 //gameActivity.puzzle.setBall(gameActivity.puzzle.getBall().getPosX(),0);
-                return moveballCheckCollision(0,-1,puzzle);
+                return moveballCheckCollisionRandom(0,-1,puzzle);
             case 2:
                 //gameActivity.puzzle.setBall(gameActivity.puzzle.getSizeX(),gameActivity.puzzle.getBall().getPosY());
-                return moveballCheckCollision(1, 0,puzzle);
+                return moveballCheckCollisionRandom(1, 0,puzzle);
             case 3:
                 //gameActivity.puzzle.setBall(gameActivity.puzzle.getBall().getPosX(),gameActivity.puzzle.getSizeY());
-                return moveballCheckCollision(0, 1,puzzle);
+                return moveballCheckCollisionRandom(0, 1,puzzle);
             case 4:
                 //gameActivity.puzzle.setBall(0,gameActivity.puzzle.getBall().getPosY());
-                return moveballCheckCollision(-1, 0,puzzle);
+                return moveballCheckCollisionRandom(-1, 0,puzzle);
             default:
                 break;
         }
@@ -375,6 +444,7 @@ public class BallSwitchPuzzleCreator {
         while(ball.getPosY()+directionY<puzzle.getSizeY() && ball.getPosX() + directionX < puzzle.getSizeX() && ball.getPosY()+directionY>-1 && ball.getPosX()+directionX>-1)
         {
             //First we move so that we dont hit anything we are currently on
+            usableSpaces[ball.getPosX()+directionX][ball.getPosY()+directionY]=false;   //Cant use this space
             ball.setPosX(ball.getPosX() + directionX);
             ball.setPosY(ball.getPosY() + directionY);
             for(BallSwitchObject object : objects)
@@ -401,6 +471,8 @@ public class BallSwitchPuzzleCreator {
             }
             spaces++;
         }
+        ball.setPosX(startX);
+        ball.setPosY(startY);
         return spaces;
     }
 
