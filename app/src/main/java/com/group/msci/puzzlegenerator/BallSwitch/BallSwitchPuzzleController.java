@@ -251,6 +251,7 @@ public class BallSwitchPuzzleController {
             @Override
             public void onClick(View view) {
                 gameView.showHelpScreen();
+                setUpHelpButtons();
             }
         });
 
@@ -265,6 +266,18 @@ public class BallSwitchPuzzleController {
         });
 
 
+    }
+
+    public void setUpHelpButtons()
+    {
+        ImageButton ballSwitchReturnButton = gameActivity.findButtonById(R.id.ballSwitchReturnButton);
+        ballSwitchReturnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gameView.showMainMenu();
+
+            }
+        });
     }
 
     public void setUpGameButtons()

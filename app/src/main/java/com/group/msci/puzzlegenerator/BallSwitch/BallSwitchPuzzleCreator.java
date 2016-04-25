@@ -122,53 +122,11 @@ public class BallSwitchPuzzleCreator {
                 if(directions.size()==0)
                 {
                     //Move the ball somewhere as we've run out of directions
-                    //We need to keep the puzzle solved so we will move either left right left right or up down up down
                     directions = new ArrayList<>(Arrays.asList(1,2,3,4));
                     int a = rand.nextInt(directions.size());
                     ballDirection = directions.get(a);    //Random value using our directions
-                    switch (ballDirection)
-                    {
-                        case 1:
-                            moveballRandom(ballDirection, createdPuzzle);
-                            moveList.add(ballDirection);
-                            moveballRandom(3, createdPuzzle);
-                            moveList.add(3);
-                            moveballRandom(ballDirection, createdPuzzle);
-                            moveList.add(ballDirection);
-                            moveballRandom(3, createdPuzzle);
-                            moveList.add(3);
-                            break;
-                        case 2:
-                            moveballRandom(ballDirection, createdPuzzle);
-                            moveList.add(ballDirection);
-                            moveballRandom(4, createdPuzzle);
-                            moveList.add(4);
-                            moveballRandom(ballDirection, createdPuzzle);
-                            moveList.add(ballDirection);
-                            moveballRandom(4, createdPuzzle);
-                            moveList.add(4);
-                            break;
-                        case 3:
-                            moveballRandom(ballDirection, createdPuzzle);
-                            moveList.add(ballDirection);
-                            moveballRandom(1, createdPuzzle);
-                            moveList.add(1);
-                            moveballRandom(ballDirection, createdPuzzle);
-                            moveList.add(ballDirection);
-                            moveballRandom(1, createdPuzzle);
-                            moveList.add(1);
-                            break;
-                        case 4:
-                            moveballRandom(ballDirection, createdPuzzle);
-                            moveList.add(ballDirection);
-                            moveballRandom(2, createdPuzzle);
-                            moveList.add(2);
-                            moveballRandom(ballDirection, createdPuzzle);
-                            moveList.add(ballDirection);
-                            moveballRandom(2, createdPuzzle);
-                            moveList.add(2);
-                            break;
-                    }
+                    moveballRandom(ballDirection, createdPuzzle);
+                    moveList.add(ballDirection);
                 }
                 int a = rand.nextInt(directions.size());
                 ballDirection = directions.get(a);    //Random value using our directions
@@ -471,8 +429,6 @@ public class BallSwitchPuzzleCreator {
             }
             spaces++;
         }
-        ball.setPosX(startX);
-        ball.setPosY(startY);
         return spaces;
     }
 
