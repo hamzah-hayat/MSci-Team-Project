@@ -1,6 +1,7 @@
 package com.group.msci.puzzlegenerator.picross;
 
 import android.content.Context;
+import android.view.MotionEvent;
 import android.widget.ImageButton;
 
 import com.group.msci.puzzlegenerator.R;
@@ -40,6 +41,11 @@ public class PicrossSquare extends ImageButton {
     public void uncross() {
         crossed = false;
         setBackgroundResource(R.drawable.unshaded);
+    }
+
+    public boolean onTouchEvent (MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) setPressed(true);
+        return super.onTouchEvent(event);
     }
 
     public boolean getShadeStatus() {

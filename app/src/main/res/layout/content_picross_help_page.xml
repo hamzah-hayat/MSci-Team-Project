@@ -11,12 +11,19 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.group.msci.puzzlegenerator.picross.PicrossHelpPage"
     tools:showIn="@layout/activity_picross_help_page">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Each number tells you that there is group of consecutive black squares somewhere in that row or column.\nFor example, a 5 above a column means that somewhere in that column, there is a group of five black squares with no spaces between them.\nIf there is more than one number for a row or column, it means that there are multiple groups of black squares, separated by at least one white square.\nYou must use logic to figure out which squares should be filled in, and which should stay blank.\nWhen you solve the puzzle, the grid will have a picture in it."
+            android:id="@+id/textView25"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textSize="25dp"/>
+    </ScrollView>
 
-    <ExpandableListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/expandableListView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+
 </RelativeLayout>

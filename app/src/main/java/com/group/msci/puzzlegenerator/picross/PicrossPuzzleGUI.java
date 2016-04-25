@@ -1,12 +1,14 @@
 package com.group.msci.puzzlegenerator.picross;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -40,28 +42,89 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
     long updatedTime = 0L;
     private MediaPlayer buttonPress;
     private boolean dbLoaded = false;
+    private ProgressDialog pd = null;
+    private Bitmap ySI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picross_puzzle_gui);
-        startGame();
+        this.pd = ProgressDialog.show(this, "Foreground Extraction",
+                "Loading... Please wait!\nThis can take up to a minute!", true, false);
+        // Start a new thread that will download all the data
+        new FDTask().execute();
     }
 
-    public void startGame() {
-        Intent intent = getIntent();
-        String answerArrayStr = intent.getStringExtra("ANSWER_ARRAY");
-        if (answerArrayStr == null) {
-            if (intent.hasExtra("SELECTED_IMAGE_URI")) {
-                Uri myImageURI = intent.getParcelableExtra("SELECTED_IMAGE_URI");
-                InputStream imageStream = null;
-                try {
-                    imageStream = getContentResolver().openInputStream(myImageURI);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+    class FDTask extends AsyncTask<Void, Void, PicrossPuzzle> {
+
+        @Override
+        protected void onPreExecute() {
+            // showDialog(AUTHORIZING_DIALOG);
+        }
+
+        @Override
+        protected void onPostExecute(PicrossPuzzle puzzle) {
+            // Pass the result data back to the main activity
+            PicrossPuzzleGUI.this.puzzle = puzzle;
+            if (PicrossPuzzleGUI.this.pd != null) {
+                PicrossPuzzleGUI.this.pd.dismiss();
+            }
+            setContentView(R.layout.activity_picross_puzzle_gui);
+            startGame();
+            return;
+        }
+
+        @Override
+        protected PicrossPuzzle doInBackground(Void... params) {
+            Bitmap yourSelectedImage = null;
+            Intent intent = getIntent();
+            String answerArrayStr = intent.getStringExtra("ANSWER_ARRAY");
+            if (answerArrayStr == null) {
+                if (intent.hasExtra("SELECTED_IMAGE_URI")) {
+                    Uri myImageURI = intent.getParcelableExtra("SELECTED_IMAGE_URI");
+                    InputStream imageStream = null;
+                    try {
+                        imageStream = getContentResolver().openInputStream(myImageURI);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    yourSelectedImage = BitmapFactory.decodeStream(imageStream);
+                    PicrossPuzzleGenerator puzzleGen = new PicrossPuzzleGenerator(yourSelectedImage, 5, 5);
+                    puzzleGen.setThreshold(intent.getIntExtra("THRESHOLD", 125));
+                    puzzleGen.setPuzzleWidth(intent.getIntExtra("PUZZLE_WIDTH", 10));
+                    puzzleGen.setPuzzleHeight(intent.getIntExtra("PUZZLE_HEIGHT", 10));
+                    InputStream in = getResources().openRawResource(R.raw.network);
+                    System.out.println("START FOREGROUND");
+                    ForegroundDetection fd = new ForegroundDetection(in);
+                    fd.setBackground(Color.WHITE);
+                    fd.setOutline(true);
+                    Bitmap ySI = yourSelectedImage.copy(Bitmap.Config.ARGB_8888, true);
+                    try {
+                        yourSelectedImage = fd.getForeground(ySI);
+                    } catch(IOException e) {
+                        e.printStackTrace();
+                    }
+                    puzzleGen.setForegroundImage(yourSelectedImage);
                 }
-                Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);
-                PicrossPuzzleGenerator puzzleGen = new PicrossPuzzleGenerator(yourSelectedImage, 5, 5);
+                else {
+                    String urlLink = intent.getStringExtra("URL_STRING");
+                    System.out.println("urlLink = " + urlLink);
+                    URLBitmap retImg = new URLBitmap(urlLink);
+                    Thread x = new Thread(retImg);
+                    x.start();
+                    try {
+                        x.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    //null error here?
+                    yourSelectedImage = retImg.getrImg();
+                    if (yourSelectedImage == null) {
+                        System.out.println("WHY IS THIS THING NULL?!");
+                    }
+
+                }
+                final PicrossPuzzleGenerator puzzleGen = new PicrossPuzzleGenerator(yourSelectedImage, 5, 5);
                 puzzleGen.setThreshold(intent.getIntExtra("THRESHOLD", 125));
                 puzzleGen.setPuzzleWidth(intent.getIntExtra("PUZZLE_WIDTH", 10));
                 puzzleGen.setPuzzleHeight(intent.getIntExtra("PUZZLE_HEIGHT", 10));
@@ -77,75 +140,30 @@ public class PicrossPuzzleGUI extends AppCompatActivity implements View.OnClickL
                     e.printStackTrace();
                 }
                 puzzleGen.setForegroundImage(yourSelectedImage);
-                puzzle = puzzleGen.createPuzzle();
-                System.out.println("PUZZLE NOT LOADED FROM DB, USED GALLERY");
+                return puzzleGen.createPuzzle();
             }
             else {
-                String urlLink = intent.getStringExtra("URL_STRING");
-                System.out.println("urlLink = " + urlLink);
-                URLBitmap retImg = new URLBitmap(urlLink);
-                Thread x = new Thread(retImg);
-                x.start();
-                try {
-                    x.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                //null error here?
-                Bitmap yourSelectedImage = retImg.getrImg();
-                if (yourSelectedImage == null) {
-                    System.out.println("WHY IS THIS THING NULL?!");
-                }
-                final PicrossPuzzleGenerator puzzleGen = new PicrossPuzzleGenerator(yourSelectedImage, 5, 5);
-                puzzleGen.setThreshold(intent.getIntExtra("THRESHOLD", 125));
-                puzzleGen.setPuzzleWidth(intent.getIntExtra("PUZZLE_WIDTH", 10));
-                puzzleGen.setPuzzleHeight(intent.getIntExtra("PUZZLE_HEIGHT", 10));
-                System.out.println("START FOREGROUND");
-                InputStream in = getResources().openRawResource(R.raw.network);
-                final ForegroundDetection fd = new ForegroundDetection(in);
-                fd.setBackground(Color.WHITE);
-                fd.setOutline(true);
-                final Bitmap ySI = yourSelectedImage.copy(Bitmap.Config.ARGB_8888, true);
-                Thread y = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            puzzleGen.setForegroundImage(fd.getForeground(ySI));
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                String[] brokenUp = answerArrayStr.split(";");
+                boolean[][] loadedAnswerArray = new boolean[brokenUp.length][brokenUp[0].length()];
+                for (int i = 0; i < loadedAnswerArray.length; i++) {
+                    for (int j = 0; j < loadedAnswerArray[i].length; j++) {
+                        if (brokenUp[i].charAt(j) == '0') {
+                            loadedAnswerArray[i][j] = false;
+                        }
+                        else {
+                            loadedAnswerArray[i][j] = true;
                         }
                     }
-                });
-                y.start();
-                try {
-                    y.join();
                 }
-                catch (InterruptedException ex) {
+                puzzle = new PicrossPuzzle(loadedAnswerArray);
+                dbLoaded = true;
+                return puzzle;
+            }
+        }
+    }
 
-                }
-                puzzle = puzzleGen.createPuzzle();
-                System.out.println("PUZZLE NOT LOADED FROM DB, USED INTERNET");
-            }
-        }
-        else {
-            String[] brokenUp = answerArrayStr.split(";");
-            boolean[][] loadedAnswerArray = new boolean[brokenUp.length][brokenUp[0].length()];
-            for (int i = 0; i < loadedAnswerArray.length; i++) {
-                for (int j = 0; j < loadedAnswerArray[i].length; j++) {
-                    if (brokenUp[i].charAt(j) == '0') {
-                        loadedAnswerArray[i][j] = false;
-                    }
-                    else {
-                        loadedAnswerArray[i][j] = true;
-                    }
-                }
-            }
-            puzzle = new PicrossPuzzle(loadedAnswerArray);
-            dbLoaded = true;
-        }
+    public void startGame() {
         setButtons();
-        /*ImageView view = (ImageView) findViewById(R.id.testingImage);
-        view.setImageBitmap(puzzle.foregroundImage);*/
         ImageButton shade = (ImageButton) findViewById(R.id.shade);
         buttonPress = MediaPlayer.create(this, R.raw.buttonclick);
         shade.setOnClickListener(new View.OnClickListener() {

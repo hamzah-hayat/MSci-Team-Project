@@ -1,6 +1,7 @@
 package com.group.msci.puzzlegenerator.picross;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -37,6 +39,7 @@ import java.net.URI;
 
 public class PicrossPuzzleOptionsGUI extends AppCompatActivity implements View.OnClickListener {
     PicrossPuzzleGenerator puzzleGen;
+    Bitmap selectedImage;
     Bitmap original;
     ImageView image;
     SeekBar thresholdSeek;
@@ -46,80 +49,88 @@ public class PicrossPuzzleOptionsGUI extends AppCompatActivity implements View.O
     int puzzleWidth = 15;
     int puzzleHeight = 15;
     String urlLink;
+    ProgressDialog pd;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_picross_puzzle_options_gui);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    class FDTask extends AsyncTask<Void, Void, Bitmap> {
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        Intent intent = getIntent();
-        Bitmap yourSelectedImage = null;
-        if (intent.hasExtra("URL_STRING")) {
-            if (isNetConn()) {
-                urlLink = intent.getStringExtra("URL_STRING");
-                URLBitmap retImg = new URLBitmap(urlLink);
-                Thread x = new Thread(retImg);
-                x.start();
-                try {
-                    x.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+        @Override
+        protected Bitmap doInBackground(Void... params) {
+            Intent intent = getIntent();
+            Bitmap yourSelectedImage = null;
+            if (intent.hasExtra("URL_STRING")) {
+                if (isNetConn()) {
+                    urlLink = intent.getStringExtra("URL_STRING");
+                    URLBitmap retImg = new URLBitmap(urlLink);
+                    Thread x = new Thread(retImg);
+                    x.start();
+                    try {
+                        x.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    yourSelectedImage = retImg.getrImg();
                 }
-                yourSelectedImage = retImg.getrImg();
+                else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(PicrossPuzzleOptionsGUI.this);
+                    builder.setTitle("Error! No Internet!\nReturning you to main menu.");
+                    builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(PicrossPuzzleOptionsGUI.this, MainActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    return selectedImage;
+                }
             }
             else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Error! No Internet!\nReturning you to main menu.");
-                builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(PicrossPuzzleOptionsGUI.this, MainActivity.class);
-                        startActivity(intent);
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-                return;
+                Uri myImageURI = intent.getParcelableExtra("SELECTED_IMAGE_URI");
+                image_uri = myImageURI;
+                InputStream imageStream = null;
+                try {
+                    imageStream = getContentResolver().openInputStream(myImageURI);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                yourSelectedImage = BitmapFactory.decodeStream(imageStream);
             }
-        }
-        else {
-            Uri myImageURI = intent.getParcelableExtra("SELECTED_IMAGE_URI");
-            image_uri = myImageURI;
-            InputStream imageStream = null;
+            Bitmap ySI = yourSelectedImage.copy(Bitmap.Config.ARGB_8888, true);
+            InputStream in = getResources().openRawResource(R.raw.network);
+            System.out.println("START FOREGROUND");
+            ForegroundDetection fd = new ForegroundDetection(in);
+            fd.setBackground(Color.WHITE);
+            fd.setOutline(true);
             try {
-                imageStream = getContentResolver().openInputStream(myImageURI);
-            } catch (FileNotFoundException e) {
+                yourSelectedImage = fd.getForeground(ySI);
+            } catch(IOException e) {
                 e.printStackTrace();
             }
-            yourSelectedImage = BitmapFactory.decodeStream(imageStream);
-        }
-        Bitmap ySI = yourSelectedImage.copy(Bitmap.Config.ARGB_8888, true);
-        InputStream in = getResources().openRawResource(R.raw.network);
-        System.out.println("START FOREGROUND");
-        ForegroundDetection fd = new ForegroundDetection(in);
-        fd.setBackground(Color.WHITE);
-        fd.setOutline(true);
-        try {
-            yourSelectedImage = fd.getForeground(ySI);
-        } catch(IOException e) {
-            e.printStackTrace();
+            return yourSelectedImage;
         }
 
-        original = Bitmap.createBitmap(yourSelectedImage);
-        puzzleGen = new PicrossPuzzleGenerator(yourSelectedImage, 25, 25);
+        @Override
+        protected void onPostExecute(Bitmap ySI) {
+            // Pass the result data back to the main activity
+            PicrossPuzzleOptionsGUI.this.selectedImage = ySI;
+            if (PicrossPuzzleOptionsGUI.this.pd != null) {
+                PicrossPuzzleOptionsGUI.this.pd.dismiss();
+            }
+            setContentView(R.layout.activity_picross_puzzle_options_gui);
+            startPreviewer();
+            return;
+        }
+    }
+
+    public void startPreviewer() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        original = Bitmap.createBitmap(selectedImage);
+        puzzleGen = new PicrossPuzzleGenerator(selectedImage, 25, 25);
         image = (ImageView) findViewById(R.id.previewImage);
         image.setScaleType(ImageView.ScaleType.FIT_XY);
-        image.setImageBitmap(yourSelectedImage);
+        image.setImageBitmap(selectedImage);
         SeekBar thresholdSeek = (SeekBar) findViewById(R.id.threshold);
         Button small = (Button) findViewById(R.id.picross_small);
         Button medium = (Button) findViewById(R.id.picross_medium);
@@ -153,6 +164,16 @@ public class PicrossPuzzleOptionsGUI extends AppCompatActivity implements View.O
                 thresholdInt = progress;
             }
         });
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_picross_puzzle_options_gui);
+        this.pd = ProgressDialog.show(this, "Foreground Extraction",
+                "Loading... Please wait!\nThis can take up to a minute!", true, false);
+        // Start a new thread that will download all the data
+        new FDTask().execute();
     }
 
     @Override
