@@ -26,21 +26,28 @@ import org.json.JSONException;
  */
 public class BallSwitchPuzzleWinPage extends Activity {
 
+    int time;
+    String[] puzzleData;
+
     //This activity is used for the win page
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ballswitch_complete);
 
-        int time = getIntent().getIntExtra("time", 0);
-        String[] puzzleData = getIntent().getStringArrayExtra("puzzleData");
+        time = getIntent().getIntExtra("time", 0);
+        puzzleData = getIntent().getStringArrayExtra("puzzleData");
+
+    }
+
+    public void onContentChanged ()
+    {
 
         setUpGameWinButtons(time,puzzleData);
 
         TextView timeText = (TextView)findViewById(R.id.ballSwitchTime);
         timeText.setText(Integer.toString(time));
     }
-
 
     public void setUpGameWinButtons(int scoreIn,String[] puzzleDataIn)
     {
