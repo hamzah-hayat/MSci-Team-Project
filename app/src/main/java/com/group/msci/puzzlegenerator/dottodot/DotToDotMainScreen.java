@@ -3,6 +3,7 @@ package com.group.msci.puzzlegenerator.dottodot;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -23,15 +24,19 @@ import java.util.Random;
  * Created by Mustafa on 11/04/2016.
  */
 public class DotToDotMainScreen extends Activity {
+    private MediaPlayer buttonPress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dots_main);
 
+        buttonPress = MediaPlayer.create(this, R.raw.buttonclick);
         ImageButton play = (ImageButton) findViewById(R.id.play);
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                buttonPress.start();
                 InputStream in = getResources().openRawResource(R.raw.animalwords);
                 PixabayScraperJSON scraper = new PixabayScraperJSON(in);
                 scraper.setLines(227);
@@ -87,6 +92,7 @@ public class DotToDotMainScreen extends Activity {
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                buttonPress.start();
                 Intent intent = new Intent(DotToDotMainScreen.this, DotToDotImageSelectType.class);
                 startActivity(intent);
             }
@@ -96,6 +102,7 @@ public class DotToDotMainScreen extends Activity {
         help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                buttonPress.start();
                 Intent intent = new Intent(DotToDotMainScreen.this, DotToDotHelp.class);
                 startActivity(intent);
             }
@@ -105,6 +112,7 @@ public class DotToDotMainScreen extends Activity {
         score.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                buttonPress.start();
                 Intent intent = new Intent(DotToDotMainScreen.this, DotToDotScoreboard.class);
                 startActivity(intent);
             }

@@ -118,6 +118,11 @@ public class DotsView extends View {
         }
         canvas.drawBitmap(dotsBitmap, 0, 0, dotsPaint);
 
+        for(int i = 0; i < dots.size(); i++) {
+            Dot c = dots.get(i);
+            canvas.drawCircle(c.getxPos(), c.getyPos(), 30, dotsPaint);
+        }
+
         float dx = Math.abs(x-startx);
         float dy = Math.abs(y-starty);
         if(dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {

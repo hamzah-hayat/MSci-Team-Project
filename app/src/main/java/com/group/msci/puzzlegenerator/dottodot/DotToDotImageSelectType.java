@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -34,16 +35,19 @@ import java.net.UnknownHostException;
 public class DotToDotImageSelectType extends Activity {
     private static final int SELECT_PHOTO = 100;
     private EditText link;
+    private MediaPlayer buttonPress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dots_create);
+        buttonPress = MediaPlayer.create(this, R.raw.buttonclick);
         ImageButton galleryButton = (ImageButton) findViewById(R.id.camera);
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
         galleryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                buttonPress.start();
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
                 startActivityForResult(photoPickerIntent, SELECT_PHOTO);
@@ -53,6 +57,7 @@ public class DotToDotImageSelectType extends Activity {
         linkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                buttonPress.start();
                 AlertDialog.Builder builder = new AlertDialog.Builder(DotToDotImageSelectType.this);
                 builder.setTitle("Enter URL");
                 builder.setMessage("Enter the URL of the image");

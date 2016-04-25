@@ -1,11 +1,14 @@
 package com.group.msci.puzzlegenerator.dottodot;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -44,6 +47,131 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
     private DotMap passDot;
     private String puzData;
     private int butCounter = 0;
+    private ProgressDialog pd = null;
+    private MediaPlayer buttonPress;
+
+    class FDTask extends AsyncTask<Void, Void, Bitmap> {
+
+        @Override
+        protected void onPreExecute() {
+            // showDialog(AUTHORIZING_DIALOG);
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bmp) {
+            // Pass the result data back to the main activity
+            DotToDotPreviewAndWord.this.mutableImg = bmp;
+            if (DotToDotPreviewAndWord.this.pd != null) {
+                DotToDotPreviewAndWord.this.pd.dismiss();
+            }
+            startGame();
+            return;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Void... params) {
+            InputStream in = getResources().openRawResource(R.raw.network);
+            System.out.println("START FOREGROUND");
+            ForegroundDetection fd = new ForegroundDetection(in);
+            fd.setBackground(Color.BLACK);
+            fd.setOutline(true);
+            Bitmap mutableImg = readImage.copy(Bitmap.Config.ARGB_8888, true);
+            try {
+                return fd.getForeground(mutableImg);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    public void startGame() {
+        System.out.println("START EDGE");
+        AndroidCannyEdgeDetector det = new AndroidCannyEdgeDetector();
+        det.setSourceImage(mutableImg);
+        det.process();
+        Bitmap edgImg = det.getEdgesImage();
+
+        final DotsView dotV = (DotsView) findViewById(R.id.dotsView);
+        final Bitmap scaledImg = Bitmap.createScaledBitmap(edgImg, dotV.getLayoutParams().width, dotV.getLayoutParams().height, true);
+
+        dots = new ArrayList<>();
+        ArrayList<Dot> fDots = new ArrayList<>();
+        for (int x = 0; x < scaledImg.getWidth(); x++) {
+            for (int y = 0; y < scaledImg.getHeight(); y++) {
+                if (scaledImg.getPixel(x, y) != Color.BLACK) {
+                    dots.add(new Dot(x, y));
+                }
+            }
+        }
+
+        fDots.add(dots.get(0));
+        for (int i = 0; i < dots.size(); i = i + 100) {
+            Dot cDot = dots.get(i);
+            fDots.add(cDot);
+        }
+
+        //dotV.setBackgroundBitmap(scaledImg);
+        dotV.setDots(fDots);
+        dotV.removeEdgeDots();
+        dotV.removeOverlappingDots();
+        dotV.invalidate();
+
+
+        passDot = new DotMap(dotV.getDots(), dotV.getLayoutParams().width, dotV.getLayoutParams().height);
+
+        buttonPress = MediaPlayer.create(this, R.raw.buttonclick);
+
+        final Button show = (Button) findViewById(R.id.show);
+        show.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonPress.start();
+                if(butCounter == 0) {
+                    butCounter++;
+                    show.setBackgroundResource(R.drawable.ic_dots_dismiss2);
+                    dotV.setBackgroundBitmap(scaledImg);
+                    dotV.invalidate();
+                }
+                else {
+                    butCounter = 0;
+                    show.setBackgroundResource(R.drawable.ic_dots_show);
+                    dotV.setBackgroundBitmap(null);
+                    dotV.invalidate();
+                }
+            }
+        });
+
+        Button discard = (Button) findViewById(R.id.discard);
+        discard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonPress.start();
+                new AlertDialog.Builder(DotToDotPreviewAndWord.this)
+                        .setTitle("Confirm")
+                        .setMessage("Are you sure you want to discard this puzzle?")
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                                Intent intent = new Intent(DotToDotPreviewAndWord.this, DotToDotMainScreen.class);
+                                startActivity(intent);
+                            }
+                        })
+                        .show();
+            }
+        });
+
+
+        Button share = (Button) findViewById(R.id.share);
+        share.setOnClickListener(this);
+
+
+    }
 
 
     @Override
@@ -75,101 +203,17 @@ public class DotToDotPreviewAndWord extends AppCompatActivity implements View.On
             }
             readImage = retImg.getrImg();
         }
-
-        InputStream in = getResources().openRawResource(R.raw.network);
-        System.out.println("START FOREGROUND");
-        ForegroundDetection fd = new ForegroundDetection(in);
-        fd.setBackground(Color.BLACK);
-        fd.setOutline(true);
-        mutableImg = readImage.copy(Bitmap.Config.ARGB_8888, true);
-        try {
-            mutableImg = fd.getForeground(mutableImg);
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("START EDGE");
-        AndroidCannyEdgeDetector det = new AndroidCannyEdgeDetector();
-        det.setSourceImage(mutableImg);
-        det.process();
-        Bitmap edgImg = det.getEdgesImage();
-
-        final DotsView dotV = (DotsView) findViewById(R.id.dotsView);
-        final Bitmap scaledImg = Bitmap.createScaledBitmap(edgImg, dotV.getLayoutParams().width, dotV.getLayoutParams().height, true);
-
-        dots = new ArrayList<>();
-        ArrayList<Dot> fDots = new ArrayList<>();
-        for (int x = 0; x < scaledImg.getWidth(); x++) {
-            for (int y = 0; y < scaledImg.getHeight(); y++) {
-                if (scaledImg.getPixel(x, y) != Color.BLACK) {
-                    dots.add(new Dot(x, y));
-                }
-            }
-        }
-
-        fDots.add(dots.get(0));
-        for (int i = 0; i < dots.size(); i = i + 100) {
-            Dot cDot = dots.get(i);
-            fDots.add(cDot);
-        }
-
-        //dotV.setBackgroundBitmap(scaledImg);
-        dotV.setDots(fDots);
-        dotV.removeEdgeDots();
-        dotV.removeOverlappingDots();
+        this.pd = ProgressDialog.show(this, "Foreground Extraction",
+                "Loading... Please wait!\nThis can take up to a minute!", true, false);
+        new FDTask().execute();
 
 
-        passDot = new DotMap(dotV.getDots(), dotV.getLayoutParams().width, dotV.getLayoutParams().height);
 
-        final Button show = (Button) findViewById(R.id.show);
-        show.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(butCounter == 0) {
-                    butCounter++;
-                    show.setBackgroundResource(R.drawable.ic_dots_dismiss2);
-                    dotV.setBackgroundBitmap(scaledImg);
-                    dotV.invalidate();
-                }
-                else {
-                    butCounter = 0;
-                    show.setBackgroundResource(R.drawable.ic_dots_show);
-                    dotV.setBackgroundBitmap(null);
-                    dotV.invalidate();
-                }
-            }
-        });
-
-        Button discard = (Button) findViewById(R.id.discard);
-        discard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new AlertDialog.Builder(DotToDotPreviewAndWord.this)
-                        .setTitle("Confirm")
-                        .setMessage("Are you sure you want to discard this puzzle?")
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                finish();
-                                Intent intent = new Intent(DotToDotPreviewAndWord.this, DotToDotMainScreen.class);
-                                startActivity(intent);
-                            }
-                        })
-                        .show();
-            }
-        });
-
-
-        Button share = (Button) findViewById(R.id.share);
-        share.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
+        buttonPress.start();
             EditText word = (EditText) findViewById(R.id.dots_answer);
             if(word.getText().toString().equals("")) {
                 new AlertDialog.Builder(DotToDotPreviewAndWord.this)
