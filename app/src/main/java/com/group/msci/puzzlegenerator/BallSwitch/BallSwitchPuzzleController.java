@@ -39,6 +39,8 @@ public class BallSwitchPuzzleController {
     public BallSwitchPuzzleController(BallSwitchPuzzleGame gameActivityIn)
     {
         gameActivity = gameActivityIn;
+        ballMover = new BallSwitchPuzzleMoveBall(gameActivity);
+        ballMover.resetBallPosition();
     }
 
     public void setView(BallSwitchPuzzleView viewIn){gameView=viewIn;}
