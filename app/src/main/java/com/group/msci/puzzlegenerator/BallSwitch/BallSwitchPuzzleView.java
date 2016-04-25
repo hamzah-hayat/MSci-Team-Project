@@ -2,6 +2,8 @@ package com.group.msci.puzzlegenerator.BallSwitch;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.widget.LinearLayout;
@@ -18,6 +20,13 @@ public class BallSwitchPuzzleView {
 
     BallSwitchPuzzleController controller;
     BallSwitchPuzzleGame gameActivity;
+    protected TextView timer;
+    private long startTime = 0L;
+    Handler timeHandler = new Handler();
+    long timeInMS = 0L;
+    long timeSwapBuff = 0L;
+    long updatedTime = 0L;
+
 
     BallSwitchPuzzleGameSurface gameCanvas;
 
@@ -57,7 +66,31 @@ public class BallSwitchPuzzleView {
         {
             gameCanvas.setPuzzle(gameActivity.getPuzzle());
         }
+
+        timer = (TextView) gameActivity.findViewById(R.id.timerField);
+        startTime = SystemClock.uptimeMillis();
+        timeHandler.postDelayed(updateTimerThread, 0);
+
     }
+
+    public Runnable updateTimerThread = new Runnable() {
+        boolean update = true;
+        @Override
+        public void run() {
+            if(update) {
+                timeInMS = SystemClock.uptimeMillis() - startTime;
+                updatedTime = timeSwapBuff + timeInMS;
+                int secs = (int) (updatedTime / 1000);
+                int mins = secs / 60;
+                if (secs % 60 < 10) {
+                    timer.setText(("" + mins + ":0" + Integer.toString(secs % 60)));
+                } else {
+                    timer.setText(("" + mins + ":" + Integer.toString(secs % 60)));
+                }
+                timeHandler.postDelayed(this, 0);
+            }
+        }
+    };
 
     public void showHelpScreen()
     {

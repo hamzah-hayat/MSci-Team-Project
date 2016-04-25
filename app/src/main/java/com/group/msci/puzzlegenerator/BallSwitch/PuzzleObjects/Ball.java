@@ -42,7 +42,6 @@ public class Ball extends BallSwitchObject {
     public void draw(RectF box,Canvas canvas,Paint paint)
     {
         //Just a ball bitmap
-        System.out.print("stop");
         paint.setColor(Color.WHITE);
         canvas.drawBitmap(image,null,box,paint);
     }

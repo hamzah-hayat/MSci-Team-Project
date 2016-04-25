@@ -208,7 +208,7 @@ public class BallSwitchPuzzleGame extends Activity {
         if (puzzle.checkPuzzleComplete())
         {
             //Game is won
-            view.showScoreBoard(10);
+            view.showScoreBoard((int) (view.updatedTime / 1000));
             gameStarted = false;
         }
     }

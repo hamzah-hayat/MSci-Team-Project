@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.DisplayMetrics;
 import android.view.SurfaceHolder;
@@ -203,11 +205,12 @@ public class BallSwitchPuzzleGameSurface extends SurfaceView implements SurfaceH
         float objectYTop = activity.getController().ballMover.ballYPosition * gridHeightSpace;
         float objectXRight = (activity.getController().ballMover.ballXPosition+1) * gridWidthSpace;
         float objectYBottom = (activity.getController().ballMover.ballYPosition+1) * gridHeightSpace;
-        paint.setColor(Color.BLACK);    //Set the colour back to default
-        ColorFilter filter = new LightingColorFilter(Color.BLACK, 1);
+        paint.setColor(Color.WHITE);    //Set the colour back to default
+        ColorFilter filter = new LightingColorFilter(Color.WHITE, 1);
         paint.setColorFilter(filter);
         RectF box = new RectF(objectXLeft,objectYTop,objectXRight,objectYBottom);
         puzzle.getBall().draw(box,canvas,paint);
+
         //Now draw the menu buttons and bar
 
     }
