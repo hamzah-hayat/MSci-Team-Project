@@ -41,7 +41,7 @@ public class BallSwitchPuzzleScoreboard extends Activity {
             //Show a loading wheel in the activity
             uploadThread.join();
         } catch (InterruptedException e) {
-            Log.i("MazeScoreBoard", "Score download thread failed to finish");
+            Log.i("BallScoreBoard", "Score download thread failed to finish");
         }
 
         try {

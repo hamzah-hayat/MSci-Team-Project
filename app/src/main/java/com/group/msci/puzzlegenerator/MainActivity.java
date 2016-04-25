@@ -47,9 +47,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             Intent intent = new Intent(this, UserManager.class);
             this.startActivity(intent);
         }
-
-        //Initialize facebook SDK
-        FacebookSdk.sdkInitialize(getApplicationContext());
         PuzzleCode.init();
 
         setContentView(R.layout.puzzld_main);

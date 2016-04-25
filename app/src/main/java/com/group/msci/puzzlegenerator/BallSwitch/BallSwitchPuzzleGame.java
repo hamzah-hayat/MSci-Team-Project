@@ -99,21 +99,6 @@ public class BallSwitchPuzzleGame extends Activity {
         }
     }
 
-    @Override
-    public void onDestroy()
-    {
-        super.onDestroy();
-        boolean retry = true;
-        controller.ballMover.thread.setRunning(false);
-        while (retry) {
-            try {
-                controller.ballMover.thread.join();
-                retry = false;
-            } catch (InterruptedException e) {
-
-            }
-        }
-    }
 
     public ImageButton findButtonById(int id)
     {
