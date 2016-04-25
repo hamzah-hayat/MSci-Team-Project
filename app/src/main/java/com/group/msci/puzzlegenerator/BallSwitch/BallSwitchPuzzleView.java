@@ -2,6 +2,7 @@ package com.group.msci.puzzlegenerator.BallSwitch;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
@@ -9,6 +10,10 @@ import android.view.SurfaceView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Ball;
+import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.BallSwitchObject;
+import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Fan;
+import com.group.msci.puzzlegenerator.BallSwitch.PuzzleObjects.Switch;
 import com.group.msci.puzzlegenerator.R;
 
 /**
@@ -114,6 +119,34 @@ public class BallSwitchPuzzleView {
 
     public void showScoreBoard(int timeIn)
     {
+        //Start new activity
+        Intent intent = new Intent(gameActivity,
+                BallSwitchPuzzleWinPage.class);
+        //Need to pass my puzzle into this
+        String[] puzzleData = new String[4 + gameActivity.getPuzzle().getObjects().size()];
+        puzzleData[0] = Integer.toString(gameActivity.puzzle.getSizeX());
+        puzzleData[1] = Integer.toString(gameActivity.puzzle.getSizeY());
+        puzzleData[2] = Integer.toString(gameActivity.puzzle.getBall().getPosX()) + "," + Integer.toString(gameActivity.puzzle.getBall().getPosY());
+        for (Integer move : gameActivity.puzzle.winningMoves) {
+            puzzleData[3] += Integer.toString(move) + ",";
+        }
+        puzzleData[3] = puzzleData[3].substring(4, puzzleData[3].length() - 1);    //Get rid of last comma
+
+        int counter = 4;
+        for (BallSwitchObject object : gameActivity.puzzle.getObjects()) {
+            if (!(object instanceof Ball)) {
+                if (object instanceof Fan) {
+                    puzzleData[counter] = object.getClass().getName() + "," + Integer.toString(object.getPosX()) + "," + Integer.toString(object.getPosY()) + "," + Integer.toString(((Fan) object).getDirection());
+                } else if (object instanceof Switch) {
+                    puzzleData[counter] = object.getClass().getName() + "," + Integer.toString(object.getPosX()) + "," + Integer.toString(object.getPosY());
+                }
+                counter++;
+            }
+        }
+        intent.putExtra("time",(int) (gameActivity.view.updatedTime / 1000));
+        intent.putExtra("puzzleData",puzzleData);
+        gameActivity.startActivity(intent);
+        /*
         //Game is won
         final int time = timeIn;
         AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(gameActivity);
@@ -121,13 +154,38 @@ public class BallSwitchPuzzleView {
         dlgAlert.setTitle("BallSwitch Puzzle Game");
         dlgAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                //showGameWinScreen(time);
-                //controller.setUpGameWinButtons(time);
+                //Start new activity
+                Intent intent = new Intent(gameActivity,
+                        BallSwitchPuzzleWinPage.class);
+                //Need to pass my puzzle into this
+                String[] puzzleData = new String[4 + gameActivity.getPuzzle().getObjects().size()];
+                puzzleData[0] = Integer.toString(gameActivity.puzzle.getSizeX());
+                puzzleData[1] = Integer.toString(gameActivity.puzzle.getSizeY());
+                puzzleData[2] = Integer.toString(gameActivity.puzzle.getBall().getPosX()) + "," + Integer.toString(gameActivity.puzzle.getBall().getPosY());
+                for (Integer move : gameActivity.puzzle.winningMoves) {
+                    puzzleData[3] += Integer.toString(move) + ",";
+                }
+                puzzleData[3] = puzzleData[3].substring(4, puzzleData[3].length() - 1);    //Get rid of last comma
+
+                int counter = 4;
+                for (BallSwitchObject object : gameActivity.puzzle.getObjects()) {
+                    if (!(object instanceof Ball)) {
+                        if (object instanceof Fan) {
+                            puzzleData[counter] = object.getClass().getName() + "," + Integer.toString(object.getPosX()) + "," + Integer.toString(object.getPosY()) + "," + Integer.toString(((Fan) object).getDirection());
+                        } else if (object instanceof Switch) {
+                            puzzleData[counter] = object.getClass().getName() + "," + Integer.toString(object.getPosX()) + "," + Integer.toString(object.getPosY());
+                        }
+                        counter++;
+                    }
+                }
+                intent.putExtra("time",(int) (gameActivity.view.updatedTime / 1000));
+                intent.putExtra("puzzleData",puzzleData);
+                gameActivity.startActivity(intent);
             }
         });
         dlgAlert.setCancelable(true);
         dlgAlert.create().show();
-
+        */
     }
 
     public void redrawGame()
