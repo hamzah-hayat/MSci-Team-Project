@@ -35,19 +35,16 @@ public class BallSwitchPuzzleView {
         gameActivity = gameActivityIn;
     }
 
-    public void createGUI()
-    {
-        //Create the screens and windows needed for GUI
-
-    }
 
     public void setController(BallSwitchPuzzleController controllerIn){controller=controllerIn;}
 
+    /*
     public void showMainMenu()
     {
         gameActivity.setContentView(R.layout.ballswitch_activity);
         gameActivity.getController().setUpMainMenuButtons();
     }
+*/
 
     //Show the gameScreen here
     public void showGameScreen()
@@ -92,22 +89,27 @@ public class BallSwitchPuzzleView {
         }
     };
 
+    /*
     public void showHelpScreen()
     {
         gameActivity.setContentView(R.layout.ballswitch_help);
     }
+    */
 
+    /*
     public void showGameWinScreen(int time)
     {
         gameActivity.setContentView(R.layout.ballswitch_complete);
         TextView timeText = (TextView)gameActivity.findViewById(R.id.ballSwitchTime);
         timeText.setText(Integer.toString(time));
     }
-
+    */
+    /*
     public void showGeneratorScreen()
     {
         gameActivity.setContentView(R.layout.balls_create);
     }
+    */
 
 
     public void showScoreBoard(int timeIn)
@@ -119,8 +121,8 @@ public class BallSwitchPuzzleView {
         dlgAlert.setTitle("BallSwitch Puzzle Game");
         dlgAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                showGameWinScreen(time);
-                controller.setUpGameWinButtons(time);
+                //showGameWinScreen(time);
+                //controller.setUpGameWinButtons(time);
             }
         });
         dlgAlert.setCancelable(true);

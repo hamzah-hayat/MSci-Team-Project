@@ -88,11 +88,27 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".BallSwitch.BallSwitchPuzzleGame"
+            android:label="BallSwitch Puzzle Game"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="BallSwitch.BallSwitchPuzzleMainMenu"
             android:label="BallSwitch Puzzle Main Menu"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".BallSwitch.BallSwitchPuzzleGeneratorMenu"
+            android:label="BallSwitch Puzzle Generator"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".BallSwitch.BallSwitchPuzzleHelpPage"
+            android:label="BallSwitch Puzzle Help Page"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".BallSwitch.BallSwitchPuzzleScoreboard"
             android:label="BallSwitch Puzzle LeaderBoard"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".BallSwitch.BallSwitchPuzzleWinPage"
+            android:label="BallSwitch Puzzle Complete Page"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".dottodot.DotToDotView"

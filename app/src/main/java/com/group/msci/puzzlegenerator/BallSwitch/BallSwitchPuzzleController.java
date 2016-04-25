@@ -45,14 +45,16 @@ public class BallSwitchPuzzleController {
 
     public void setView(BallSwitchPuzzleView viewIn){gameView=viewIn;}
 
+    /*
     public void setUpGameWinButtons(int scoreIn)
     {
         ImageButton ballSwitchReturnButton = gameActivity.findButtonById(R.id.ballSwitchReturnToMainMenu);
         ballSwitchReturnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gameView.showMainMenu();
-
+                Intent intent = new Intent(gameActivity,
+                        BallSwitchPuzzleMainMenu.class);
+                gameActivity.startActivity(intent);
             }
         });
 
@@ -146,6 +148,7 @@ public class BallSwitchPuzzleController {
             }
         });
     }
+    */
 
     public void setUpGeneratorMenuButtons()
     {
@@ -224,6 +227,7 @@ public class BallSwitchPuzzleController {
 
     }
 
+    /*
     public void setUpMainMenuButtons()
     {
         //Setup main menu buttons so they work
@@ -232,14 +236,6 @@ public class BallSwitchPuzzleController {
             @Override
             public void onClick(View view) {
                 //Start the game
-                //Need to change view and start gameloop
-                /*
-                gameActivity.startGame();
-                gameView.showGameScreen();
-                setUpGameButtons();
-                ballMover = new BallSwitchPuzzleMoveBall(gameActivity);
-                ballMover.resetBallPosition();
-                */
 
                 gameView.showGeneratorScreen();
                 setUpGeneratorMenuButtons();
@@ -264,10 +260,11 @@ public class BallSwitchPuzzleController {
                 gameActivity.startActivity(intent);
             }
         });
-
-
     }
+    */
 
+
+    /*
     public void setUpHelpButtons()
     {
         ImageButton ballSwitchReturnButton = gameActivity.findButtonById(R.id.ballSwitchReturnButton);
@@ -279,6 +276,7 @@ public class BallSwitchPuzzleController {
             }
         });
     }
+    */
 
     public void setUpGameButtons()
     {
@@ -293,14 +291,15 @@ public class BallSwitchPuzzleController {
             }
         });
 
-        //This doesnt work sadly
         ImageButton ballSwitchReturnButton = gameActivity.findButtonById(R.id.ballSwitchReturnButton);
         ballSwitchReturnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Go back to main menu
                 gameActivity.gameStarted = false;
-                gameView.showMainMenu();
+                Intent intent = new Intent(gameActivity,
+                        BallSwitchPuzzleMainMenu.class);
+                gameActivity.startActivity(intent);
             }
         });
 

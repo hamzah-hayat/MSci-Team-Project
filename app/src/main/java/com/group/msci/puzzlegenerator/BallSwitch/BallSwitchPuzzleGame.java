@@ -87,15 +87,15 @@ public class BallSwitchPuzzleGame extends Activity {
         }
         else
         {
+            int difficulty = getIntent().getIntExtra("difficulty",0);
             controller = new BallSwitchPuzzleController(this);
             view = new BallSwitchPuzzleView(this);
             //Now link them together
 
             controller.setView(view);
             view.setController(controller);
-            gameStarted=false;
-            //Fully set up
-            view.showMainMenu();
+            setCreator(new BallSwitchPuzzleCreator(difficulty,getResources()));
+            startGame();
         }
     }
 

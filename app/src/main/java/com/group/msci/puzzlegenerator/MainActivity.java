@@ -19,6 +19,7 @@ import com.facebook.FacebookSdk;
 import com.google.gson.Gson;
 import com.group.msci.puzzlegenerator.BallSwitch.BallSwitchPuzzle;
 import com.group.msci.puzzlegenerator.BallSwitch.BallSwitchPuzzleGame;
+import com.group.msci.puzzlegenerator.BallSwitch.BallSwitchPuzzleMainMenu;
 import com.group.msci.puzzlegenerator.dottodot.DotToDotMainScreen;
 import com.group.msci.puzzlegenerator.dottodot.DotToDotView;
 import com.group.msci.puzzlegenerator.utils.PuzzleCode;
@@ -87,7 +88,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         ballSwitchMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, BallSwitchPuzzleGame.class);
+                Intent intent = new Intent(MainActivity.this, BallSwitchPuzzleMainMenu.class);
                 MainActivity.this.startActivity(intent);
             }
         });
