@@ -196,9 +196,32 @@ public class BallSwitchPuzzleGame extends Activity {
         if (puzzle.checkPuzzleComplete())
         {
             //Game is won
-            view.showScoreBoard((int) (view.updatedTime / 1000));
-            gameStarted = false;
+            controller.ballMover.thread.interrupt();
+            try {
+                controller.ballMover.thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
+            if (controller.ballMover.thread.isAlive()) {
+                //do nothing
+            }
+            else {
+                view.gameCanvas.thread.interrupt();
+                try {
+                    view.gameCanvas.thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (view.gameCanvas.thread.isAlive()) {
+                    //do nothing
+                }
+                else {
+                    System.out.println("FREEZE?!");
+                    view.showScoreBoard((int) (view.updatedTime / 1000));
+                    gameStarted = false;
+                }
+            }
         }
     }
 

@@ -34,7 +34,7 @@ public class BallSwitchPuzzleViewThread extends Thread {
     public void run()
     {
         Canvas c;
-        while(run)
+        while(run && !Thread.currentThread().isInterrupted())
         {
             c = null;
             //Limit frame rate to 60fps
@@ -48,7 +48,7 @@ public class BallSwitchPuzzleViewThread extends Thread {
                 }
                 catch(InterruptedException ex)
                 {
-
+                    run = false;
                 }
             }
             surface.timePrevFrame = System.currentTimeMillis();

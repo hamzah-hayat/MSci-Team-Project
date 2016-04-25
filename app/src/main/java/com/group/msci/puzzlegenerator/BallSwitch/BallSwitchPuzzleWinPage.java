@@ -34,17 +34,13 @@ public class BallSwitchPuzzleWinPage extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ballswitch_complete);
-
-        time = getIntent().getIntExtra("time", 0);
-        puzzleData = getIntent().getStringArrayExtra("puzzleData");
-
     }
 
     public void onContentChanged ()
     {
-
-        setUpGameWinButtons(time,puzzleData);
-
+        setUpGameWinButtons(time, puzzleData);
+        time = getIntent().getIntExtra("time", 0);
+        puzzleData = getIntent().getStringArrayExtra("puzzleData");
         TextView timeText = (TextView)findViewById(R.id.ballSwitchTime);
         timeText.setText(Integer.toString(time));
     }
@@ -94,13 +90,11 @@ public class BallSwitchPuzzleWinPage extends Activity {
         ballSwitchShareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Gson gson = new Gson();
                 UploadPuzzleJSON uploader = new UploadPuzzleJSON('b', gson.toJson(puzzleData), "ballswitch");
                 Thread uploadThread = new Thread(uploader);
                 uploadThread.start();
                 String code = "";
-
                 try {
                     uploadThread.join();
                     code = uploader.getJSON().getString("shareCode");   //this is the code of the puzzle

@@ -61,7 +61,7 @@ public class PicrossScoreboard extends Activity {
 
         usernameScores = new ArrayList<>();
         setContentView(R.layout.activity_picross_scoreboard);
-        listView = (ListView) findViewById(R.id.leaderboard_list_view);
+        listView = (ListView) findViewById(R.id.picrossListView);
 
         try {
             //Show a loading wheel in the activity

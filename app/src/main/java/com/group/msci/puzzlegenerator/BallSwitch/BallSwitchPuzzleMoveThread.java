@@ -40,11 +40,12 @@ public class BallSwitchPuzzleMoveThread extends Thread {
                 }
                 catch(InterruptedException ex)
                 {
-
+                    run = false;
                 }
             }
             ballMover.timePrevFrame = System.currentTimeMillis();
             ballMover.moveBall();
         }
+        System.out.println("Loop Broken");
     }
 }
